@@ -60,7 +60,7 @@ function App() {
           <span style={{ fontWeight: 700, fontSize: '1.5rem', letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>ScumDB Web Analyzer</span>
         </div>
         <a
-          href="https://github.com/your-github-org-or-user/your-repo"
+          href="https://github.com/Agent772/ScumDBWebAnalyser"
           target="_blank"
           rel="noopener noreferrer"
           style={{
