@@ -1,0 +1,16 @@
+{
+  "name": "Node.js & React Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "GitHub.copilot-chat"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install -g npm@latest"
+}
