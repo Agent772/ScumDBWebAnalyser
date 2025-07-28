@@ -1,6 +1,6 @@
 import { Database } from 'sql.js';
-// No BLOB parsing needed for vehicle ownership
-import React from 'react';
+import React, { useState } from 'react';
+import './AnalysisTable.css';
 
 interface Analysis1Props {
   db: Database;
@@ -8,7 +8,7 @@ interface Analysis1Props {
 
 interface SquadGroup {
   squadName: string;
-  members: { name: string; vehicles: number[] }[];
+  members: { name: string; vehicles: { entity_id: number; vehicle_class: string }[] }[];
 }
 
 export function SquadVehicles({ db }: Analysis1Props) {
@@ -28,19 +28,20 @@ export function SquadVehicles({ db }: Analysis1Props) {
     JOIN entity e ON e.id = ie.entity_id
     WHERE e.reason = 'AVehicleBase::BeginPlay'
   `);
-  // Map: user_profile_id -> vehicles[]
-  const userVehicles = new Map<number, { entity_id: number }[]>();
+  // Map: user_profile_id -> vehicles[] (with class)
+  const userVehicles = new Map<number, { entity_id: number; vehicle_class: string }[]>();
   if (itemEntities[0]) {
     for (const row of itemEntities[0].values) {
       const entity_id = Number(row[0]);
       const xml = row[1];
+      const vehicle_class = row[3] ? String(row[3]).replace('_Item_Container_ES', '') : '';
       if (typeof xml === 'string') {
         // Look for _owningUserProfileId="12345"
-        const match = xml.match(/_owningUserProfileId=\"(\d+)\"/);
+        const match = xml.match(/_owningUserProfileId="(\d+)"/);
         if (match) {
           const user_profile_id = Number(match[1]);
           if (!userVehicles.has(user_profile_id)) userVehicles.set(user_profile_id, []);
-          userVehicles.get(user_profile_id)!.push({ entity_id });
+          userVehicles.get(user_profile_id)!.push({ entity_id, vehicle_class });
         }
       }
     }
@@ -69,35 +70,212 @@ export function SquadVehicles({ db }: Analysis1Props) {
         group = { squadName: squad_name, members: [] };
       }
       const vehicles = userVehicles.get(user_profile_id) || [];
-      group.members.push({ name: member_name, vehicles: vehicles.map(v => v.entity_id) });
+      group.members.push({ name: member_name, vehicles });
     }
     if (group) squadGroups.push(group);
   }
 
+  // Helper: count vehicles in squad
+  function squadVehicleCount(squad: SquadGroup) {
+    return squad.members.reduce((sum, m) => sum + m.vehicles.length, 0);
+  }
+
+  // Flatten data for table
+  const flatRows: { squad: string; member: string; vehicle_id: number; vehicle_class: string }[] = [];
+  squadGroups.forEach((squad) => {
+    squad.members.forEach((member) => {
+      if (member.vehicles.length === 0) {
+        flatRows.push({
+          squad: squad.squadName,
+          member: member.name,
+          vehicle_id: 0,
+          vehicle_class: '',
+        });
+      } else {
+        member.vehicles.forEach((v) => {
+          flatRows.push({
+            squad: squad.squadName,
+            member: member.name,
+            vehicle_id: v.entity_id,
+            vehicle_class: v.vehicle_class,
+          });
+        });
+      }
+    });
+  });
+
+  // Filtering state
+  const [filter, setFilter] = useState({
+    squad: '',
+    member: '',
+    vehicle_id: '',
+    vehicle_class: '',
+  });
+
+  const filteredRows = flatRows.filter(row =>
+    row.squad.toLowerCase().includes(filter.squad.toLowerCase()) &&
+    row.member.toLowerCase().includes(filter.member.toLowerCase()) &&
+    (filter.vehicle_id === '' || String(row.vehicle_id).includes(filter.vehicle_id)) &&
+    row.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
+  );
+
+  // Download as txt
+  function downloadTxt() {
+    let txt = '';
+    // Only include squads/members/vehicles that match the current filter
+    const filteredSquads = squadGroups.filter(sq => sq.squadName.toLowerCase().includes(filter.squad.toLowerCase()));
+    filteredSquads.forEach(squad => {
+      // Check if any member matches
+      const filteredMembers = squad.members.filter(m => m.name.toLowerCase().includes(filter.member.toLowerCase()));
+      if (filteredMembers.length === 0) return;
+      txt += `${squad.squadName}  (members: ${squad.members.length}, vehicles: ${squadVehicleCount(squad)})\n`;
+      filteredMembers.forEach(member => {
+        txt += `  ${member.name}  (vehicles: ${member.vehicles.length})\n`;
+        // Filter vehicles for this member
+        const filteredVehicles = member.vehicles.filter(v =>
+          (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
+          v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
+        );
+        if (filteredVehicles.length === 0) {
+          txt += `    – no Vehicles –\n`;
+        } else {
+          filteredVehicles.forEach(v => {
+            txt += `    ${v.entity_id}\t${v.vehicle_class}\n`;
+          });
+        }
+      });
+      txt += '\n';
+    });
+    if (!txt.trim()) txt = 'No squads or members found.';
+    const blob = new Blob([txt], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'squad-vehicles.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Expand/collapse state
+  const [openSquads, setOpenSquads] = useState<{ [squad: string]: boolean }>(() => {
+    // All squads collapsed by default
+    const initial: { [s: string]: boolean } = {};
+    squadGroups.forEach(sq => { initial[sq.squadName] = false; });
+    return initial;
+  });
+  const [openMembers, setOpenMembers] = useState<{ [key: string]: boolean }>({});
+
+  // When a squad is opened, expand all its members by default
+  function toggleSquad(squad: string) {
+    setOpenSquads((prev) => {
+      const current = prev[squad];
+      const newState = { ...prev, [squad]: current === undefined ? false : !current };
+      // If opening, expand all members in this squad
+      if (!current) {
+        setOpenMembers((prevMembers) => {
+          const updated = { ...prevMembers };
+          const squadObj = squadGroups.find(sq => sq.squadName === squad);
+          if (squadObj) {
+            squadObj.members.forEach(m => {
+              if (m.vehicles && m.vehicles.length > 0) {
+                updated[squad + '|' + m.name] = true;
+              } else {
+                updated[squad + '|' + m.name] = false;
+              }
+            });
+          }
+          return updated;
+        });
+      }
+      return newState;
+    });
+  }
+
+  function toggleMember(squad: string, member: string) {
+    setOpenMembers((prev) => {
+      const key = squad + '|' + member;
+      const current = prev[key];
+      return { ...prev, [key]: current === undefined ? false : !current };
+    });
+  }
+
   // Render
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       <h2 style={{ color: '#f7b801', marginBottom: 24 }}>Vehicles per Squad</h2>
-      {squadGroups.length === 0 && <div>No squads or members found.</div>}
-      {squadGroups.map((squad) => (
-        <div key={squad.squadName} style={{ marginBottom: 24 }}>
-          <div style={{ fontWeight: 700, fontSize: '1.1rem', color: '#f7b801' }}>🚩 Squad: {squad.squadName}</div>
-          {squad.members.map((member) => (
-            <div key={member.name} style={{ marginLeft: 16, marginTop: 4 }}>
-              <span style={{ fontWeight: 600 }}>👤 {member.name}</span>
-              {member.vehicles.length === 0 ? (
-                <span style={{ color: '#bbb', marginLeft: 8 }}>– no Vehicles –</span>
-              ) : (
-                <ul style={{ margin: '4px 0 4px 24px', padding: 0 }}>
-                  {member.vehicles.map((vid) => (
-                    <li key={vid} style={{ color: '#fff' }}>• Vehicle ID: {vid}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
-        </div>
-      ))}
+      <div className="analysis-table-filters">
+        <input className="analysis-table-filter" placeholder="Filter Squad" value={filter.squad} onChange={e => setFilter(f => ({ ...f, squad: e.target.value }))} />
+        <input className="analysis-table-filter" placeholder="Filter Member" value={filter.member} onChange={e => setFilter(f => ({ ...f, member: e.target.value }))} />
+        <input className="analysis-table-filter" placeholder="Filter Vehicle ID" value={filter.vehicle_id} onChange={e => setFilter(f => ({ ...f, vehicle_id: e.target.value }))} />
+        <input className="analysis-table-filter" placeholder="Filter Vehicle Class" value={filter.vehicle_class} onChange={e => setFilter(f => ({ ...f, vehicle_class: e.target.value }))} />
+        <button className="analysis-table-download" onClick={downloadTxt}>Download as TXT</button>
+      </div>
+      <div style={{ overflowX: 'auto' }}>
+        <table className="analysis-table">
+          <thead>
+            <tr>
+              <th style={{ width: '40%' }}>Squad / Member / Vehicle</th>
+              <th style={{ width: '20%' }}>Vehicle ID</th>
+              <th style={{ width: '40%' }}>Vehicle Class</th>
+            </tr>
+          </thead>
+          <tbody>
+            {squadGroups.length === 0 && (
+              <tr><td colSpan={3} className="no-vehicles-row">No squads or members found.</td></tr>
+            )}
+            {squadGroups.filter(sq => sq.squadName.toLowerCase().includes(filter.squad.toLowerCase())).map((squad, sIdx) => {
+              // Filter members
+              const filteredMembers = squad.members.filter(m => m.name.toLowerCase().includes(filter.member.toLowerCase()));
+              if (filteredMembers.length === 0) return null;
+              const squadOpen = openSquads[squad.squadName] !== false;
+              return (
+                <React.Fragment key={squad.squadName + sIdx}>
+                  <tr className="squad-row" onClick={() => toggleSquad(squad.squadName)}>
+                    <td className="squad-cell" colSpan={3}>
+                      <span className="arrow">{squadOpen ? '▼' : '▶'}</span>{squad.squadName}
+                      <span className="count">
+                        ({squad.members.length} members, {squadVehicleCount(squad)} vehicles)
+                      </span>
+                    </td>
+                  </tr>
+                  {squadOpen && filteredMembers.map((member, mIdx) => {
+                    const memberKey = squad.squadName + '|' + member.name;
+                    const memberOpen = openMembers[memberKey] !== false;
+                    // Filter vehicles
+                    const filteredVehicles = member.vehicles.filter(v =>
+                      (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
+                      v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
+                    );
+                    return (
+                      <React.Fragment key={member.name + mIdx}>
+                        <tr className="member-row" onClick={e => { e.stopPropagation(); toggleMember(squad.squadName, member.name); }}>
+                          <td className="member-cell" colSpan={3}>
+                            <span className="arrow">{memberOpen ? '▼' : '▶'}</span>{member.name}
+                            <span className="count">({member.vehicles.length} vehicles)</span>
+                          </td>
+                        </tr>
+                        {memberOpen && (filteredVehicles.length === 0 ? (
+                          <tr className="no-vehicles-row">
+                            <td className="vehicle-cell" colSpan={3}>– no Vehicles –</td>
+                          </tr>
+                        ) : (
+                          filteredVehicles.map((v, vIdx) => (
+                            <tr key={v.entity_id + vIdx} className="vehicle-row">
+                              <td className="vehicle-cell"></td>
+                              <td>{v.entity_id}</td>
+                              <td>{v.vehicle_class}</td>
+                            </tr>
+                          ))
+                        ))}
+                      </React.Fragment>
+                    );
+                  })}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

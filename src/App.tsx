@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import initSqlJs, { Database } from 'sql.js';
 import './App.css';
@@ -92,7 +90,6 @@ function App() {
       {/* Main content area */}
       <main style={{
         flex: 1,
-        marginTop: 72,
         marginBottom: 56,
         display: 'flex',
         flexDirection: 'row',
@@ -186,9 +183,9 @@ function App() {
           )}
           {/* Show analysis result or prompt */}
           {db && (
-            <div style={{ width: '100%', maxWidth: 700 }}>
+            <div style={{ width: '100%' }}>
               {selectedAnalysis === 'squad-vehicles' && (
-                <div style={{ background: '#232533', color: '#fff', borderRadius: 8, padding: '2rem', minHeight: 120 }}>
+                <div style={{ width: '100%', minHeight: 120 }}>
                   <SquadVehicles db={db} />
                 </div>
               )}
