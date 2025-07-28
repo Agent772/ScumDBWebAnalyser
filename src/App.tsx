@@ -60,34 +60,48 @@ function App() {
           <img src="/src/logo.svg" alt="ScumDB Web Analyzer Logo" style={{ width: 40, height: 40 }} />
           <span style={{ fontWeight: 700, fontSize: '1.5rem', letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>ScumDB Web Analyzer</span>
         </div>
-        <a
-          href="https://github.com/Agent772/ScumDBWebAnalyser"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5em',
-            background: 'rgba(255,255,255,0.08)',
-            color: '#fff',
-            border: '2px solid #f7b801',
-            borderRadius: 8,
-            padding: '0.45em 1.1em',
-            fontWeight: 600,
-            fontSize: '1rem',
-            textDecoration: 'none',
-            boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-            transition: 'background 0.2s, border 0.2s',
-            cursor: 'pointer',
-            minWidth: 0,
-            marginRight: '60px',
-          }}
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ display: 'inline', verticalAlign: 'middle' }} xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.48 2.87 8.28 6.84 9.63.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.41-1.07-1-1.36-1-1.36-.82-.57.06-.56.06-.56.91.07 1.39.95 1.39.95.81 1.42 2.13 1.01 2.65.77.08-.6.32-1.01.58-1.24-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.38 9.38 0 0 1 12 7.43c.85.004 1.71.12 2.51.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.33.29.62.86.62 1.74 0 1.26-.01 2.28-.01 2.59 0 .27.18.58.69.48C19.13 20.54 22 16.74 22 12.26 22 6.58 17.52 2 12 2Z" fill="#f7b801"/>
-          </svg>
-          GitHub
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+          <a
+            href="https://www.buymeacoffee.com/Agent772"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'inline-block', marginRight: 12 }}
+          >
+            <img
+              src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+              alt="Buy Me A Coffee"
+              style={{ height: 40, width: 143, display: 'block' }}
+            />
+          </a>
+          <a
+            href="https://github.com/Agent772/ScumDBWebAnalyser"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5em',
+              background: 'rgba(255,255,255,0.08)',
+              color: '#fff',
+              border: '2px solid #f7b801',
+              borderRadius: 8,
+              padding: '0.45em 1.1em',
+              fontWeight: 600,
+              fontSize: '1rem',
+              textDecoration: 'none',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+              transition: 'background 0.2s, border 0.2s',
+              cursor: 'pointer',
+              minWidth: 0,
+              marginRight: '60px',
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ display: 'inline', verticalAlign: 'middle' }} xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.48 2.87 8.28 6.84 9.63.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.41-1.07-1-1.36-1-1.36-.82-.57.06-.56.06-.56.91.07 1.39.95 1.39.95.81 1.42 2.13 1.01 2.65.77.08-.6.32-1.01.58-1.24-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.38 9.38 0 0 1 12 7.43c.85.004 1.71.12 2.51.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.33.29.62.86.62 1.74 0 1.26-.01 2.28-.01 2.59 0 .27.18.58.69.48C19.13 20.54 22 16.74 22 12.26 22 6.58 17.52 2 12 2Z" fill="#f7b801"/>
+            </svg>
+            GitHub
+          </a>
+        </div>
       </header>
 
       {/* Main content area */}
@@ -159,17 +173,6 @@ function App() {
               >
                 Predefined Analysis 2
               </button>
-            </div>
-            {/* Bottom: SQL worksheets (placeholder) and table list */}
-            <div style={{ padding: '0.5rem 1rem 1.2rem 1rem' }}>
-              <div style={{ fontWeight: 600, fontSize: '1.05rem', marginBottom: 8 }}>SQL Worksheets</div>
-              <div style={{ fontSize: '0.95rem', color: '#bbb', marginBottom: 12 }}>(coming soon)</div>
-              <div style={{ fontWeight: 600, fontSize: '1.05rem', marginBottom: 8 }}>Tables</div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, maxHeight: 120, overflowY: 'auto' }}>
-                {tables.map((name) => (
-                  <li key={name} style={{ padding: '2px 0', color: '#f7b801' }}>{name}</li>
-                ))}
-              </ul>
             </div>
           </nav>
         ) : null}
