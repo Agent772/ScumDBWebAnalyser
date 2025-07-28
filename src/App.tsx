@@ -2,6 +2,8 @@ import { useState } from 'react';
 import initSqlJs, { Database } from 'sql.js';
 import './App.css';
 import { SquadVehicles } from './analysis/Squad-vehicles';
+import { DiscordModal } from './utils/DiscordModal';
+import { DiscordWebhookManagerModal } from './utils/DiscordWebhookManagerModal';
 
 function App() {
   const [db, setDb] = useState<Database | null>(null);
@@ -9,6 +11,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedAnalysis, setSelectedAnalysis] = useState<string | null>(null);
+  const [discordManagerOpen, setDiscordManagerOpen] = useState(false);
 
   const handleFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -117,8 +120,32 @@ function App() {
             boxShadow: '2px 0 8px rgba(0,0,0,0.04)',
             zIndex: 900,
           }}>
-            {/* Top: Predefined analysis buttons */}
+            {/* Top: Discord Webhook Manager button and Predefined analysis buttons */}
             <div style={{ padding: '1.2rem 1rem 0.5rem 1rem' }}>
+              <button
+                style={{
+                  width: '100%',
+                  marginBottom: 16,
+                  padding: '0.6em',
+                  borderRadius: 6,
+                  border: '2px solid #7289da',
+                  background: 'transparent',
+                  color: '#7289da',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  transition: 'background 0.2s, border 0.2s, color 0.2s',
+                }}
+                onClick={() => setDiscordManagerOpen(true)}
+                title="Manage Discord Webhooks"
+                onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.background = '#232533'; (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
+                onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; (e.currentTarget as HTMLButtonElement).style.color = '#7289da'; }}
+              >
+                <svg width="30" height="20" viewBox="0 0 24 24" fill="#7289da" style={{ verticalAlign: 'middle' }} xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.369A19.791 19.791 0 0 0 16.885 3.1a.074.074 0 0 0-.079.037c-.34.607-.719 1.396-.984 2.013a18.524 18.524 0 0 0-5.59 0 12.51 12.51 0 0 0-.997-2.013.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.369a.069.069 0 0 0-.032.027C1.577 7.651.293 10.818.076 13.946a.08.08 0 0 0 .028.061c2.426 1.778 4.78 2.852 7.084 3.563a.077.077 0 0 0 .084-.027c.547-.75 1.035-1.539 1.426-2.362a.076.076 0 0 0-.041-.104c-.781-.297-1.523-.654-2.241-1.062a.077.077 0 0 1-.008-.127c.151-.114.302-.23.446-.346a.074.074 0 0 1 .077-.01c4.751 2.172 9.87 2.172 14.563 0a.075.075 0 0 1 .078.009c.144.116.295.232.447.346a.077.077 0 0 1-.006.127c-.719.408-1.461.765-2.242 1.062a.076.076 0 0 0-.04.105c.391.822.878 1.611 1.425 2.361a.076.076 0 0 0 .084.028c2.305-.711 4.659-1.785 7.084-3.563a.077.077 0 0 0 .028-.061c-.24-3.127-1.524-6.294-3.569-9.55a.07.07 0 0 0-.033-.027zM8.02 14.331c-1.01 0-1.845-.924-1.845-2.057 0-1.133.818-2.057 1.845-2.057 1.036 0 1.86.933 1.845 2.057 0 1.133-.818 2.057-1.845 2.057zm7.974 0c-1.01 0-1.845-.924-1.845-2.057 0-1.133.818-2.057 1.845-2.057 1.036 0 1.86.933 1.845 2.057 0 1.133-.818 2.057-1.845 2.057z"/></svg>
+                Manage Webhooks
+              </button>
               <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>Analysis</div>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: '#f7b801', color: '#232533', fontWeight: 600, cursor: 'pointer' }}
@@ -146,6 +173,10 @@ function App() {
             </div>
           </nav>
         ) : null}
+      {/* Discord Webhook Manager Modal (standalone, no analysis context) */}
+      {discordManagerOpen && (
+        <DiscordWebhookManagerModal open={discordManagerOpen} onClose={() => setDiscordManagerOpen(false)} />
+      )}
 
         {/* Main content area */}
         <section style={{

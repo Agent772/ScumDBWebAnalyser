@@ -1,3 +1,61 @@
+// --- Modular Discord webhook storage (localStorage, opt-in) ---
+
+const WEBHOOKS_KEY = 'scumdb_saved_discord_webhooks';
+
+export interface SavedDiscordWebhook {
+  name: string; // user label
+  webhook: string;
+  username?: string;
+  threadId?: string;
+}
+
+/**
+ * Get all saved Discord webhooks from localStorage.
+ * Returns an array of { name, webhook, username, threadId }
+ */
+export function getSavedDiscordWebhooks(): SavedDiscordWebhook[] {
+  try {
+    const raw = localStorage.getItem(WEBHOOKS_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    if (Array.isArray(arr)) return arr;
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Save a new Discord webhook (opt-in). If a webhook with the same URL exists, it is replaced.
+ */
+export function saveDiscordWebhook(entry: SavedDiscordWebhook) {
+  const all = getSavedDiscordWebhooks();
+  const filtered = all.filter(w => w.webhook !== entry.webhook);
+  filtered.push(entry);
+  localStorage.setItem(WEBHOOKS_KEY, JSON.stringify(filtered));
+}
+
+/**
+ * Remove a saved Discord webhook by webhook URL.
+ */
+export function removeDiscordWebhook(webhook: string) {
+  const all = getSavedDiscordWebhooks();
+  const filtered = all.filter(w => w.webhook !== webhook);
+  localStorage.setItem(WEBHOOKS_KEY, JSON.stringify(filtered));
+}
+
+/**
+ * Clear all saved Discord webhooks (for user opt-out).
+ */
+export function clearAllDiscordWebhooks() {
+  localStorage.removeItem(WEBHOOKS_KEY);
+}
+
+/**
+ * Usage statement for UI: Only if user opts in, Discord webhooks are saved in your browser (localStorage), never sent anywhere else. You can remove them at any time.
+ */
+export const DISCORD_WEBHOOK_STORAGE_STATEMENT =
+  'If you choose to save a Discord webhook, it will be stored only in your browser (localStorage) and never sent anywhere else. You can remove saved webhooks at any time.';
 // Utility for posting messages to a Discord webhook from the browser
 
 
@@ -44,6 +102,7 @@ export async function postToDiscordWebhook(
       const form = new FormData();
       if (content) form.append('content', content);
       if (info.username) form.append('username', info.username);
+      if (info.threadName) form.append('thread_name', info.threadName);
       form.append('file', file, filename || 'file.txt');
       const res = await fetch(url, {
         method: 'POST',
@@ -52,13 +111,15 @@ export async function postToDiscordWebhook(
       return res.ok;
     } else {
       // Send as JSON
+      const body: Record<string, any> = {
+        content,
+        username: info.username || undefined,
+      };
+      if (info.threadName) body.thread_name = info.threadName;
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          content,
-          username: info.username || undefined,
-        }),
+        body: JSON.stringify(body),
       });
       return res.ok;
     }
