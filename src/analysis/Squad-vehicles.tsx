@@ -1,5 +1,9 @@
 import { Database } from 'sql.js';
 import React, { useState } from 'react';
+
+import { DiscordModal } from '../utils/DiscordModal';
+import { postToDiscordWebhook } from '../utils/discordWebhook';
+import type { DiscordWebhookInfo } from '../utils/DiscordModal';
 import './AnalysisTable.css';
 
 interface Analysis1Props {
@@ -112,12 +116,7 @@ export function SquadVehicles({ db }: Analysis1Props) {
     vehicle_class: '',
   });
 
-  const filteredRows = flatRows.filter(row =>
-    row.squad.toLowerCase().includes(filter.squad.toLowerCase()) &&
-    row.member.toLowerCase().includes(filter.member.toLowerCase()) &&
-    (filter.vehicle_id === '' || String(row.vehicle_id).includes(filter.vehicle_id)) &&
-    row.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
-  );
+  // (filteredRows is not used in the UI, so removed to avoid lint error)
 
   // Download as txt
   function downloadTxt() {
@@ -199,17 +198,92 @@ export function SquadVehicles({ db }: Analysis1Props) {
     });
   }
 
+  // Discord modal state
+  const [discordOpen, setDiscordOpen] = useState(false);
+  const [discordStatus, setDiscordStatus] = useState<string | null>(null);
+  // (discordLoading is not used in the UI, so removed to avoid lint error)
+
+  // Generate the analysis txt (same as download, but as string)
+  function getAnalysisTxt() {
+    let txt = 'Vehicles per Squad Analysis\n\n';
+    const filteredSquads = squadGroups.filter(sq => sq.squadName.toLowerCase().includes(filter.squad.toLowerCase()));
+    filteredSquads.forEach(squad => {
+      const filteredMembers = squad.members.filter(m => m.name.toLowerCase().includes(filter.member.toLowerCase()));
+      if (filteredMembers.length === 0) return;
+      txt += `${squad.squadName}  (members: ${squad.members.length}, vehicles: ${squadVehicleCount(squad)})\n`;
+      filteredMembers.forEach(member => {
+        txt += `  ${member.name}  (vehicles: ${member.vehicles.length})\n`;
+        const filteredVehicles = member.vehicles.filter(v =>
+          (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
+          v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
+        );
+        if (filteredVehicles.length === 0) {
+          txt += `    – no Vehicles –\n`;
+        } else {
+          filteredVehicles.forEach(v => {
+            txt += `    ${v.entity_id}\t${v.vehicle_class}\n`;
+          });
+        }
+      });
+      txt += '\n';
+    });
+    if (!txt.trim()) txt = 'No squads or members found.';
+    return txt;
+  }
+
+  // Handle Discord send
+  async function handleDiscordSend(info: DiscordWebhookInfo) {
+    setDiscordStatus(null);
+    const txt = getAnalysisTxt();
+    if (!txt.trim()) {
+      setDiscordStatus('Analysis is empty. Please adjust filters or data.');
+      return;
+    }
+    // Create a Blob for the file attachment
+    const file = new Blob([txt], { type: 'text/plain' });
+    const filename = 'squad-vehicles.txt';
+    // Optionally include a message above the file
+    const content = info.message ? info.message : '';
+    const ok = await postToDiscordWebhook(info, content, file, filename);
+    setDiscordStatus(ok ? 'Posted to Discord with file attachment!' : 'Failed to post. Check the webhook URL and try again.');
+    if (ok) setDiscordOpen(false);
+  }
+
   // Render
   return (
     <div style={{ width: '100%' }}>
-      <h2 style={{ color: '#f7b801', marginBottom: 24 }}>Vehicles per Squad</h2>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+        <h2 style={{ color: '#f7b801', margin: 0 }}>Vehicles per Squad</h2>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button
+            className="analysis-discord-btn"
+            type="button"
+            onClick={() => setDiscordOpen(true)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ verticalAlign: 'middle', marginRight: 6 }} xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.317 4.369A19.791 19.791 0 0 0 16.885 3.1a.074.074 0 0 0-.079.037c-.34.607-.719 1.396-.984 2.013a18.524 18.524 0 0 0-5.59 0 12.51 12.51 0 0 0-.997-2.013.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.369a.069.069 0 0 0-.032.027C1.577 7.651.293 10.818.076 13.946a.08.08 0 0 0 .028.061c2.426 1.778 4.78 2.852 7.084 3.563a.077.077 0 0 0 .084-.027c.547-.75 1.035-1.539 1.426-2.362a.076.076 0 0 0-.041-.104c-.781-.297-1.523-.654-2.241-1.062a.077.077 0 0 1-.008-.127c.151-.114.302-.23.446-.346a.074.074 0 0 1 .077-.01c4.751 2.172 9.87 2.172 14.563 0a.075.075 0 0 1 .078.009c.144.116.295.232.447.346a.077.077 0 0 1-.006.127c-.719.408-1.461.765-2.242 1.062a.076.076 0 0 0-.04.105c.391.822.878 1.611 1.425 2.361a.076.076 0 0 0 .084.028c2.305-.711 4.659-1.785 7.084-3.563a.077.077 0 0 0 .028-.061c-.24-3.127-1.524-6.294-3.569-9.55a.07.07 0 0 0-.033-.027zM8.02 14.331c-1.01 0-1.845-.924-1.845-2.057 0-1.133.818-2.057 1.845-2.057 1.036 0 1.86.933 1.845 2.057 0 1.133-.818 2.057-1.845 2.057zm7.974 0c-1.01 0-1.845-.924-1.845-2.057 0-1.133.818-2.057 1.845-2.057 1.036 0 1.86.933 1.845 2.057 0 1.133-.818 2.057-1.845 2.057z" fill="#7289da"/>
+            </svg>
+            Send to Discord
+          </button>
+          <button className="analysis-table-download" onClick={downloadTxt}>Download as TXT</button>
+        </div>
+      </div>
       <div className="analysis-table-filters">
         <input className="analysis-table-filter" placeholder="Filter Squad" value={filter.squad} onChange={e => setFilter(f => ({ ...f, squad: e.target.value }))} />
         <input className="analysis-table-filter" placeholder="Filter Member" value={filter.member} onChange={e => setFilter(f => ({ ...f, member: e.target.value }))} />
         <input className="analysis-table-filter" placeholder="Filter Vehicle ID" value={filter.vehicle_id} onChange={e => setFilter(f => ({ ...f, vehicle_id: e.target.value }))} />
         <input className="analysis-table-filter" placeholder="Filter Vehicle Class" value={filter.vehicle_class} onChange={e => setFilter(f => ({ ...f, vehicle_class: e.target.value }))} />
-        <button className="analysis-table-download" onClick={downloadTxt}>Download as TXT</button>
       </div>
+      {discordOpen && (
+        <DiscordModal
+          open={discordOpen}
+          onClose={() => setDiscordOpen(false)}
+          onSubmit={handleDiscordSend}
+        />
+      )}
+      {discordStatus && (
+        <div style={{ color: discordStatus.startsWith('Posted') ? '#43b581' : '#f04747', fontWeight: 600, margin: '10px 0' }}>{discordStatus}</div>
+      )}
       <div style={{ overflowX: 'auto' }}>
         <table className="analysis-table">
           <thead>
