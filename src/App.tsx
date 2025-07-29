@@ -3,6 +3,7 @@ import initSqlJs, { Database } from 'sql.js';
 import './App.css';
 import { SquadVehicles } from './analysis/Squad-vehicles';
 import { DemographicsAnalyticsPanel } from './analysis/DemographicsAnalyticsPanel';
+import { FishingStatsPanel } from './analysis/FishingStatsPanel';
 import { DiscordWebhookManagerModal } from './utils/DiscordWebhookManagerModal';
 import { DiscordIcon } from './assets/DiscordIcon';
 
@@ -173,9 +174,9 @@ function App() {
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: '#f7b801', color: '#232533', fontWeight: 600, cursor: 'pointer' }}
-                onClick={() => setSelectedAnalysis('analysis2')}
+                onClick={() => setSelectedAnalysis('fishing-stats')}
               >
-                Predefined Analysis 2
+                Fishing Stats
               </button>
             </div>
           </nav>
@@ -232,10 +233,9 @@ function App() {
                   <SquadVehicles db={db} />
                 </div>
               )}
-              {selectedAnalysis === 'analysis2' && (
-                <div style={{ background: '#232533', color: '#fff', borderRadius: 8, padding: '2rem', minHeight: 120 }}>
-                  <h2 style={{ color: '#f7b801' }}>Predefined Analysis 2</h2>
-                  <div>Analysis 2 output will appear here.</div>
+              {selectedAnalysis === 'fishing-stats' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <FishingStatsPanel db={db} />
                 </div>
               )}
               {!selectedAnalysis && (
