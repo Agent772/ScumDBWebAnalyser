@@ -2,6 +2,7 @@ declare module 'sql.js' {
   // Minimal type declarations for sql.js
   export interface QueryExecResult {
     columns: string[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     values: any[][];
   }
   export class Database {

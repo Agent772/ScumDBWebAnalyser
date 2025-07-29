@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import initSqlJs, { Database } from 'sql.js';
-import './App.css';
-import { SquadVehicles } from './analysis/Squad-vehicles';
-import { DemographicsAnalyticsPanel } from './analysis/DemographicsAnalyticsPanel';
-import { FishingStatsPanel } from './analysis/FishingStatsPanel';
-import { DiscordWebhookManagerModal } from './utils/DiscordWebhookManagerModal';
-import { DiscordIcon } from './assets/DiscordIcon';
+import { SquadVehicles } from './features/squadVehicles/Squad-vehicles';
+import { DemographicsAnalyticsPanel } from './features/demographics/DemographicsAnalyticsPanel';
+import { FishingStatsPanel } from './features/fishingStats/FishingStatsPanel';
+import { DiscordWebhookManagerModal } from './ui/Discord/DiscordWebhookManagerModal';
+import { DiscordIcon } from './ui/Discord/DiscordIcon';
+import './index.css';
 
 function App() {
   const [db, setDb] = useState<Database | null>(null);
@@ -56,7 +56,7 @@ function App() {
         overflow: 'hidden',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', minWidth: 0, marginRight: 10 }}>
-          <img src="/src/logo.svg" alt="ScumDB Web Analyzer Logo" style={{ width: 40, height: 40 }} />
+          <img src="/src/ui/assets/logo.svg" alt="ScumDB Web Analyzer Logo" style={{ width: 40, height: 40 }} />
           <span style={{ fontWeight: 700, fontSize: '1.5rem', letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>ScumDB Web Analyzer</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>

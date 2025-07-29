@@ -1,10 +1,12 @@
 import { Database } from 'sql.js';
 import React, { useState } from 'react';
-import { DiscordModal } from '../utils/DiscordModal';
-import { postToDiscordWebhook } from '../utils/discordWebhook';
-import type { DiscordWebhookInfo } from '../utils/DiscordModal';
-import './AnalysisTable.css';
-import { DiscordIcon } from '../assets/DiscordIcon';
+import { DiscordModal } from '../../ui/Discord/DiscordModal';
+import { postToDiscordWebhook } from '../../ui/Discord/discordWebhook';
+import type { DiscordWebhookInfo } from '../../ui/Discord/DiscordModal';
+import './SquadVehicleTable.css';
+import '../../ui/Discord/DiscordButton.css';
+import '../../ui/Export/ExportButton.css';
+import { DiscordIcon } from '../../ui/Discord/DiscordIcon';
 
 interface Analysis1Props {
   db: Database;
@@ -256,14 +258,14 @@ export function SquadVehicles({ db }: Analysis1Props) {
         <h2 style={{ color: '#f7b801', margin: 0 }}>Vehicles per Squad</h2>
         <div style={{ display: 'flex', gap: 8 }}>
           <button
-            className="analysis-discord-btn"
+            className="discord-btn"
             type="button"
             onClick={() => setDiscordOpen(true)}
           >
             <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
             Send to Discord
           </button>
-          <button className="analysis-table-download" onClick={downloadTxt}>Download as TXT</button>
+          <button className="btn-download" onClick={downloadTxt}>Download as TXT</button>
         </div>
       </div>
       <div className="analysis-table-filters">

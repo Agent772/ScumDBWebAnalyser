@@ -1,8 +1,10 @@
 import { ReactNode, RefObject, useState } from 'react';
-import { exportAsImage } from '../utils/exportAsImage';
-import { DiscordModal } from '../utils/DiscordModal';
-import { postToDiscordWebhook } from '../utils/discordWebhook';
-import { DiscordIcon } from '../assets/DiscordIcon';
+import { exportAsImage } from '../../ui/Export/exportAsImage';
+import { DiscordModal } from '../../ui/Discord/DiscordModal';
+import { postToDiscordWebhook } from '../../ui/Discord/discordWebhook';
+import { DiscordIcon } from '../../ui/Discord/DiscordIcon';
+import '../../ui/Discord/DiscordButton.css';
+import '../../ui/Export/ExportButton.css';
 
 interface AnalysisPanelLayoutProps {
   header: ReactNode;
@@ -58,23 +60,15 @@ export function AnalysisPanelLayout({
     <div style={{ width: '100%', ...style }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, marginBottom: 12 }}>
         <button
+          type="button"
+          className='btn-download'
           onClick={handleExport}
-          style={{
-            padding: '6px 18px',
-            background: '#f7b801',
-            color: '#222',
-            border: 'none',
-            borderRadius: 4,
-            fontWeight: 600,
-            fontSize: '1rem',
-            cursor: 'pointer',
-          }}
         >
           Export as Image
         </button>
         <button
           type="button"
-          className="analysis-discord-btn"
+          className="discord-btn"
           onClick={() => setDiscordOpen(true)}
         >
           <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />

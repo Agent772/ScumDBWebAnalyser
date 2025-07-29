@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { Database } from 'sql.js';
-import { getDemographicsAnalytics } from './demographics';
-import { KPI } from './KPI';
-import { AnalysisPanelLayout } from './AnalysisPanelLayout';
+import { getDemographicsAnalytics } from './demographicsData';
+import { KPI } from '../shared/KPI';
+import { AnalysisPanelLayout } from '../shared/AnalysisPanelLayout';
 
 interface DemographicsProps {
   db: Database;

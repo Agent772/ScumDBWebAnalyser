@@ -111,6 +111,7 @@ export async function postToDiscordWebhook(
       return res.ok;
     } else {
       // Send as JSON
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const body: Record<string, any> = {
         content,
         username: info.username || undefined,

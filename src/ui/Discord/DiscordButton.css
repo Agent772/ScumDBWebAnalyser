@@ -1,0 +1,23 @@
+/* Discord button styling for all analyses */
+.discord-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 2px solid #7289da;
+  border-radius: 8px;
+  padding: 0.45em 1.1em;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: background 0.2s, border 0.2s;
+  cursor: pointer;
+  min-width: 0;
+}
+.discord-btn:hover {
+  background: #7289da;
+  color: #fff;
+  border-color: #7289da;
+}

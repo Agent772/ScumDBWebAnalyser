@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { Database } from 'sql.js';
-import { getFishingStatsAnalytics } from './fishingStats';
-import { exportAsImage } from '../utils/exportAsImage';
-import { DiscordModal } from '../utils/DiscordModal';
-import { postToDiscordWebhook } from '../utils/discordWebhook';
-import { DiscordIcon } from '../assets/DiscordIcon';
+import { getFishingStatsAnalytics } from './fishingStatsData';
+import { exportAsImage } from '../../ui/Export/exportAsImage';
+import { DiscordModal } from '../../ui/Discord/DiscordModal';
+import { postToDiscordWebhook } from '../../ui/Discord/discordWebhook';
+import { DiscordIcon } from '../../ui/Discord/DiscordIcon';
 
 interface FishingStatsPanelProps {
   db: Database;
@@ -68,7 +68,7 @@ export function FishingStatsPanel({ db }: FishingStatsPanelProps) {
         </button>
         <button
           type="button"
-          className="analysis-discord-btn"
+          className="discord-btn"
           onClick={() => setDiscordOpen(true)}
         >
           <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />

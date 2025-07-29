@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   getSavedDiscordWebhooks,
   saveDiscordWebhook,
-  removeDiscordWebhook,
   DISCORD_WEBHOOK_STORAGE_STATEMENT,
 } from './discordWebhook';
 import type { SavedDiscordWebhook } from './discordWebhook';
