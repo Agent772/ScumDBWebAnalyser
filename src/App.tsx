@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import initSqlJs, { Database } from 'sql.js';
-import { SquadVehicles } from './features/squadVehicles/Squad-vehicles';
+import { SquadVehicles } from './features/squadVehicles/Squad-vehiclesPanel';
 import { DemographicsAnalyticsPanel } from './features/demographics/DemographicsAnalyticsPanel';
 import { FishingStatsPanel } from './features/fishingStats/FishingStatsPanel';
 import { DiscordWebhookManagerModal } from './ui/Discord/DiscordWebhookManagerModal';
@@ -109,7 +109,7 @@ function App() {
         marginBottom: 56,
         display: 'flex',
         flexDirection: 'row',
-        width: '100%',
+        width: '100vw',//'100%',
         height: '100%',
         boxSizing: 'border-box',
         background: 'transparent',

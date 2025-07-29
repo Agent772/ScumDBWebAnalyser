@@ -254,20 +254,35 @@ export function SquadVehicles({ db }: Analysis1Props) {
   // Render
   return (
     <div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-        <h2 style={{ color: '#f7b801', margin: 0 }}>Vehicles per Squad</h2>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button
-            className="discord-btn"
-            type="button"
-            onClick={() => setDiscordOpen(true)}
-          >
-            <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
-            Send to Discord
-          </button>
-          <button className="btn-download" onClick={downloadTxt}>Download as TXT</button>
-        </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, marginBottom: 12 }}>
+        <button
+          type="button"
+          className='btn-download'
+          onClick={downloadTxt}
+        >
+          Download as TXT
+        </button>
+        <button
+          type="button"
+          className="discord-btn"
+          onClick={() => setDiscordOpen(true)}
+        >
+          <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
+          Send to Discord
+        </button>
       </div>
+      <h2
+          style={{
+            color: '#f7b801',
+            fontWeight: 700,
+            fontSize: '2rem',
+            margin: 0,
+            textAlign: 'center',
+            letterSpacing: '0.01em',
+          }}
+        >
+           Vehicles per Squad
+        </h2>
       <div className="analysis-table-filters">
         <input className="analysis-table-filter" placeholder="Filter Squad" value={filter.squad} onChange={e => setFilter(f => ({ ...f, squad: e.target.value }))} />
         <input className="analysis-table-filter" placeholder="Filter Member" value={filter.member} onChange={e => setFilter(f => ({ ...f, member: e.target.value }))} />

@@ -56,3 +56,13 @@
 .analysis-table .arrow {
   margin-right: 8px;
 }
+.analysis-table-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.analysis-table-filter {
+  flex: 1;
+  min-width: 0;
+}
