@@ -2,7 +2,7 @@ import { useState } from 'react';
 import initSqlJs, { Database } from 'sql.js';
 import './App.css';
 import { SquadVehicles } from './analysis/Squad-vehicles';
-import { DiscordModal } from './utils/DiscordModal';
+import { DemographicsAnalyticsPanel } from './analysis/DemographicsAnalyticsPanel';
 import { DiscordWebhookManagerModal } from './utils/DiscordWebhookManagerModal';
 
 function App() {
@@ -163,6 +163,12 @@ function App() {
               <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>Analysis</div>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: '#f7b801', color: '#232533', fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('demographics')}
+              >
+                Demographics
+              </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: '#f7b801', color: '#232533', fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('squad-vehicles')}
               >
                 Vehicles per Squad
@@ -189,7 +195,7 @@ function App() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: db ? 'flex-start' : 'center',
-          padding: db ? '2.5rem 2rem 1.5rem 2rem' : '0',
+          padding: db ? '4.5rem 2rem 3.5rem 2rem' : '0',
           minHeight: 0,
           width: '100%',
           overflowY: 'auto',
@@ -218,6 +224,11 @@ function App() {
           {/* Show analysis result or prompt */}
           {db && (
             <div style={{ width: '100%' }}>
+              {selectedAnalysis === 'demographics' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <DemographicsAnalyticsPanel db={db} />
+                </div>
+              )}
               {selectedAnalysis === 'squad-vehicles' && (
                 <div style={{ width: '100%', minHeight: 120 }}>
                   <SquadVehicles db={db} />
