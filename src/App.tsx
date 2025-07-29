@@ -4,10 +4,10 @@ import './App.css';
 import { SquadVehicles } from './analysis/Squad-vehicles';
 import { DemographicsAnalyticsPanel } from './analysis/DemographicsAnalyticsPanel';
 import { DiscordWebhookManagerModal } from './utils/DiscordWebhookManagerModal';
+import { DiscordIcon } from './assets/DiscordIcon';
 
 function App() {
   const [db, setDb] = useState<Database | null>(null);
-  const [tables, setTables] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedAnalysis, setSelectedAnalysis] = useState<string | null>(null);
@@ -23,19 +23,17 @@ function App() {
       const arrayBuffer = await file.arrayBuffer();
       const db = new SQL.Database(new Uint8Array(arrayBuffer));
       setDb(db);
-      // Get table names
-      const res = db.exec("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name;");
-      const tableNames = res[0]?.values.map((row: unknown[]) => String(row[0])) || [];
-      setTables(tableNames);
-    } catch (e: any) {
-      setError('Failed to load database: ' + (e.message || e.toString()));
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError('Failed to load database: ' + e.message);
+      } else {
+        setError('Failed to load database: ' + String(e));
+      }
       setDb(null);
-      setTables([]);
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
@@ -157,7 +155,7 @@ function App() {
                 onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.background = '#232533'; (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
                 onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; (e.currentTarget as HTMLButtonElement).style.color = '#7289da'; }}
               >
-                <svg width="30" height="20" viewBox="0 0 24 24" fill="#7289da" style={{ verticalAlign: 'middle' }} xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.369A19.791 19.791 0 0 0 16.885 3.1a.074.074 0 0 0-.079.037c-.34.607-.719 1.396-.984 2.013a18.524 18.524 0 0 0-5.59 0 12.51 12.51 0 0 0-.997-2.013.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.369a.069.069 0 0 0-.032.027C1.577 7.651.293 10.818.076 13.946a.08.08 0 0 0 .028.061c2.426 1.778 4.78 2.852 7.084 3.563a.077.077 0 0 0 .084-.027c.547-.75 1.035-1.539 1.426-2.362a.076.076 0 0 0-.041-.104c-.781-.297-1.523-.654-2.241-1.062a.077.077 0 0 1-.008-.127c.151-.114.302-.23.446-.346a.074.074 0 0 1 .077-.01c4.751 2.172 9.87 2.172 14.563 0a.075.075 0 0 1 .078.009c.144.116.295.232.447.346a.077.077 0 0 1-.006.127c-.719.408-1.461.765-2.242 1.062a.076.076 0 0 0-.04.105c.391.822.878 1.611 1.425 2.361a.076.076 0 0 0 .084.028c2.305-.711 4.659-1.785 7.084-3.563a.077.077 0 0 0 .028-.061c-.24-3.127-1.524-6.294-3.569-9.55a.07.07 0 0 0-.033-.027zM8.02 14.331c-1.01 0-1.845-.924-1.845-2.057 0-1.133.818-2.057 1.845-2.057 1.036 0 1.86.933 1.845 2.057 0 1.133-.818 2.057-1.845 2.057zm7.974 0c-1.01 0-1.845-.924-1.845-2.057 0-1.133.818-2.057 1.845-2.057 1.036 0 1.86.933 1.845 2.057 0 1.133-.818 2.057-1.845 2.057z"/></svg>
+                <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
                 Manage Webhooks
               </button>
               <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>Analysis</div>

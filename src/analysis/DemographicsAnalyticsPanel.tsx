@@ -1,9 +1,12 @@
-import React, { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { Database } from 'sql.js';
 import { getDemographicsAnalytics } from './demographics';
 import { KPI } from './KPI';
 import { exportAsImage } from '../utils/exportAsImage';
+import { DiscordModal } from '../utils/DiscordModal';
+import { postToDiscordWebhook } from '../utils/discordWebhook';
+import { DiscordIcon } from '../assets/DiscordIcon';
 
 interface DemographicsProps {
   db: Database;
@@ -20,7 +23,19 @@ function GenderPieChart({ counts }: { counts: Record<'Male' | 'Female' | 'Unknow
   const GENDER_COLORS = ['#8ecae6', '#fbb6ce']; // baby blue, light pink
 
   // Custom label for percent on the outer part of each slice
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieLabelProps) => {
+type PieLabelProps = {
+  cx: number;
+  cy: number;
+  midAngle?: number;
+  innerRadius: number;
+  outerRadius: number;
+  percent?: number;
+  index?: number;
+  name?: string;
+  value?: number;
+};
+
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieLabelProps) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
   const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
@@ -62,7 +77,10 @@ export function DemographicsAnalyticsPanel({ db }: DemographicsProps) {
   // Calculate max for Y axis with buffer for label
   const maxAgeCount = data.ageDistribution.length > 0 ? Math.max(...data.ageDistribution.map(a => a.count)) : 0;
   const yAxisMax = maxAgeCount > 0 ? Math.ceil(maxAgeCount * 1.1) : 1;
+
   const panelRef = useRef<HTMLDivElement>(null);
+  const [discordOpen, setDiscordOpen] = useState(false);
+  const [discordStatus, setDiscordStatus] = useState<string | null>(null);
 
   const handleExport = async () => {
     if (panelRef.current) {
@@ -70,25 +88,64 @@ export function DemographicsAnalyticsPanel({ db }: DemographicsProps) {
     }
   };
 
+  // Discord send handler
+  const handleDiscordSend = async (info: any) => {
+    setDiscordStatus(null);
+    if (!panelRef.current) {
+      setDiscordStatus('Panel not found.');
+      return;
+    }
+    // Export as image and send as file
+    const dataUrl = await exportAsImage(panelRef.current, { returnDataUrl: true, fileName: 'demographics-analysis.png' }) as string;
+    if (!dataUrl) {
+      setDiscordStatus('Failed to export image.');
+      return;
+    }
+    // Convert dataUrl to Blob
+    const res = await fetch(dataUrl);
+    const blob = await res.blob();
+    const ok = await postToDiscordWebhook(info, info.message || '', blob, 'demographics-analysis.png');
+    setDiscordStatus(ok ? 'Posted to Discord with image!' : 'Failed to post. Check the webhook URL and try again.');
+    if (ok) setDiscordOpen(false);
+  };
+
   return (
     <div>
-      <button
-        onClick={handleExport}
-        style={{
-          margin: '0 0 12px 0',
-          padding: '6px 18px',
-          background: '#f7b801',
-          color: '#222',
-          border: 'none',
-          borderRadius: 4,
-          fontWeight: 600,
-          fontSize: '1rem',
-          cursor: 'pointer',
-          float: 'right',
-        }}
-      >
-        Export as Image
-      </button>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, marginBottom: 12 }}>
+        <button
+          onClick={handleExport}
+          style={{
+            padding: '6px 18px',
+            background: '#f7b801',
+            color: '#222',
+            border: 'none',
+            borderRadius: 4,
+            fontWeight: 600,
+            fontSize: '1rem',
+            cursor: 'pointer',
+          }}
+        >
+          Export as Image
+        </button>
+        <button
+          type="button"
+          className="analysis-discord-btn"
+          onClick={() => setDiscordOpen(true)}
+        >
+          <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
+          Send to Discord
+        </button>
+      </div>
+      {discordOpen && (
+        <DiscordModal
+          open={discordOpen}
+          onClose={() => setDiscordOpen(false)}
+          onSubmit={handleDiscordSend}
+        />
+      )}
+      {discordStatus && (
+        <div style={{ color: discordStatus.startsWith('Posted') ? '#43b581' : '#f04747', fontWeight: 600, margin: '10px 0' }}>{discordStatus}</div>
+      )}
       <div
         ref={panelRef}
         className="demographics-panel"
