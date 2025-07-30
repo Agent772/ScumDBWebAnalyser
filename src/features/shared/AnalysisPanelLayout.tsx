@@ -97,6 +97,8 @@ export function AnalysisPanelLayout({
           gap: 16,
           width: '100%',
           margin: '0 auto',
+          minHeight: 0,
+          height: '80vh',
         }}
       >
         <h2
