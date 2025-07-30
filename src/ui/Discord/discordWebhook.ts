@@ -1,3 +1,22 @@
+/**
+ * Post multiple files to a Discord webhook, sending each as a separate message.
+ * @param info DiscordWebhookInfo (webhook, username, threadId, etc)
+ * @param content The message content to send (optional if file is present)
+ * @param files Array of { blob, name }
+ * @returns Promise that resolves to true if all successful, false otherwise
+ */
+export async function postMultipleFilesToDiscordWebhook(
+  info: DiscordWebhookInfo,
+  content: string,
+  files: { blob: Blob; name: string }[]
+): Promise<boolean> {
+  let allOk = true;
+  for (const file of files) {
+    const ok = await postToDiscordWebhook(info, content, file.blob, file.name);
+    if (!ok) allOk = false;
+  }
+  return allOk;
+}
 // --- Modular Discord webhook storage (localStorage, opt-in) ---
 
 const WEBHOOKS_KEY = 'scumdb_saved_discord_webhooks';

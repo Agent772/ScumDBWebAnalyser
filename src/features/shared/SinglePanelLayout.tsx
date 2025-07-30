@@ -3,10 +3,10 @@ import { exportAsImage } from '../../ui/Export/exportAsImage';
 import { DiscordModal } from '../../ui/Discord/DiscordModal';
 import { postToDiscordWebhook } from '../../ui/Discord/discordWebhook';
 import { DiscordIcon } from '../../ui/Discord/DiscordIcon';
-import '../../ui/Discord/DiscordButton.css';
-import '../../ui/Export/ExportButton.css';
+import { COLORS } from '../../ui/helpers/colors';
+import '../../index.css'; // Ensure styles are applied
 
-interface AnalysisPanelLayoutProps {
+interface SinglePanelLayoutProps {
   header: ReactNode;
   panelRef?: RefObject<HTMLDivElement>;
   children: ReactNode;
@@ -16,9 +16,10 @@ interface AnalysisPanelLayoutProps {
   actions?: ReactNode;
   exportFileName?: string;
   discordFileName?: string;
+  height?: string;
 }
 
-export function AnalysisPanelLayout({
+export function SinglePanelLayout({
   header,
   panelRef,
   children,
@@ -28,7 +29,8 @@ export function AnalysisPanelLayout({
   actions,
   exportFileName = 'analysis-panel.png',
   discordFileName = 'analysis-panel.png',
-}: AnalysisPanelLayoutProps) {
+  height = '85vh',
+}: SinglePanelLayoutProps) {
   const [discordOpen, setDiscordOpen] = useState(false);
   const [discordStatus, setDiscordStatus] = useState<string | null>(null);
 
@@ -68,7 +70,7 @@ export function AnalysisPanelLayout({
         </button>
         <button
           type="button"
-          className="discord-btn"
+          className="btn-discord"
           onClick={() => setDiscordOpen(true)}
         >
           <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
@@ -84,7 +86,7 @@ export function AnalysisPanelLayout({
         />
       )}
       {discordStatus && (
-        <div style={{ color: discordStatus.startsWith('Posted') ? '#43b581' : '#f04747', fontWeight: 600, margin: '10px 0' }}>{discordStatus}</div>
+        <div style={{ color: discordStatus.startsWith('Posted') ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}>{discordStatus}</div>
       )}
       {status && status}
       <div
@@ -98,12 +100,12 @@ export function AnalysisPanelLayout({
           width: '100%',
           margin: '0 auto',
           minHeight: 0,
-          height: '80vh',
+          height: height,
         }}
       >
         <h2
           style={{
-            color: '#f7b801',
+            color: COLORS.primary,
             fontWeight: 700,
             fontSize: '2rem',
             margin: 0,

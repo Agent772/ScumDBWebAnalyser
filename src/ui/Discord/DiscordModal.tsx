@@ -5,6 +5,7 @@ import {
   DISCORD_WEBHOOK_STORAGE_STATEMENT,
 } from './discordWebhook';
 import type { SavedDiscordWebhook } from './discordWebhook';
+import { COLORS } from '../helpers/colors';
 
 export interface DiscordWebhookInfo {
   webhook: string;
@@ -68,11 +69,11 @@ export function DiscordModal({ open, onClose, onSubmit, defaultUsername }: Disco
   if (!open) return null;
   return (
     <div style={{
-      position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.45)', zIndex: 2000,
+      position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: COLORS.elevation3, zIndex: 2000,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
-      <div style={{ background: '#232533', color: '#fff', borderRadius: 10, padding: '2rem', minWidth: 340, maxWidth: 440, boxShadow: '0 4px 32px #0008', position: 'relative' }}>
-        <button onClick={onClose} style={{ position: 'absolute', top: 10, right: 14, background: 'none', border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer' }} title="Close">×</button>
+      <div style={{ background: COLORS.elevation3, color: COLORS.text, borderRadius: 10, padding: '2rem', minWidth: 340, maxWidth: 440, boxShadow: '0 4px 32px #0008', position: 'relative' }}>
+        <button onClick={onClose} style={{ position: 'absolute', top: 10, right: 14, background: 'none', border: 'none', color: COLORS.text, fontSize: 22, cursor: 'pointer' }} title="Close">×</button>
         <h2 style={{ color: '#7289da', marginTop: 0, marginBottom: 18, fontWeight: 700 }}>Post to Discord</h2>
         <form onSubmit={handleSubmit}>
           {/* Saved webhooks dropdown */}

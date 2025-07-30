@@ -3,8 +3,11 @@ import initSqlJs, { Database } from 'sql.js';
 import { SquadVehiclesPanel } from './features/squadVehicles/squadVehiclesPanel';
 import { DemographicsAnalyticsPanel } from './features/demographics/DemographicsAnalyticsPanel';
 import { FishingStatsPanel } from './features/fishingStats/FishingStatsPanel';
+import { BodySimulationPanel } from './features/bodySimulation/BodySimulationPanel';
 import { DiscordWebhookManagerModal } from './ui/Discord/DiscordWebhookManagerModal';
 import { DiscordIcon } from './ui/Discord/DiscordIcon';
+import { SkillStatsPanel } from './features/skills/SkillStatsPanel';
+import { COLORS } from './ui/helpers/colors';
 import './index.css';
 
 function App() {
@@ -45,14 +48,14 @@ function App() {
         width: '100vw',
         minWidth: 0,
         height: 64,
-        background: '#2d3142',
-        color: '#fff',
+        background: COLORS.elevation2,
+        color: COLORS.text,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '0 10px 0 2rem',
         zIndex: 1000,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+        boxShadow: COLORS.shadow,
         overflow: 'hidden',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', minWidth: 0, marginRight: 10 }}>
@@ -80,15 +83,15 @@ function App() {
               display: 'flex',
               alignItems: 'center',
               gap: '0.5em',
-              background: 'rgba(255,255,255,0.08)',
-              color: '#fff',
-              border: '2px solid #f7b801',
+              background: 'transparent',
+              color: COLORS.text,
+              border: '2px solid #ffffff',
               borderRadius: 8,
               padding: '0.45em 1.1em',
               fontWeight: 600,
               fontSize: '1rem',
               textDecoration: 'none',
-              boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+              boxShadow: COLORS.shadow,
               transition: 'background 0.2s, border 0.2s',
               cursor: 'pointer',
               minWidth: 0,
@@ -96,7 +99,7 @@ function App() {
             }}
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ display: 'inline', verticalAlign: 'middle' }} xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.48 2.87 8.28 6.84 9.63.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.41-1.07-1-1.36-1-1.36-.82-.57.06-.56.06-.56.91.07 1.39.95 1.39.95.81 1.42 2.13 1.01 2.65.77.08-.6.32-1.01.58-1.24-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.38 9.38 0 0 1 12 7.43c.85.004 1.71.12 2.51.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.33.29.62.86.62 1.74 0 1.26-.01 2.28-.01 2.59 0 .27.18.58.69.48C19.13 20.54 22 16.74 22 12.26 22 6.58 17.52 2 12 2Z" fill="#f7b801"/>
+              <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.48 2.87 8.28 6.84 9.63.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.41-1.07-1-1.36-1-1.36-.82-.57.06-.56.06-.56.91.07 1.39.95 1.39.95.81 1.42 2.13 1.01 2.65.77.08-.6.32-1.01.58-1.24-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.38 9.38 0 0 1 12 7.43c.85.004 1.71.12 2.51.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.33.29.62.86.62 1.74 0 1.26-.01 2.28-.01 2.59 0 .27.18.58.69.48C19.13 20.54 22 16.74 22 12.26 22 6.58 17.52 2 12 2Z" fill="#ffffff"/>
             </svg>
             GitHub
           </a>
@@ -109,10 +112,10 @@ function App() {
         marginBottom: 56,
         display: 'flex',
         flexDirection: 'row',
-        width: '100vw',//'100%',
+        width: '99vw',//'100%',
         height: '100%',
         boxSizing: 'border-box',
-        background: 'transparent',
+        // background: COLORS.background,
       }}>
         {/* Left navigation menu, only after DB upload */}
         {db ? (
@@ -120,17 +123,17 @@ function App() {
             width: 240,
             minWidth: 180,
             maxWidth: 320,
-            background: '#232533',
-            color: '#fff',
+            background: COLORS.elevation1,
+            color: COLORS.text,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            height: 'calc(100vh - 120px)',
+            height: 'calc(100vh - 100px)',
             position: 'fixed',
             top: 64,
             left: 0,
             borderRight: '2px solid #222',
-            boxShadow: '2px 0 8px rgba(0,0,0,0.04)',
+            boxShadow: COLORS.shadow,
             zIndex: 900,
           }}>
             {/* Top: Discord Webhook Manager button and Predefined analysis buttons */}
@@ -161,22 +164,34 @@ function App() {
               </button>
               <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>Analysis</div>
               <button
-                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: '#f7b801', color: '#232533', fontWeight: 600, cursor: 'pointer' }}
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('demographics')}
               >
                 Demographics
               </button>
               <button
-                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: '#f7b801', color: '#232533', fontWeight: 600, cursor: 'pointer' }}
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('squad-vehicles')}
               >
                 Vehicles per Squad
               </button>
               <button
-                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: '#f7b801', color: '#232533', fontWeight: 600, cursor: 'pointer' }}
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('fishing-stats')}
               >
                 Fishing Stats
+              </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('body-simulation')}
+              >
+                Body Simulation
+              </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('skill-stats')}
+              >
+                Skill Stats
               </button>
             </div>
           </nav>
@@ -194,7 +209,7 @@ function App() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: db ? 'flex-start' : 'center',
-          padding: db ? '4.5rem 2rem 3.5rem 2rem' : '0',
+          padding: db ? '4.5rem 2rem 0rem 2rem' : '0',
           minHeight: 0,
           width: '100%',
           overflowY: 'auto',
@@ -212,12 +227,12 @@ function App() {
               <button
                 type="button"
                 onClick={() => document.getElementById('scumdb-upload')?.click()}
-                style={{ padding: '0.7em 1.5em', fontSize: '1rem', borderRadius: '6px', background: '#f7b801', color: '#2d3142', border: 'none', cursor: 'pointer', fontWeight: 600, margin: '2.5rem 0 1.5rem 0' }}
+                style={{ padding: '0.7em 1.5em', fontSize: '1rem', borderRadius: '6px', background: COLORS.primary, color: COLORS.textSecondary, border: 'none', cursor: 'pointer', fontWeight: 600, margin: '2.5rem 0 1.5rem 0' }}
               >
                 Upload SCUM.db
               </button>
               {loading && <p>Loading database...</p>}
-              {error && <p style={{ color: 'red' }}>{error}</p>}
+              {error && <p style={{ color: COLORS.error }}>{error}</p>}
             </>
           )}
           {/* Show analysis result or prompt */}
@@ -238,8 +253,18 @@ function App() {
                   <FishingStatsPanel db={db} />
                 </div>
               )}
+              {selectedAnalysis === 'body-simulation' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <BodySimulationPanel db={db} />
+                </div>
+              )}
+              {selectedAnalysis === 'skill-stats' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <SkillStatsPanel db={db} />
+                </div>
+              )}
               {!selectedAnalysis && (
-                <div style={{ color: '#bbb', fontSize: '1.1rem', marginTop: 40, textAlign: 'center' }}>
+                <div style={{ color: COLORS.text, fontSize: '1.1rem', marginTop: 40, textAlign: 'center' }}>
                   Select an analysis from the left menu to begin.
                 </div>
               )}
@@ -255,14 +280,14 @@ function App() {
         left: 0,
         width: '100%',
         height: 48,
-        background: '#2d3142',
-        color: '#fff',
+        background: COLORS.elevation2,
+        color: COLORS.text,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: '0.98rem',
         zIndex: 1000,
-        boxShadow: '0 -2px 8px rgba(0,0,0,0.07)'
+        boxShadow: COLORS.shadow
       }}>
         <span>
           All data is processed in your browser and never transferred anywhere. This tool is fan-made and not affiliated with SCUM or Gamepires.

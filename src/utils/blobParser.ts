@@ -45,11 +45,12 @@ export function extractItemContainerEntityIdFromVehicleBlob(blob: Uint8Array): n
 }
 
 
-// --- Robust browser-compatible Unreal property BLOB parser ---
-const MAGIC_KEY_PADDING = 0x05;
-const MAGIC_VALUE_PADDING = 0x0A;
 
-const propertyTypes = {
+// --- Robust browser-compatible Unreal property BLOB parser ---
+export const MAGIC_KEY_PADDING = 0x05;
+export const MAGIC_VALUE_PADDING = 0x0A;
+
+export const propertyTypes = {
   ByteProperty: { width: 1, structType: 'Uint8' },
   IntProperty: { width: 4, structType: 'Int32' },
   BoolProperty: { width: 1, structType: 'Uint8' },
@@ -64,13 +65,13 @@ const propertyTypes = {
   UInt16Property: { width: 2, structType: 'Uint16' },
 };
 
-function readNullTerminatedString(arr: Uint8Array, offset: number): string {
+export function readNullTerminatedString(arr: Uint8Array, offset: number): string {
   let end = offset;
   while (end < arr.length && arr[end] !== 0x00) end++;
   return new TextDecoder().decode(arr.slice(offset, end));
 }
 
-function getAllOffsets(blob: Uint8Array, key: string) {
+export function getAllOffsets(blob: Uint8Array, key: string) {
   const keyBytes = new TextEncoder().encode(key);
   const results: { typeName: string; valueOffset: number; propertyType: typeof propertyTypes["ByteProperty"] }[] = [];
   let searchOffset = 0;
@@ -106,7 +107,7 @@ function getAllOffsets(blob: Uint8Array, key: string) {
   return results;
 }
 
-function readPropertyValue(dv: DataView, offset: number, type: typeof propertyTypes["ByteProperty"]) {
+export function readPropertyValue(dv: DataView, offset: number, type: typeof propertyTypes["ByteProperty"]) {
   switch (type.structType) {
     case 'Uint8': return dv.getUint8(offset);
     case 'Int32': return dv.getInt32(offset, true);
@@ -120,6 +121,37 @@ function readPropertyValue(dv: DataView, offset: number, type: typeof propertyTy
     case 'Uint16': return dv.getUint16(offset, true);
     default: return null;
   }
+}
+
+/**
+ * Generic Unreal property blob parser for extracting multiple keys.
+ * Returns { result, warnings }.
+ */
+export function parseBlob(blob: Uint8Array, keys: string[]): { result: Record<string, number | bigint | (number | bigint)[]>; warnings: string[] } {
+  const result: Record<string, number | bigint | (number | bigint)[]> = {};
+  const warnings: string[] = [];
+  if (!(blob instanceof Uint8Array)) {
+    return { result: {}, warnings: ['Invalid blob: not a Uint8Array'] };
+  }
+  for (const key of keys) {
+    const matches = getAllOffsets(blob, key);
+    if (matches.length === 0) {
+      warnings.push(`Key not found: ${key}`);
+      continue;
+    }
+    const values: (number | bigint)[] = [];
+    const dv = new DataView(blob.buffer, blob.byteOffset, blob.byteLength);
+    for (const { valueOffset, propertyType, typeName } of matches) {
+      const value = readPropertyValue(dv, valueOffset, propertyType);
+      if (value !== null && value !== undefined) {
+        values.push(value);
+      } else {
+        warnings.push(`Failed to read key: ${key} (type: ${typeName})`);
+      }
+    }
+    result[key] = values.length === 1 ? values[0]! : values;
+  }
+  return { result, warnings };
 }
 
 export function extractOwnerIdFromBlob(blob: Uint8Array): number | null {

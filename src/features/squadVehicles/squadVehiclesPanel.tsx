@@ -4,11 +4,11 @@ import { DiscordModal } from '../../ui/Discord/DiscordModal';
 import { postToDiscordWebhook } from '../../ui/Discord/discordWebhook';
 import type { DiscordWebhookInfo } from '../../ui/Discord/DiscordModal';
 import './SquadVehicleTable.css';
-import '../../ui/Discord/DiscordButton.css';
-import '../../ui/Export/ExportButton.css';
+import '../../index.css'; // Ensure styles are applied
 import { DiscordIcon } from '../../ui/Discord/DiscordIcon';
 import { getSquadVehiclesAnalytics } from './squadVehiclesData';
 import type { SquadGroup } from './squadVehiclesData';
+import { COLORS } from '../../ui/helpers/colors';
 
 interface squadVehicleProps {
   db: Database;
@@ -200,7 +200,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         </button>
         <button
           type="button"
-          className="discord-btn"
+          className="btn-discord"
           onClick={() => setDiscordOpen(true)}
         >
           <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
@@ -209,7 +209,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
       </div>
       <h2
           style={{
-            color: '#f7b801',
+            color: COLORS.primary,
             fontWeight: 700,
             fontSize: '2rem',
             margin: 0,
@@ -233,7 +233,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         />
       )}
       {discordStatus && (
-        <div style={{ color: discordStatus.startsWith('Posted') ? '#43b581' : '#f04747', fontWeight: 600, margin: '10px 0' }}>{discordStatus}</div>
+        <div style={{ color: discordStatus.startsWith('Posted') ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}>{discordStatus}</div>
       )}
       <div style={{ overflowX: 'auto' }}>
         <table className="analysis-table">

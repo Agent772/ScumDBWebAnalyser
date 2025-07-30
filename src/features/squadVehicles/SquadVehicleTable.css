@@ -1,36 +1,36 @@
 .analysis-table {
   width: 100%;
   border-collapse: collapse;
-  background: #232533;
-  color: #fff;
+  background: var(--elevation1);
+  color: var(--text);
 }
 .analysis-table th {
-  border-bottom: 2px solid #f7b801;
+  border-bottom: 2px solid var(--primary);
   padding: 8px;
   text-align: left;
 }
 .analysis-table thead th {
-  background: #232533;
+  background: var(--elevation1);
 }
 .analysis-table .squad-row {
-  background: #2d3142;
+  background: var(--elevation2);
   font-weight: 700;
-  color: #f7b801;
+  color: var(--primary);
   cursor: pointer;
 }
 .analysis-table .member-row {
-  background: #232533;
+  background: var(--elevation1);
   font-weight: 600;
-  color: #fff;
+  color: var(--text);
   cursor: pointer;
 }
 .analysis-table .vehicle-row {
-  background: #26293a;
-  color: #fff;
+  background: var(--elevation2);
+  color: var(--text);
 }
 .analysis-table .no-vehicles-row {
-  background: #232533;
-  color: #bbb;
+  background: var(--elevation1);
+  color: var(--text);
 }
 .analysis-table td, .analysis-table th {
   border-bottom: 1px solid #444;
@@ -48,7 +48,7 @@
   padding-left: 40px;
 }
 .analysis-table .count {
-  color: #bbb;
+  color: var(--text);
   font-weight: 400;
   margin-left: 10px;
   font-size: 0.97em;

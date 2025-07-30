@@ -12,6 +12,18 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* Colors */
+  --primary: #f7b801;
+  --primary-hover: color-mix(in srgb, var(--primary), white 10%);
+  --text: #bbb;
+  --text-secondary: #2d3142;
+  --background: #18191c;
+  --elevation1: #232533;
+  --elevation2: #2d3142;
+  --elevation3: #2c2f41;
+  --elevation4: #3d4158;
+  --elevation5: #4e536e;
 }
 #root {
   margin: 0 auto;
@@ -56,4 +68,44 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Button styling for export functionality */
+.btn-download {
+  padding: 6px 16px;
+  border-radius: 4px;
+  background: var(--primary);
+  color: var(--text-secondary);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.2s;
+}
+.btn-download:hover {
+  background: #ffd700;
+}
+
+/* Discord button styling for all analyses */
+.btn-discord {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  background: transparent;
+  color: var(--text);
+  border: 2px solid #7289da;
+  border-radius: 8px;
+  padding: 0.45em 1.1em;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: background 0.2s, border 0.2s;
+  cursor: pointer;
+  min-width: 0;
+}
+.btn-discord:hover {
+  background: #7289da;
+  color: var(--text);
+  border-color: #7289da;
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { COLORS } from './colors';
 
 interface KPIProps {
   header: string;
@@ -13,16 +14,16 @@ export function KPI({ header, value, footer, color = '#fff', style }: KPIProps) 
     <div
       className="kpi-box"
       style={{
-        background: 'rgba(255,255,255,0.04)',
+        background: COLORS.elevation2,
         borderRadius: 8,
-        padding: '0.3em 0.5em',
+        //padding: '0.3em 0.5em',
         width: '100%',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+        boxShadow: COLORS.shadow,
         flex: 1,
         ...style,
       }}
