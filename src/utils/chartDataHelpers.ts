@@ -23,11 +23,12 @@ export function toChartData(entries: ChartEntry[], topN = 10): ChartData {
     ...e,
     kpi: round2(e.kpi),
   }));
-  const colorCodingKpis = sorted.map(e => e.colorCodingKpi).filter((v): v is number => v !== undefined);
+  // Compute colorCoding min/max over all entries, not just the top N
+  const colorCodingKpisAll = entries.map(e => e.colorCodingKpi).filter((v): v is number => v !== undefined);
   return {
     entries: sorted,
-    colorCodingMin: colorCodingKpis.length ? Math.min(...colorCodingKpis) : undefined,
-    colorCodingMax: colorCodingKpis.length ? Math.max(...colorCodingKpis) : undefined,
+    colorCodingMin: colorCodingKpisAll.length ? Math.min(...colorCodingKpisAll) : undefined,
+    colorCodingMax: colorCodingKpisAll.length ? Math.max(...colorCodingKpisAll) : undefined,
   };
 }
 

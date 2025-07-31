@@ -3,6 +3,7 @@ import initSqlJs, { Database } from 'sql.js';
 import { SquadVehiclesPanel } from './features/squadVehicles/squadVehiclesPanel';
 import { DemographicsAnalyticsPanel } from './features/demographics/DemographicsAnalyticsPanel';
 import { FishingStatsPanel } from './features/fishingStats/FishingStatsPanel';
+import { SurvivalStatsPanel } from './features/survival/survivalStatsPanel';
 import { DiscordWebhookManagerModal } from './ui/Discord/DiscordWebhookManagerModal';
 import { DiscordIcon } from './ui/Discord/DiscordIcon';
 import { SkillStatsPanel } from './features/skills/SkillStatsPanel';
@@ -187,6 +188,12 @@ function App() {
               >
                 Skill Stats
               </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('survival-stats')}
+              >
+                Survival Stats
+              </button>
             </div>
           </nav>
         ) : null}
@@ -252,6 +259,12 @@ function App() {
                   <SkillStatsPanel db={db} />
                 </div>
               )}
+              {selectedAnalysis === 'survival-stats' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <SurvivalStatsPanel db={db} />
+                </div>
+              )}
+              {/* Placeholder for future analysis panels */}
               {!selectedAnalysis && (
                 <div style={{ color: COLORS.text, fontSize: '1.1rem', marginTop: 40, textAlign: 'center' }}>
                   Select an analysis from the left menu to begin.
