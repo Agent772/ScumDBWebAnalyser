@@ -1,3 +1,16 @@
+/**
+ * Modal component for managing Discord webhooks.
+ *
+ * Allows users to add, view, and remove Discord webhooks, which are stored locally in the browser.
+ * Provides input validation for webhook name and URL, and displays error messages for invalid input.
+ * Displays a list of saved webhooks with the ability to remove individual entries.
+ *
+ * @param {DiscordWebhookManagerModalProps} props - The component props.
+ * @param {boolean} props.open - Whether the modal is open.
+ * @param {() => void} props.onClose - Callback to close the modal.
+ *
+ * @returns {JSX.Element | null} The rendered modal component, or null if not open.
+ */
 import React, { useState } from 'react';
 import { getSavedDiscordWebhooks, saveDiscordWebhook, removeDiscordWebhook } from './discordWebhook';
 import type { SavedDiscordWebhook } from './discordWebhook';

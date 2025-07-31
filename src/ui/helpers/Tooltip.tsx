@@ -1,3 +1,15 @@
+/**
+ * Custom tooltip component for displaying detailed KPI information.
+ *
+ * @param props - The properties for the tooltip component.
+ * @param props.active - Whether the tooltip is visible.
+ * @param props.name - The name to display in the tooltip.
+ * @param props.kpi - The KPI value to display.
+ * @param props.kpiLabel - The label for the KPI value.
+ * @param props.colorKPI - (Optional) An additional KPI value for coloring.
+ * @param props.coloringLabel - (Optional) The label for the coloring KPI value.
+ * @returns A styled tooltip element with the provided information, or null if not active.
+ */
 import { COLORS } from './colors';
 
 interface TooltipProps {

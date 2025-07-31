@@ -29,7 +29,7 @@ export function SinglePanelLayout({
   actions,
   exportFileName = 'analysis-panel.png',
   discordFileName = 'analysis-panel.png',
-  height = '85vh',
+  height = '89vh',
 }: SinglePanelLayoutProps) {
   const [discordOpen, setDiscordOpen] = useState(false);
   const [discordStatus, setDiscordStatus] = useState<string | null>(null);
@@ -60,24 +60,6 @@ export function SinglePanelLayout({
 
   return (
     <div style={{ width: '100%', ...style }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, marginBottom: 12 }}>
-        <button
-          type="button"
-          className='btn-download'
-          onClick={handleExport}
-        >
-          Export as Image
-        </button>
-        <button
-          type="button"
-          className="btn-discord"
-          onClick={() => setDiscordOpen(true)}
-        >
-          <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
-          Send to Discord
-        </button>
-        {actions}
-      </div>
       {discordOpen && (
         <DiscordModal
           open={discordOpen}
@@ -101,8 +83,10 @@ export function SinglePanelLayout({
           margin: '0 auto',
           minHeight: 0,
           height: height,
+          alignItems: 'center',
         }}
       >
+        {/* Header and actions in the same grid row */}
         <h2
           style={{
             color: COLORS.primary,
@@ -113,10 +97,38 @@ export function SinglePanelLayout({
             letterSpacing: '0.01em',
             gridColumn: '1 / 13',
             gridRow: '1 / 2',
+            alignSelf: 'center',
           }}
         >
           {header}
         </h2>
+        <div
+          style={{
+            gridColumn: '9 / 13',
+            gridRow: '1 / 2',
+            justifySelf: 'end',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}
+        >
+          <button
+            type="button"
+            className='btn-download'
+            onClick={handleExport}
+          >
+            Export as Image
+          </button>
+          <button
+            type="button"
+            className="btn-discord"
+            onClick={() => setDiscordOpen(true)}
+          >
+            <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
+            Send to Discord
+          </button>
+          {actions}
+        </div>
         {children}
       </div>
     </div>

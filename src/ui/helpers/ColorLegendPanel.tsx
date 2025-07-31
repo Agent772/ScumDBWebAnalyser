@@ -4,6 +4,7 @@ interface ColorLegendProps {
   min: number;
   max: number;
   label: string;
+  idSuffix?: string;
 }
 
 /**
@@ -12,8 +13,8 @@ interface ColorLegendProps {
  * @param max The maximum value (right label)
  * @param label The legend label (default: 'KPI Color Scale')
  */
-export function ColorLegendPanel({ min, max, label }: ColorLegendProps) {
-  const gradientId = `legend-gradient-${COLORS.kpiStart.replace('#','')}-${COLORS.kpiEnd.replace('#','')}`;
+export function ColorLegendPanel({ min, max, label, idSuffix }: ColorLegendProps) {
+  const gradientId = `legend-gradient-${COLORS.kpiStart.replace('#','')}-${COLORS.kpiEnd.replace('#','')}${idSuffix ? '-' + idSuffix : ''}`;
   return (
     <div style={{ margin: '0 0 18px 0', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gridArea: '14 / 1 / 14 / 13' }}>
       <div style={{ fontSize: 13, color: COLORS.text, marginBottom: 4, textAlign: 'center' }}>{label}</div>

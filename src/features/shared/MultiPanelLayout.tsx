@@ -100,7 +100,7 @@ export function MultiPanelLayout({
 
   return (
     <div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, marginBottom: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8}}>
         {navButtons}
         <button
           type="button"
@@ -138,7 +138,7 @@ export function MultiPanelLayout({
           <SinglePanelLayout
             header={getPanelHeader(i)}
             panelRef={{ current: panelRefs.current[i] }}
-            height='80vh'
+            height='85vh'
           >
             {children ? children(i) : null}
           </SinglePanelLayout>

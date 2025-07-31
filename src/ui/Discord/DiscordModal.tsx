@@ -1,3 +1,16 @@
+/**
+ * Modal component for posting messages to a Discord webhook.
+ *
+ * Allows users to input a Discord webhook URL, an optional message, username, thread ID, and thread name.
+ * Users can also select from previously saved webhooks or save a new webhook for future use.
+ *
+ * @param open - Whether the modal is open and visible.
+ * @param onClose - Callback invoked when the modal is closed.
+ * @param onSubmit - Callback invoked with the webhook info when the form is submitted.
+ * @param defaultUsername - Optional default username to pre-fill the username field.
+ *
+ * @returns A modal dialog for configuring and submitting a Discord webhook post, or `null` if not open.
+ */
 import React, { useState } from 'react';
 import {
   getSavedDiscordWebhooks,

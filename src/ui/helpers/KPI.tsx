@@ -1,3 +1,14 @@
+/**
+ * A reusable KPI (Key Performance Indicator) component for displaying a header, value, and optional footer.
+ *
+ * @param header - The main label or title for the KPI.
+ * @param value - The primary value or metric to display. Can be any React node.
+ * @param footer - Optional. Additional information or context displayed below the value.
+ * @param color - Optional. The color used for the text elements. Defaults to `#fff`.
+ * @param style - Optional. Additional CSS properties to apply to the root container.
+ *
+ * @returns A styled box displaying the KPI header, value, and optional footer.
+ */
 import React from 'react';
 import { COLORS } from './colors';
 
@@ -9,7 +20,7 @@ interface KPIProps {
   style?: React.CSSProperties;
 }
 
-export function KPI({ header, value, footer, color = '#fff', style }: KPIProps) {
+export function KPI({ header, value, footer, color = COLORS.text, style }: KPIProps) {
   return (
     <div
       className="kpi-box"

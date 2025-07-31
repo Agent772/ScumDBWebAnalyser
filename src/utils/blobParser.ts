@@ -1,4 +1,14 @@
 // Extract _itemContainerEntityId from VehicleAttachment:BPC_Tractor_Carriage in a vehicle BLOB
+/**
+ * Extracts the `_itemContainerEntityId` property value from a vehicle blob.
+ *
+ * This function searches for a specific vehicle attachment marker (`VehicleAttachment:BPC_Tractor_Carriage`)
+ * within the provided binary blob, then locates the `_itemContainerEntityId` property key following the marker.
+ * If found, it parses and returns the property value using the appropriate property type.
+ *
+ * @param blob - The binary data (as a `Uint8Array`) representing the vehicle blob to parse.
+ * @returns The extracted item container entity ID as a `number` if found, or `null` if not found or parsing fails.
+ */
 export function extractItemContainerEntityIdFromVehicleBlob(blob: Uint8Array): number | null {
   // Find the marker for the attachment
   const attachmentName = 'VehicleAttachment:BPC_Tractor_Carriage';

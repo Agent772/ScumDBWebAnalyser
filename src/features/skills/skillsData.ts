@@ -1,29 +1,18 @@
-
 import { Database } from 'sql.js';
 import { parseBlob } from '../../utils/blobParser';
+import type { ChartEntry } from '../../utils/types/ChartData';
+import { extractAttributeFromTemplateXml } from '../../utils/extractAttributeFromTemplateXml';
 
-export interface SkillStatsEntry {
-  name: string;
-  value: number;
-  play_time: number;
+// Internal structure to hold all skill stats in memory after one DB query
+interface AllSkillStats {
+  strength: ChartEntry[];
+  constitution: ChartEntry[];
+  dexterity: ChartEntry[];
+  intelligence: ChartEntry[];
+  playTimes: number[];
 }
 
-export interface SkillStatsAnalytics {
-  strength: SkillStatsEntry[];
-  constitution: SkillStatsEntry[];
-  dexterity: SkillStatsEntry[];
-  intelligence: SkillStatsEntry[];
-  playTimeMin: number;
-  playTimeMax: number;
-}
-
-function extractAttributeFromTemplateXml(xml: string, attr: string): number {
-  const regex = new RegExp(`${attr}="([0-9.]+)"`);
-  const match = xml.match(regex);
-  return match ? parseFloat(match[1]) : 0;
-}
-
-export function getSkillStatsAnalytics(db: Database): SkillStatsAnalytics {
+export function fetchAllSkillStats(db: Database): AllSkillStats {
   const res = db.exec(`
     SELECT up.name, up.template_xml, p.body_simulation, up.play_time / 60 AS play_time
     FROM user_profile up
@@ -36,15 +25,14 @@ export function getSkillStatsAnalytics(db: Database): SkillStatsAnalytics {
       constitution: [],
       dexterity: [],
       intelligence: [],
-      playTimeMin: 0,
-      playTimeMax: 0,
+      playTimes: [],
     };
   }
   const rows = res[0].values;
-  const strengthArr: SkillStatsEntry[] = [];
-  const constitutionArr: SkillStatsEntry[] = [];
-  const dexterityArr: SkillStatsEntry[] = [];
-  const intelligenceArr: SkillStatsEntry[] = [];
+  const strengthArr: ChartEntry[] = [];
+  const constitutionArr: ChartEntry[] = [];
+  const dexterityArr: ChartEntry[] = [];
+  const intelligenceArr: ChartEntry[] = [];
   const playTimes: number[] = [];
 
   for (const row of rows) {
@@ -68,34 +56,52 @@ export function getSkillStatsAnalytics(db: Database): SkillStatsAnalytics {
     const baseConstitution = Number(parsed.result['BaseConstitution'] ?? 0);
     const baseDexterity = Number(parsed.result['BaseDexterity'] ?? 0);
     const baseIntelligence = Number(parsed.result['BaseIntelligence'] ?? 0);
-    strengthArr.push({ name, value: strength + baseStrength, play_time });
-    constitutionArr.push({ name, value: constitution + baseConstitution, play_time });
-    dexterityArr.push({ name, value: dexterity + baseDexterity, play_time });
-    intelligenceArr.push({ name, value: intelligence + baseIntelligence, play_time });
+    strengthArr.push({ name, kpi: strength + baseStrength, colorCodingKpi: play_time });
+    constitutionArr.push({ name, kpi: constitution + baseConstitution, colorCodingKpi: play_time });
+    dexterityArr.push({ name, kpi: dexterity + baseDexterity, colorCodingKpi: play_time });
+    intelligenceArr.push({ name, kpi: intelligence + baseIntelligence, colorCodingKpi: play_time });
   }
-
-  const round2 = (n: number) => Math.round(n * 100) / 100;
-  const playTimeMin = playTimes.length > 0 ? Math.min(...playTimes) : 0;
-  const playTimeMax = playTimes.length > 0 ? Math.max(...playTimes) : 0;
-  return {
-    strength: strengthArr
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 10)
-      .map(({ name, value, play_time }) => ({ name, value: round2(value), play_time })),
-    constitution: constitutionArr
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 10)
-      .map(({ name, value, play_time }) => ({ name, value: round2(value), play_time })),
-    dexterity: dexterityArr
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 10)
-      .map(({ name, value, play_time }) => ({ name, value: round2(value), play_time })),
-    intelligence: intelligenceArr
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 10)
-      .map(({ name, value, play_time }) => ({ name, value: round2(value), play_time })),
-    playTimeMin,
-    playTimeMax,
-  };
+  return { strength: strengthArr, constitution: constitutionArr, dexterity: dexterityArr, intelligence: intelligenceArr, playTimes };
 }
 
+// Structure for all prisoner skills grouped by skill name
+export interface AllPrisonerSkills {
+  [skillName: string]: ChartEntry[];
+}
+
+/**
+ * Fetches all prisoner skills, grouped by skill name, with player name and play time for color coding.
+ * @param db The sql.js Database instance
+ * @returns An object mapping skill names to arrays of ChartEntry
+ */
+export function fetchAllPrisonerSkills(db: Database): AllPrisonerSkills {
+  // Query joins user_profile, prisoner, and prisoner_skill
+  const res = db.exec(`
+    SELECT up.name, up.play_time / 60 AS play_time, ps.name AS skill_name, ps.level, ps.experience
+    FROM user_profile up
+    JOIN prisoner p ON up.prisoner_id = p.id
+    JOIN prisoner_skill ps ON ps.prisoner_id = p.id
+    WHERE up.name IS NOT NULL AND ps.name IS NOT NULL
+  `);
+  if (!res[0]) return {};
+  const rows = res[0].values;
+  const skills: AllPrisonerSkills = {};
+  for (const row of rows) {
+    const playerName = row[0] as string;
+    const playTime = Number(row[1] ?? 0);
+    let skillName = row[2] as string;
+    // Remove trailing 'Skill' if present (case-sensitive)
+    if (skillName.endsWith('Skill')) {
+      skillName = skillName.slice(0, -5);
+    }
+    // You can choose to use level or experience as KPI; here we use experience for more granularity
+    const experience = Number(row[4] ?? 0);
+    if (!skills[skillName]) skills[skillName] = [];
+    skills[skillName].push({
+      name: playerName,
+      kpi: experience,
+      colorCodingKpi: playTime,
+    });
+  }
+  return skills;
+}
