@@ -180,19 +180,19 @@ function App() {
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('fishing-stats')}
               >
-                Fishing Stats
+                Fishing
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('skill-stats')}
               >
-                Skill Stats
+                Skill
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('survival-stats')}
               >
-                Survival Stats
+                Survival
               </button>
             </div>
           </nav>
