@@ -23,6 +23,7 @@ interface LeaderboardBarChartProps {
   yAxisWidth?: number;
   yAxisFontSize?: number;
   xAxisFontSize?: number;
+  disableAnimation?: boolean; // Optional prop to disable animation
 }
 
 export function LeaderboardBarChart({
@@ -32,6 +33,7 @@ export function LeaderboardBarChart({
   yAxisWidth = 90,
   yAxisFontSize,
   xAxisFontSize,
+  disableAnimation = false,
 }: LeaderboardBarChartProps) {
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -56,7 +58,7 @@ export function LeaderboardBarChart({
           tick={{ ...xAxisStyle, fontSize: xAxisFontSize ?? xAxisStyle.fontSize }}
           domain={[0, getXAxisMax(data.entries, 'kpi')]}
         />
-        <Bar dataKey="kpi" radius={[0, 3, 3, 0]} label={{ position: 'right' }}>
+        <Bar dataKey="kpi" radius={[0, 3, 3, 0]} label={{ position: 'right' }} isAnimationActive={!disableAnimation}>
           {data.entries.map((entry, idx) => (
             <Cell
               key={`cell-${idx}`}

@@ -1,4 +1,5 @@
-import { ReactNode, RefObject, useState } from 'react';
+import React from 'react';
+import { type ReactNode, type RefObject, useState } from 'react';
 import { exportAsImage } from '../../ui/Export/exportAsImage';
 import { DiscordModal } from '../../ui/Discord/DiscordModal';
 import { postToDiscordWebhook } from '../../ui/Discord/discordWebhook';
@@ -17,6 +18,7 @@ interface SinglePanelLayoutProps {
   exportFileName?: string;
   discordFileName?: string;
   height?: string;
+  disableAnimation?: boolean;
 }
 
 export function SinglePanelLayout({
@@ -30,6 +32,7 @@ export function SinglePanelLayout({
   exportFileName = 'analysis-panel.png',
   discordFileName = 'analysis-panel.png',
   height = '89vh',
+  disableAnimation = false,
 }: SinglePanelLayoutProps) {
   const [discordOpen, setDiscordOpen] = useState(false);
   const [discordStatus, setDiscordStatus] = useState<string | null>(null);
@@ -129,7 +132,16 @@ export function SinglePanelLayout({
           </button>
           {actions}
         </div>
-        {children}
+        {React.Children.map(children, child => {
+          if (
+            React.isValidElement(child) &&
+            child.type &&
+            (child.type as any).name === 'LeaderboardBarChart'
+          ) {
+            return React.cloneElement(child, { disableAnimation });
+          }
+          return child;
+        })}
       </div>
     </div>
   );

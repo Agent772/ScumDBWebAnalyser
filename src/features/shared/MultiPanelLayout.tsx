@@ -14,7 +14,7 @@ export interface MultiPanelLayoutProps {
   groupCount: number;
   getPanelHeader?: (groupIndex: number) => React.ReactNode;
   getPanelFileName?: (groupIndex: number) => string;
-  children?: (groupIndex: number) => React.ReactNode;
+  children?: (groupIndex: number, props: { disableAnimation: boolean }) => React.ReactNode;
   exportZipName?: string;
 }
 
@@ -28,6 +28,7 @@ export function MultiPanelLayout({
   const [currentGroup, setCurrentGroup] = useState(0);
   const [discordOpen, setDiscordOpen] = useState(false);
   const [discordStatus, setDiscordStatus] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
   // Use array of refs, always length groupCount, with nulls
   const panelRefs = useRef<(HTMLDivElement | null)[]>(Array(groupCount).fill(null));
 
@@ -55,10 +56,16 @@ export function MultiPanelLayout({
     </div>
   );
 
-  // Export all groups as images in a zip
+  // Export all groups as images in a zip, making each panel visible for export
   const handleExportAll = async () => {
+    setExporting(true);
     const zip = new JSZip();
+    const originalGroup = currentGroup;
     for (let i = 0; i < groupCount; i++) {
+      await new Promise<void>(resolve => {
+        setCurrentGroup(i);
+        setTimeout(resolve, 120);
+      });
       const ref = panelRefs.current[i];
       if (ref) {
         const dataUrl = await exportAsImage(ref, { returnDataUrl: true, fileName: getPanelFileName(i) });
@@ -69,6 +76,8 @@ export function MultiPanelLayout({
         }
       }
     }
+    setCurrentGroup(originalGroup);
+    setExporting(false);
     const content = await zip.generateAsync({ type: 'blob' });
     saveAs(content, exportZipName);
   };
@@ -140,7 +149,7 @@ export function MultiPanelLayout({
             panelRef={{ current: panelRefs.current[i] }}
             height='85vh'
           >
-            {children ? children(i) : null}
+            {children ? children(i, { disableAnimation: exporting }) : null}
           </SinglePanelLayout>
         </div>
       ))}

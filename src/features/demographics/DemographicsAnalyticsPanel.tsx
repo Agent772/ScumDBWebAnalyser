@@ -37,7 +37,7 @@ function GenderPieChart({ counts }: { counts: Record<'Male' | 'Female' | 'Unknow
     const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
     const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
     return (
-      <text x={x} y={y} fill="black" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      <text x={x} y={y} fill="black" fontWeight={600} textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
         {`${((percent ?? 1) * 100).toFixed(0)}%`}
       </text>
     );

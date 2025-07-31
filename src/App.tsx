@@ -3,7 +3,6 @@ import initSqlJs, { Database } from 'sql.js';
 import { SquadVehiclesPanel } from './features/squadVehicles/squadVehiclesPanel';
 import { DemographicsAnalyticsPanel } from './features/demographics/DemographicsAnalyticsPanel';
 import { FishingStatsPanel } from './features/fishingStats/FishingStatsPanel';
-import { BodySimulationPanel } from './features/bodySimulation/BodySimulationPanel';
 import { DiscordWebhookManagerModal } from './ui/Discord/DiscordWebhookManagerModal';
 import { DiscordIcon } from './ui/Discord/DiscordIcon';
 import { SkillStatsPanel } from './features/skills/SkillStatsPanel';
@@ -165,27 +164,22 @@ function App() {
               <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>Analysis</div>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('squad-vehicles')}
+              >
+                Vehicles per Squad
+              </button>
+              <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>Stats</div>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('demographics')}
               >
                 Demographics
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
-                onClick={() => setSelectedAnalysis('squad-vehicles')}
-              >
-                Vehicles per Squad
-              </button>
-              <button
-                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('fishing-stats')}
               >
                 Fishing Stats
-              </button>
-              <button
-                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
-                onClick={() => setSelectedAnalysis('body-simulation')}
-              >
-                Body Simulation
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
@@ -251,11 +245,6 @@ function App() {
               {selectedAnalysis === 'fishing-stats' && (
                 <div style={{ width: '100%', minHeight: 120 }}>
                   <FishingStatsPanel db={db} />
-                </div>
-              )}
-              {selectedAnalysis === 'body-simulation' && (
-                <div style={{ width: '100%', minHeight: 120 }}>
-                  <BodySimulationPanel db={db} />
                 </div>
               )}
               {selectedAnalysis === 'skill-stats' && (
