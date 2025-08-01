@@ -7,6 +7,7 @@ import { SurvivalStatsPanel } from './features/survival/survivalStatsPanel';
 import { DiscordWebhookManagerModal } from './ui/Discord/DiscordWebhookManagerModal';
 import { DiscordIcon } from './ui/Discord/DiscordIcon';
 import { SkillStatsPanel } from './features/skills/SkillStatsPanel';
+import { KillStatsPanel } from './features/kills/killsStatsPanel';
 import { COLORS } from './ui/helpers/colors';
 import './index.css';
 
@@ -194,6 +195,12 @@ function App() {
               >
                 Survival
               </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('kills-stats')}
+              >
+                Kills
+              </button>
             </div>
           </nav>
         ) : null}
@@ -262,6 +269,11 @@ function App() {
               {selectedAnalysis === 'survival-stats' && (
                 <div style={{ width: '100%', minHeight: 120 }}>
                   <SurvivalStatsPanel db={db} />
+                </div>
+              )}
+              {selectedAnalysis === 'kills-stats' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <KillStatsPanel db={db} />
                 </div>
               )}
               {/* Placeholder for future analysis panels */}
