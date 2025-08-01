@@ -239,6 +239,9 @@ function App() {
               >
                 Upload SCUM.db
               </button>
+              <p style={{ fontSize: 13, color: COLORS.text, marginTop: 4 }}>
+                <b>Hint:</b> The <code>SCUM.db</code> file is usually located at <code>/Saved/SaveFiles/SCUM.db</code> on your server.
+              </p>
               {loading && <p>Loading database...</p>}
               {error && <p style={{ color: COLORS.error }}>{error}</p>}
             </>
