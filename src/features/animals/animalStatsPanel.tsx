@@ -17,6 +17,7 @@
  * @returns {JSX.Element} The rendered animal statistics panel with multiple grouped charts.
  */
 import { MultiPanelLayout } from '../shared/MultiPanelLayout';
+import { useTranslation } from 'react-i18next';
 import { fetchAllAnimalsStats } from './animalsData';
 import { Database } from 'sql.js';
 import { ColorLegendPanel } from '../../ui/helpers/ColorLegendPanel';
@@ -30,7 +31,8 @@ interface AnimalStatsPanelProps {
 }
 
 
-export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
+  export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
+  const { t } = useTranslation();
   const allStats = fetchAllAnimalsStats(db);
   // Panel 1 (Animals Overview) Data Preparation
   const animalsKilledData = toChartData(allStats.MostAnimalsKilled);
@@ -56,9 +58,9 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
     <MultiPanelLayout
       groupCount={3}
       getPanelHeader={i => {
-        if (i === 0) return 'Animals Overview';
-        if (i === 1) return 'Single Animal Kills 1';
-        if (i === 2) return 'Single Animal Kills 2';
+        if (i === 0) return t('animals_panel.panel_header');
+        if (i === 1) return t('animals_panel.single_animal_kills', { page: 1 });
+        if (i === 2) return t('animals_panel.single_animal_kills', { page: 2 });
         return '';
       }}
       getPanelFileName={i => {
@@ -72,15 +74,15 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
         if (groupIndex === 0) {
           return (
             <>
-              <ColorLegendPanel idSuffix={String(groupIndex)} min={animalsKilledData.colorCodingMin!} max={animalsKilledData.colorCodingMax!} label='Time Played (m)' />
+              <ColorLegendPanel idSuffix={String(groupIndex)} min={animalsKilledData.colorCodingMin!} max={animalsKilledData.colorCodingMax!} label={t('time_played_m')}/>
               {/* Animals Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>Animals Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.animals_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={animalsKilledData}
-                    kpiLabel="Animals Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.animals_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -89,12 +91,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Longest Animal Kill Distance */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>Longest Animal Kill Distance</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.longest_animal_kill_distance')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={longestAnimalKillDistanceData}
-                    kpiLabel="Longest Kill Distance"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.longest_animal_kill_distance')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -103,12 +105,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Animals Skinned */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>Animals Skinned</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.animals_skinned')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={animalsSkinnedData}
-                    kpiLabel="Animals Skinned"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.animals_skinned')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -117,12 +119,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Times Mauled By Bear */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>Times Mauled By Bear</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.times_mauled_by_bear')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={timesMauledByBearData}
-                    kpiLabel="Times Mauled By Bear"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.times_mauled_by_bear')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -136,12 +138,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
             <>
               {/* Crows Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>Crows Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.crows_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={crowsKilledData}
-                    kpiLabel="Crows Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.crows_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -150,12 +152,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Seagulls Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>Seagulls Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.seagulls_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={seagullsKilledData}
-                    kpiLabel="Seagulls Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.seagulls_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -164,12 +166,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Horses Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>Horses Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.horses_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={horsesKilledData}
-                    kpiLabel="Horses Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.horses_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -178,12 +180,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Boars Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>Boars Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.boars_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={boarsKilledData}
-                    kpiLabel="Boars Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.boars_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -192,12 +194,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Goats Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>Goats Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.goats_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={goatsKilledData}
-                    kpiLabel="Goats Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.goats_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -219,7 +221,7 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
                   idSuffix={String(groupIndex)}
                   min={crowsKilledData.colorCodingMin!}
                   max={crowsKilledData.colorCodingMax!}
-                  label="Time Played (m)"
+                  label={t('time_played_m')}
                 />
               </div>
             </>
@@ -230,12 +232,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
             <>
               {/* Deers Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>Deers Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.deers_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={deersKilledData}
-                    kpiLabel="Deers Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.deers_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -244,12 +246,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Chickens Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>Chickens Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.chickens_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={chickensKilledData}
-                    kpiLabel="Chickens Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.chickens_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -258,12 +260,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Rabbits Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>Rabbits Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.rabbits_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={rabbitsKilledData}
-                    kpiLabel="Rabbits Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.rabbits_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -272,12 +274,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Donkeys Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>Donkeys Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.donkeys_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={donkeysKilledData}
-                    kpiLabel="Donkeys Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.donkeys_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -286,12 +288,12 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
 
               {/* Wolves Killed */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>Wolves Killed</div>
+                <div style={{ ...chartHeaderStyle }}>{t('animals_panel.wolves_killed')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={wolvesKilledData}
-                    kpiLabel="Wolves Killed"
-                    coloringLabel="Time Played (m)"
+                    kpiLabel={t('animals_panel.wolves_killed')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -313,7 +315,7 @@ export function AnimalStatsPanel({ db }: AnimalStatsPanelProps) {
                   idSuffix={String(groupIndex)}
                   min={wolvesKilledData.colorCodingMin!}
                   max={wolvesKilledData.colorCodingMax!}
-                  label="Time Played (m)"
+                  label={t('time_played_m')}
                 />
               </div>
             </>

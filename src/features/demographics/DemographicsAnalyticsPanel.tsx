@@ -9,6 +9,7 @@
  * @returns A React component rendering the demographics analytics panel.
  */
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { Database } from 'sql.js';
 import { getDemographicsAnalytics } from './demographicsData';
@@ -22,9 +23,10 @@ interface DemographicsProps {
 }
 
 function GenderPieChart({ counts }: { counts: Record<'Male' | 'Female' | 'Unknown', number> }) {
+  const { t } = useTranslation();
   const pieData = [
-    { name: 'Male', value: counts.Male },
-    { name: 'Female', value: counts.Female },
+    { name: t('male'), value: counts.Male },
+    { name: t('female'), value: counts.Female },
   ];
   const total = pieData.reduce((sum, d) => sum + d.value, 0);
   const RADIAN = Math.PI / 180;
@@ -53,7 +55,7 @@ function GenderPieChart({ counts }: { counts: Record<'Male' | 'Female' | 'Unknow
     );
   };
 
-  if (total === 0) return <div>No data</div>;
+  if (total === 0) return <div>{t('no_data')}</div>;
   return (
     <div style={{ width: '100%', height: '100%', minHeight: 180, minWidth: 180 }}>
       <ResponsiveContainer width="100%" height="100%">
@@ -79,6 +81,7 @@ function GenderPieChart({ counts }: { counts: Record<'Male' | 'Female' | 'Unknow
 }
 
 export function DemographicsAnalyticsPanel({ db }: DemographicsProps) {
+  const { t } = useTranslation();
   const data = getDemographicsAnalytics(db);
   const panelRef = useRef<HTMLDivElement>(null);
   // Calculate max for Y axis with buffer for label
@@ -87,44 +90,44 @@ export function DemographicsAnalyticsPanel({ db }: DemographicsProps) {
 
   return (
     <SinglePanelLayout
-      header="Demographics"
+      header={t('demographics')}
       panelRef={panelRef}
       exportFileName="demographics-analysis.png"
       discordFileName="demographics-analysis.png"
     >
       {/* KPIs: Players and Play Time */}
       <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 5', alignItems: 'center', justifyContent: 'center' }}>
-        <KPI header="Players" value={data.playerCount} />
+        <KPI header={t('demographics_panel.players')} value={data.playerCount} />
       </div>
       <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 5',  gap: 32, alignItems: 'center', justifyContent: 'center' }}>
-        <KPI header="Avg. Play Time (min)" value={data.avgPlayTimeMinutes} />
+        <KPI header={t('demographics_panel.avg_play_time_min')} value={data.avgPlayTimeMinutes} />
       </div>
       {/* Gender Pie Chart */}
       <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '5 / 9', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ ...chartHeaderStyle }}>Gender</div>
+        <div style={{ ...chartHeaderStyle }}>{t('demographics_panel.gender')}</div>
         <GenderPieChart counts={data.genderCounts} />
       </div>
       {/* Size KPIs */}
       <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '5 / 7', gap: 32, justifyContent: 'center', alignItems: 'center' }}>
         <KPI
-          header="Avg. Penis Size"
-          value={data.avgPenisSize?.toFixed(2) ?? 'N/A'}
-          footer={`min: ${data.minPenisSize ?? 'N/A'}, max: ${data.maxPenisSize ?? 'N/A'}`}
+          header={t('demographics_panel.avg_penis_size')}
+          value={data.avgPenisSize?.toFixed(2) ?? t('na')}
+          footer={`${t('min')}: ${data.minPenisSize ?? t('na')}, ${t('max')}: ${data.maxPenisSize ?? t('na')}`}
         />
       </div>
       <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '7 / 9', gap: 32, justifyContent: 'center', alignItems: 'center' }}>
         <KPI
-          header="Avg. Breast Size"
-          value={data.avgBreastSize?.toFixed(2) ?? 'N/A'}
-          footer={`min: ${data.minBreastSize ?? 'N/A'}, max: ${data.maxBreastSize ?? 'N/A'}`}
+          header={t('demographics_panel.avg_breast_size')}
+          value={data.avgBreastSize?.toFixed(2) ?? t('na')}
+          footer={`${t('min')}: ${data.minBreastSize ?? t('na')}, ${t('max')}: ${data.maxBreastSize ?? t('na')}`}
         />
       </div>
       {/* Age Distribution */}
       <div style={{ ...chartContainerStyle, gridColumn: '1 / 13', gridRow: '9 / 13', marginTop: 8 }}>
-        <div style={{ ...chartHeaderStyle }}>Age Distribution</div>
+        <div style={{ ...chartHeaderStyle }}>{t('demographics_panel.age_distribution')}</div>
         <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
           {data.ageDistribution.length === 0 ? (
-            <div style={{ color: COLORS.text}}>No data</div>
+            <div style={{ color: COLORS.text}}>{t('no_data')}</div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.ageDistribution} margin={{ top: 8, right: 8, left: 8, bottom: 8 }}>

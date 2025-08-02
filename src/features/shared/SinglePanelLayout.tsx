@@ -19,6 +19,7 @@
  */
 import React from 'react';
 import { type ReactNode, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { exportAsImage } from '../../ui/Export/exportAsImage';
 import { DiscordModal } from '../../ui/Discord/DiscordModal';
 import { postToDiscordWebhook } from '../../ui/Discord/discordWebhook';
@@ -52,6 +53,7 @@ export function SinglePanelLayout({
   discordFileName = 'analysis-panel.png',
   height = '89vh',
 }: SinglePanelLayoutProps) {
+  const { t } = useTranslation();
   const [discordOpen, setDiscordOpen] = useState(false);
   const [discordStatus, setDiscordStatus] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
@@ -69,7 +71,7 @@ export function SinglePanelLayout({
   const handleDiscordSend = async (info: DiscordWebhookInfo) => {
     setDiscordStatus(null);
     if (!panelRef?.current) {
-      setDiscordStatus('Panel not found.');
+      setDiscordStatus(t('single_panel.panel_not_found'));
       return;
     }
     setExporting(true);
@@ -77,13 +79,13 @@ export function SinglePanelLayout({
     const dataUrl = await exportAsImage(panelRef.current, { returnDataUrl: true, fileName: discordFileName }) as string;
     setExporting(false);
     if (!dataUrl) {
-      setDiscordStatus('Failed to export image.');
+      setDiscordStatus(t('single_panel.failed_export_image'));
       return;
     }
     const res = await fetch(dataUrl);
     const blob = await res.blob();
     const ok = await postToDiscordWebhook(info, info.message || '', blob, discordFileName);
-    setDiscordStatus(ok ? 'Posted to Discord with image!' : 'Failed to post. Check the webhook URL and try again.');
+    setDiscordStatus(ok ? t('single_panel.posted_to_discord') : t('single_panel.failed_post'));
     if (ok) setDiscordOpen(false);
   };
 
@@ -100,7 +102,7 @@ export function SinglePanelLayout({
         <div
           role="status"
           aria-live="polite"
-          style={{ color: discordStatus.startsWith('Posted') ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
+          style={{ color: discordStatus.startsWith(t('single_panel.status_posted_prefix')) ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
         >
           {discordStatus}
         </div>
@@ -153,19 +155,19 @@ export function SinglePanelLayout({
           <button
             type="button"
             className='btn-download'
-            aria-label="Export panel as image"
+            aria-label={t('single_panel.export_panel_as_image_aria')}
             onClick={handleExport}
           >
-            Export as Image
+            {t('single_panel.export_panel_as_image')}
           </button>
           <button
             type="button"
             className="btn-discord"
-            aria-label="Send panel to Discord"
+            aria-label={t('single_panel.send_panel_to_discord_aria')}
             onClick={() => setDiscordOpen(true)}
           >
             <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
-            Send to Discord
+            {t('single_panel.send_panel_to_discord')}
           </button>
           {actions}
         </div>

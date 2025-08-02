@@ -14,6 +14,7 @@
  * @returns {JSX.Element} The rendered fishing stats panel.
  */
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Database } from 'sql.js';
 import { fetchAllFishingStats } from './fishingStatsData';
 import { SinglePanelLayout } from '../shared/SinglePanelLayout';
@@ -27,6 +28,7 @@ interface FishingStatsPanelProps {
 }
 
 export function FishingStatsPanel({ db }: FishingStatsPanelProps) {
+  const { t } = useTranslation();
   const allStats = fetchAllFishingStats(db);
   const minFishCaught = Math.min(...allStats.Caught.map(d => d.kpi));
   const maxFishCaught = Math.max(...allStats.Caught.map(d => d.kpi));
@@ -39,7 +41,7 @@ export function FishingStatsPanel({ db }: FishingStatsPanelProps) {
 
   return (
     <SinglePanelLayout
-      header="Fishing Stats"
+      header={t('fishing_panel.panel_header')}
       panelRef={panelRef}
       className="fishing-stats-panel"
       exportFileName="fishing-stats-analysis.png"
@@ -50,15 +52,15 @@ export function FishingStatsPanel({ db }: FishingStatsPanelProps) {
         <ColorLegendPanel
           min={minFishCaught}
           max={maxFishCaught}
-          label="Fish Caught Color Scale"
+          label={t('fishing_panel.fish_caught_color_scale')}
         />
         {/* Most Fish Caught */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 8'}}>
-          <div style={{ ...chartHeaderStyle}}>Most Fish Caught</div>
+          <div style={{ ...chartHeaderStyle}}>{t('fishing_panel.most_fish_caught')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={caughtData}
-              kpiLabel='Fish Caught'
+              kpiLabel={t('fishing_panel.fish_caught')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
@@ -66,39 +68,39 @@ export function FishingStatsPanel({ db }: FishingStatsPanelProps) {
         </div>
         {/* Heaviest Fish Caught */}
         <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 8' }}>
-          <div style={{ ...chartHeaderStyle }}>Heaviest Fish Caught</div>
+          <div style={{ ...chartHeaderStyle }}>{t('fishing_panel.heaviest_fish_caught')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={heaviestData}
-              kpiLabel='Heaviest Fish Caught'
+              kpiLabel={t('fishing_panel.heaviest_fish_caught')}
               yAxisWidth={120}
-              coloringLabel="Fish Caught"
+              coloringLabel={t('fishing_panel.fish_caught')}
               disableAnimation={disableAnimation}
             />
           </div>
         </div>
         {/* Longest Fish Caught */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '8 / 14' }}>
-          <div style={{ ...chartHeaderStyle }}>Longest Fish Caught</div>
+          <div style={{ ...chartHeaderStyle }}>{t('fishing_panel.longest_fish_caught')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={longestData}
-              kpiLabel='Longest Fish Caught'
+              kpiLabel={t('fishing_panel.longest_fish_caught')}
               yAxisWidth={120}
-              coloringLabel="Fish Caught"
+              coloringLabel={t('fishing_panel.fish_caught')}
               disableAnimation={disableAnimation}
             />
           </div>
         </div>
         {/* Most Broken Fishing Lines */}
         <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '8 / 14' }}>
-          <div style={{ ...chartHeaderStyle }}>Most Broken Fishing Lines</div>
+          <div style={{ ...chartHeaderStyle }}>{t('fishing_panel.most_broken_fishing_lines')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={linesBrokenData}
-              kpiLabel='Lines Broken'
+              kpiLabel={t('fishing_panel.lines_broken')}
               yAxisWidth={120}
-              coloringLabel="Fish Caught"
+              coloringLabel={t('fishing_panel.fish_caught')}
               disableAnimation={disableAnimation}
             />
           </div>

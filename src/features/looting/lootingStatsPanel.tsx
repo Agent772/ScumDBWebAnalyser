@@ -25,12 +25,15 @@ import { chartContainerStyle, chartHeaderStyle} from '../../ui/helpers/chartHelp
 import { toChartData } from '../../utils/chartDataHelpers';
 import { LeaderboardBarChart } from '../../ui/helpers/LeaderboardBarChart';
 import { ChartFooter } from '../../ui/helpers/chartFooter';
+import { useTranslation } from 'react-i18next';
 
 interface LootingStatsPanelProps {
   db: Database;
 }
 
+
 export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
+  const { t } = useTranslation();
   const allStats = fetchAllLootingStats(db);
 
   const containersLootedData = toChartData(allStats.ContainersLooted);
@@ -43,21 +46,21 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
 
   return (
     <SinglePanelLayout
-      header="Travel Stats"
+      header={t('looting_stats.looting_stats')}
       panelRef={panelRef}
-      className="travel-stats-panel"
-      exportFileName="travel-stats-analysis.png"
-      discordFileName="travel-stats-analysis.png"
+      className="looting-stats-panel"
+      exportFileName="looting-stats-analysis.png"
+      discordFileName="looting-stats-analysis.png"
     >
       {({ disableAnimation }) => <>
         {/* Locks Picked */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-          <div style={{ ...chartHeaderStyle }}>Locks Picked</div>
+          <div style={{ ...chartHeaderStyle }}>{t('looting_stats.locks_picked')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={locksPickedData}
-              kpiLabel='Locks Picked'
-              coloringLabel="Time Played (m)"
+              kpiLabel={t('looting_stats.locks_picked')}
+              coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
@@ -66,12 +69,12 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
 
         {/* Containers Looted */}
         <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-          <div style={{ ...chartHeaderStyle }}>Containers Looted</div>
+          <div style={{ ...chartHeaderStyle }}>{t('looting_stats.containers_looted')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={containersLootedData}
-              kpiLabel='Containers Looted'
-              coloringLabel="Time Played (m)"
+              kpiLabel={t('looting_stats.containers_looted')}
+              coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
@@ -80,12 +83,12 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
 
          {/* Items picked up */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-          <div style={{ ...chartHeaderStyle }}>Items Picked Up</div>
+          <div style={{ ...chartHeaderStyle }}>{t('looting_stats.items_picked_up')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={itemsPickedUpData}
-              kpiLabel='Items Picked Up'
-              coloringLabel="Time Played (m)"
+              kpiLabel={t('looting_stats.items_picked_up')}
+              coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
@@ -94,26 +97,26 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
 
         {/* Items put into Containers */}
         <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-          <div style={{ ...chartHeaderStyle }}>Items Put Into Containers</div>
+          <div style={{ ...chartHeaderStyle }}>{t('looting_stats.items_put_into_containers')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={itemsPutIntoContainersData}
-              kpiLabel='Items Put Into Containers'
-              coloringLabel="Items Picked Up"
+              kpiLabel={t('looting_stats.items_put_into_containers')}
+              coloringLabel={t('looting_stats.items_picked_up')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
           </div>
-          <ChartFooter text='Color coding is based on the number of items picked up.' />
+          <ChartFooter text={t('looting_stats.items_put_into_containers_footer')} />
         </div>
         {/* Highest Weight carried */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-          <div style={{ ...chartHeaderStyle }}>Highest Weight Carried (kg)</div>
+          <div style={{ ...chartHeaderStyle }}>{t('looting_stats.highest_weight_carried')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={highestWeightCarriedData}
-              kpiLabel='Highest Weight Carried (kg)'
-              coloringLabel="Time Played (m)"
+              kpiLabel={t('looting_stats.highest_weight_carried')}
+              coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
@@ -136,7 +139,7 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
           <ColorLegendPanel
             min={itemsPickedUpData.colorCodingMin!}
             max={itemsPickedUpData.colorCodingMax!}
-            label="Time Played (m)"
+            label={t('time_played_m')}
           />
         </div>
 
@@ -156,11 +159,10 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
           <ColorLegendPanel
             min={itemsPutIntoContainersData.colorCodingMin!}
             max={itemsPutIntoContainersData.colorCodingMax!}
-            label="Items picked up"
+            label={t('looting_stats.items_picked_up')}
           />
         </div>
-      </>
-      }
+      </>}
     </SinglePanelLayout>
   );
 }

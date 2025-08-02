@@ -16,6 +16,7 @@
  * @returns {JSX.Element} The rendered travel stats panel.
  */
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Database } from 'sql.js';
 import { fetchAllTravelStats } from './travelData';
 import { SinglePanelLayout } from '../shared/SinglePanelLayout';
@@ -29,6 +30,7 @@ interface TravelStatsPanelProps {
 }
 
 export function TravelStatsPanel({ db }: TravelStatsPanelProps) {
+  const { t } = useTranslation();
   const allStats = fetchAllTravelStats(db);
 
   const distanceTravelledByFootData = toChartData(allStats.MostDistanceTravelledByFoot);
@@ -41,7 +43,7 @@ export function TravelStatsPanel({ db }: TravelStatsPanelProps) {
 
   return (
     <SinglePanelLayout
-      header="Travel Stats"
+      header={t('travel_stats.header')}
       panelRef={panelRef}
       className="travel-stats-panel"
       exportFileName="travel-stats-analysis.png"
@@ -50,12 +52,12 @@ export function TravelStatsPanel({ db }: TravelStatsPanelProps) {
       {({ disableAnimation }) => <>
         {/* Distance Travelled By Foot */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-          <div style={{ ...chartHeaderStyle }}>Distance Travelled By Foot (m)</div>
+          <div style={{ ...chartHeaderStyle }}>{t('travel_stats.distance_by_foot')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={distanceTravelledByFootData}
-              kpiLabel='Distance By Foot (m)'
-              coloringLabel="Time Played (m)"
+              kpiLabel={t('travel_stats.distance_by_foot_kpi')}
+              coloringLabel={t('travel_stats.time_played')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
@@ -63,12 +65,12 @@ export function TravelStatsPanel({ db }: TravelStatsPanelProps) {
         </div>
         {/* Distance Travelled In Vehicle */}
         <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-          <div style={{ ...chartHeaderStyle }}>Distance Travelled In Vehicle (m)</div>
+          <div style={{ ...chartHeaderStyle }}>{t('travel_stats.distance_in_vehicle')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={distanceTravelledInVehicleData}
-              kpiLabel='Distance In Vehicle (m)'
-              coloringLabel="Time Played (m)"
+              kpiLabel={t('travel_stats.distance_in_vehicle_kpi')}
+              coloringLabel={t('travel_stats.time_played')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
@@ -76,12 +78,12 @@ export function TravelStatsPanel({ db }: TravelStatsPanelProps) {
         </div>
         {/* Distance Travelled Swimming */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-          <div style={{ ...chartHeaderStyle }}>Distance Travelled Swimming (m)</div>
+          <div style={{ ...chartHeaderStyle }}>{t('travel_stats.distance_swimming')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={distanceTravelledSwimmingData}
-              kpiLabel='Distance Swimming (m)'
-              coloringLabel="Time Played (m)"
+              kpiLabel={t('travel_stats.distance_swimming_kpi')}
+              coloringLabel={t('travel_stats.time_played')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
@@ -89,12 +91,12 @@ export function TravelStatsPanel({ db }: TravelStatsPanelProps) {
         </div>
         {/* Distance Travelled By Boat */}
         <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-          <div style={{ ...chartHeaderStyle }}>Distance Travelled By Boat (m)</div>
+          <div style={{ ...chartHeaderStyle }}>{t('travel_stats.distance_by_boat')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={distanceTravelledByBoatData}
-              kpiLabel='Distance By Boat (m)'
-              coloringLabel="Time Played (m)"
+              kpiLabel={t('travel_stats.distance_by_boat_kpi')}
+              coloringLabel={t('travel_stats.time_played')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
@@ -102,12 +104,12 @@ export function TravelStatsPanel({ db }: TravelStatsPanelProps) {
         </div>
         {/* Distance Sailed */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-          <div style={{ ...chartHeaderStyle }}>Distance Sailed (m)</div>
+          <div style={{ ...chartHeaderStyle }}>{t('travel_stats.distance_sailed')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={distanceSailedData}
-              kpiLabel='Distance Sailed (m)'
-              coloringLabel="Time Played (m)"
+              kpiLabel={t('travel_stats.distance_sailed_kpi')}
+              coloringLabel={t('travel_stats.time_played')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
@@ -129,7 +131,7 @@ export function TravelStatsPanel({ db }: TravelStatsPanelProps) {
                 <ColorLegendPanel
                   min={distanceSailedData.colorCodingMin!}
                   max={distanceSailedData.colorCodingMax!}
-                  label="Time Played (m)"
+                  label={t('travel_stats.time_played')}
                 />
               </div>
       </>}

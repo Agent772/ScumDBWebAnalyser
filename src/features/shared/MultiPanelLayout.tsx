@@ -29,6 +29,7 @@
  * ```
  */
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SinglePanelLayout } from './SinglePanelLayout';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
@@ -56,6 +57,7 @@ export function MultiPanelLayout({
   children,
   exportZipName = 'multi-panel-analysis.zip',
 }: MultiPanelLayoutProps) {
+  const { t } = useTranslation();
   const [currentGroup, setCurrentGroup] = useState(0);
   const [discordOpen, setDiscordOpen] = useState(false);
   const [discordStatus, setDiscordStatus] = useState<string | null>(null);
@@ -68,11 +70,11 @@ export function MultiPanelLayout({
 
   // Navigation buttons for header
   const navButtons = (
-    <nav aria-label="Panel group navigation" style={{ display: 'flex', gap: 4 }}>
+    <nav aria-label={t('multi_panel.panel_group_navigation')} style={{ display: 'flex', gap: 4 }}>
       {Array.from({ length: groupCount }).map((_, i) => (
         <button
           key={i}
-          aria-label={`Show group ${i + 1}`}
+          aria-label={t('multi_panel.show_group', { group: i + 1 })}
           aria-current={i === currentGroup ? 'page' : undefined}
           ref={el => {
             navButtonRefs.current[i] = el;
@@ -175,19 +177,19 @@ export function MultiPanelLayout({
         <button
           type="button"
           className="btn-download"
-          aria-label="Export all panels as zip"
+          aria-label={t('multi_panel.export_all_as_zip_aria')}
           onClick={handleExportAll}
         >
-          Export All as Zip
+          {t('multi_panel.export_all_as_zip')}
         </button>
         <button
           type="button"
           className="btn-discord"
-          aria-label="Send all panels to Discord"
+          aria-label={t('multi_panel.send_all_to_discord_aria')}
           onClick={() => setDiscordOpen(true)}
         >
           <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
-          Send All to Discord
+          {t('multi_panel.send_all_to_discord')}
         </button>
       </header>
       {discordOpen && (
@@ -201,7 +203,7 @@ export function MultiPanelLayout({
         <div
           role="status"
           aria-live="polite"
-          style={{ color: discordStatus.startsWith('Posted') ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
+          style={{ color: discordStatus.startsWith(t('multi_panel.status_posted_prefix')) ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
         >
           {discordStatus}
         </div>

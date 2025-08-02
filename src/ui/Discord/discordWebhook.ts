@@ -70,11 +70,7 @@ export function clearAllDiscordWebhooks() {
   localStorage.removeItem(WEBHOOKS_KEY);
 }
 
-/**
- * Usage statement for UI: Only if user opts in, Discord webhooks are saved in your browser (localStorage), never sent anywhere else. You can remove them at any time.
- */
-export const DISCORD_WEBHOOK_STORAGE_STATEMENT =
-  'If you choose to save a Discord webhook, it will be stored only in your browser (localStorage) and never sent anywhere else. You can remove saved webhooks at any time.';
+
 // Utility for posting messages to a Discord webhook from the browser
 
 

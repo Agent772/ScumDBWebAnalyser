@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import './i18n';
+import { useTranslation } from 'react-i18next';
 import initSqlJs, { Database } from 'sql.js';
 import { SquadVehiclesPanel } from './features/squadVehicles/squadVehiclesPanel';
 import { DemographicsAnalyticsPanel } from './features/demographics/DemographicsAnalyticsPanel';
@@ -18,6 +20,7 @@ import { MiscStatsPanel } from './features/misc/miscStatsPanel';
 import './index.css';
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [db, setDb] = useState<Database | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -67,7 +70,12 @@ function App() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', minWidth: 0, marginRight: 10 }}>
           <img src="/src/ui/assets/logo.svg" alt="ScumDB Web Analyzer Logo" style={{ width: 40, height: 40 }} />
-          <span style={{ fontWeight: 700, fontSize: '1.5rem', letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>ScumDB Web Analyzer</span>
+          <span style={{ fontWeight: 700, fontSize: '1.5rem', letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t('app_title')}</span>
+        </div>
+        {/* Language Switcher */}
+        <div style={{ marginRight: 16 }}>
+          <button onClick={() => i18n.changeLanguage('en')} style={{ marginRight: 6, padding: '0.2em 0.7em', borderRadius: 4, border: '1px solid #ccc', background: i18n.language === 'en' ? '#eee' : 'transparent', cursor: 'pointer' }}>EN</button>
+          <button onClick={() => i18n.changeLanguage('de')} style={{ padding: '0.2em 0.7em', borderRadius: 4, border: '1px solid #ccc', background: i18n.language === 'de' ? '#eee' : 'transparent', cursor: 'pointer' }}>DE</button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
           <a
@@ -169,86 +177,86 @@ function App() {
                   transition: 'background 0.2s, border 0.2s, color 0.2s',
                 }}
                 onClick={() => setDiscordManagerOpen(true)}
-                title="Manage Discord Webhooks"
+                title={t('discord.manage_webhooks')}
                 onMouseOver={e => { (e.currentTarget as HTMLButtonElement).style.background = '#232533'; (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
                 onMouseOut={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; (e.currentTarget as HTMLButtonElement).style.color = '#7289da'; }}
               >
                 <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
-                Manage Webhooks
+                {t('discord.manage_webhooks')}
               </button>
-              <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>Analysis</div>
+              <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>{t('navigation.analysis')}</div>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('squad-vehicles')}
               >
-                Vehicles per Squad
+                {t('navigation.vehicles_per_squad')}
               </button>
-              <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>Stats</div>
+              <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>{t('navigation.stats')}</div>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('demographics')}
               >
-                Demographics
+                {t('navigation.demographics')}
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('fishing-stats')}
               >
-                Fishing
+                {t('navigation.fishing')}
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('skill-stats')}
               >
-                Skill
+                {t('navigation.skill')}
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('survival-stats')}
               >
-                Survival
+                {t('navigation.survival')}
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('kills-stats')}
               >
-                Kills
+                {t('navigation.kills')}
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('animal-stats')}
               >
-                Animal
+                {t('navigation.animal')}
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('crafting-stats')}
               >
-                Crafting
+                {t('navigation.crafting')}
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('travel-stats')}
               >
-                Travel
+                {t('navigation.travel')}
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('looting-stats')}
               >
-                Looting
+                {t('navigation.looting')}
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('food-stats')}
               >
-                Food
+                {t('navigation.food')}
               </button>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
                 onClick={() => setSelectedAnalysis('misc-stats')}
               >
-                MISC
+                {t('navigation.misc')}
               </button>
             </div>
           </nav>
@@ -292,16 +300,16 @@ function App() {
                 onClick={() => document.getElementById('scumdb-upload')?.focus() || document.getElementById('scumdb-upload')?.click()}
                 style={{ padding: '0.7em 1.5em', fontSize: '1rem', borderRadius: '6px', background: COLORS.primary, color: COLORS.textSecondary, border: 'none', cursor: 'pointer', fontWeight: 600, margin: '2.5rem 0 1.5rem 0' }}
               >
-                Upload SCUM.db
+                {t('upload_scumdb')}
               </button>
               <p style={{ fontSize: 13, color: COLORS.text, marginTop: 4 }}>
-                <b>Hint:</b> The <code>SCUM.db</code> file is usually located at <code>/Saved/SaveFiles/SCUM.db</code> on your server.
+                <b>{t('hint_label')}</b> {t('hint_location')}
               </p>
               {loading && (
-                <p role="status" aria-live="polite">Loading database...</p>
+                <p role="status" aria-live="polite">{t('loading_db')}</p>
               )}
               {error && (
-                <p role="alert" style={{ color: COLORS.error }}>{error}</p>
+                <p role="alert" style={{ color: COLORS.error }}>{t('error_loading_db')}</p>
               )}
             </>
           )}
@@ -371,7 +379,7 @@ function App() {
               {/* Placeholder for future analysis panels */}
               {!selectedAnalysis && (
                 <div style={{ color: COLORS.text, fontSize: '1.1rem', marginTop: 40, textAlign: 'center' }}>
-                  Select an analysis from the left menu to begin.
+                  {t('select_analysis')}
                 </div>
               )}
             </div>
@@ -396,7 +404,7 @@ function App() {
         boxShadow: COLORS.shadow
       }}>
         <span>
-          All data is processed in your browser and never transferred anywhere. This tool is fan-made and not affiliated with SCUM or Gamepires.
+          {t('footer_disclaimer')}
         </span>
       </footer>
     </div>
