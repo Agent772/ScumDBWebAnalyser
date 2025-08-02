@@ -41,14 +41,28 @@ SCUM is a hardcore survival game by Gamepires. This tool is for server admins, p
 
 ---
 
+
 ## 📸 Screenshots
 
-> _Screenshots coming soon!_
->
-> ![Dashboard Screenshot - blurred](docs/screenshots/dashboard-blurred.png)
-> ![Vehicle Analysis Screenshot - blurred](docs/screenshots/vehicles-blurred.png)
->
-> _Replace these placeholders with your own screenshots. Use image editing to blur player names for privacy._
+Below are example screenshots of the app in action. (Player names and sensitive data are blurred for privacy.)
+
+<p align="center">
+  <img src="docs/screenshots/StatsExample.png" alt="Stats Example" width="700" />
+  <br />
+  <em>Stats Example.</em>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/VehiclesPerSquadExample.png" alt="Squad Vehicles Table" width="700" />
+  <br />
+  <em>Squad vehicles: see all vehicles per squad and member, with filtering and export.</em>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/DemographicsExample.png" alt="DemographicsExample" width="700" />
+  <br />
+  <em>Example of the Demographics Stats</em>
+</p>
 
 ---
 
