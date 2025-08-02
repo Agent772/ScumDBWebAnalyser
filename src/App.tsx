@@ -12,6 +12,7 @@ import { COLORS } from './ui/helpers/colors';
 import { AnimalStatsPanel } from './features/animals/animalStatsPanel';
 import { CraftingStatsPanel } from './features/crafting/craftingStatsPanel';
 import { TravelStatsPanel } from './features/travel/travelStatsPanel';
+import { LootingStatsPanel } from './features/looting/lootingStatsPanel';
 import './index.css';
 
 function App() {
@@ -222,6 +223,12 @@ function App() {
               >
                 Travel
               </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('looting-stats')}
+              >
+                Looting
+              </button>
             </div>
           </nav>
         ) : null}
@@ -305,11 +312,6 @@ function App() {
                   <AnimalStatsPanel db={db} />
                 </div>
               )}
-              {selectedAnalysis === 'animal-stats' && (
-                <div style={{ width: '100%', minHeight: 120 }}>
-                  <AnimalStatsPanel db={db} />
-                </div>
-              )}
               {selectedAnalysis === 'crafting-stats' && (
                 <div style={{ width: '100%', minHeight: 120 }}>
                   <CraftingStatsPanel db={db} />
@@ -318,6 +320,11 @@ function App() {
               {selectedAnalysis === 'travel-stats' && (
                 <div style={{ width: '100%', minHeight: 120 }}>
                   <TravelStatsPanel db={db} />
+                </div>
+              )}
+              {selectedAnalysis === 'looting-stats' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <LootingStatsPanel db={db} />
                 </div>
               )}
               {/* Placeholder for future analysis panels */}

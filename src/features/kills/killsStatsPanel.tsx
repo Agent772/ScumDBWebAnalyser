@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import Slider from '@mui/material/Slider';
 import { MultiPanelLayout } from '../shared/MultiPanelLayout';
@@ -10,6 +8,7 @@ import { chartContainerStyle, chartHeaderStyle } from '../../ui/helpers/chartHel
 import { LeaderboardBarChart } from '../../ui/helpers/LeaderboardBarChart';
 import { toChartData } from '../../utils/chartDataHelpers';
 import { COLORS } from '../../ui/helpers/colors';
+import { ChartFooter } from '../../ui/helpers/chartFooter';
 
 
 interface KillStatsPanelProps {
@@ -357,9 +356,7 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
                     disableAnimation={disableAnimation}
                   />
                 </div>
-                <div style={{ textAlign: 'left', fontSize: 10, color: COLORS.text, margin: '0 0 5px 16px' }}>
-                    It seams SCUM counts headshots at least from bows too, maybe from meelee weapons also.
-                </div>
+                <ChartFooter text="Headshots are counted for bows and firearms, but not for melee weapons." />
               </div>
 
               {/* Accuracy Chart with Material UI Slider beside header */}
