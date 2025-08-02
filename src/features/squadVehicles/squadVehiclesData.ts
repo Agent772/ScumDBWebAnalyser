@@ -1,3 +1,13 @@
+/**
+ * Retrieves analytics about squad vehicles from the provided SQL.js database.
+ *
+ * This function queries the database for squads, their members, and the vehicles owned by each member.
+ * It organizes the data into groups by squad, with each group containing the squad name and a list of members.
+ * Each member includes their name and an array of vehicles they own, where each vehicle has its entity ID and class.
+ *
+ * @param db - The SQL.js `Database` instance to query.
+ * @returns An array of `SquadGroup` objects, each representing a squad and its members with their vehicles.
+ */
 import { Database } from 'sql.js';
 
 export interface SquadGroup {

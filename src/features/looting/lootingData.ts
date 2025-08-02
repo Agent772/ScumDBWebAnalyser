@@ -1,3 +1,12 @@
+/**
+ * Fetches all looting statistics from the provided SQLite database and organizes them into memory.
+ *
+ * Executes a single query joining `user_profile` and `survival_stats` tables, then maps the results
+ * into arrays of `ChartEntry` objects for various looting KPIs, as well as an array of play times.
+ *
+ * @param db - The SQLite database instance to query.
+ * @returns An object containing arrays of looting statistics and play times for all users.
+ */
 import { Database } from 'sql.js';
 import type { ChartEntry } from '../../utils/types/ChartData';
 

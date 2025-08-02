@@ -1,8 +1,28 @@
+/**
+ * A layout component that renders a single analysis panel with a header, optional status, actions, and export/Discord integration.
+ *
+ * Provides functionality to export the panel as an image or send it to a Discord webhook.
+ * The panel content can be rendered as static children or as a render function that receives an object with `disableAnimation` (useful for disabling animations during export).
+ *
+ * @param header - The header content displayed at the top of the panel.
+ * @param panelRef - Optional ref to the panel's root div, used for exporting as an image.
+ * @param children - The panel content, either as a React node or a render function receiving `{ disableAnimation }`.
+ * @param className - Optional CSS class for the panel container.
+ * @param style - Optional inline styles for the panel container.
+ * @param status - Optional status node displayed above the panel.
+ * @param actions - Optional additional action elements rendered next to the export/Discord buttons.
+ * @param exportFileName - Optional file name for the exported image (default: 'analysis-panel.png').
+ * @param discordFileName - Optional file name for the image sent to Discord (default: 'analysis-panel.png').
+ * @param height - Optional height for the panel container (default: '89vh').
+ *
+ * @returns The single panel layout with export and Discord integration.
+ */
 import React from 'react';
-import { type ReactNode, type RefObject, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { exportAsImage } from '../../ui/Export/exportAsImage';
 import { DiscordModal } from '../../ui/Discord/DiscordModal';
 import { postToDiscordWebhook } from '../../ui/Discord/discordWebhook';
+import type { DiscordWebhookInfo } from '../../ui/Discord/DiscordModal';
 import { DiscordIcon } from '../../ui/Discord/DiscordIcon';
 import { COLORS } from '../../ui/helpers/colors';
 import '../../index.css'; // Ensure styles are applied
@@ -46,7 +66,7 @@ export function SinglePanelLayout({
     }
   };
 
-  const handleDiscordSend = async (info: any) => {
+  const handleDiscordSend = async (info: DiscordWebhookInfo) => {
     setDiscordStatus(null);
     if (!panelRef?.current) {
       setDiscordStatus('Panel not found.');

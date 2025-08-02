@@ -1,3 +1,20 @@
+/**
+ * Displays a panel with various travel statistics visualized as bar charts.
+ *
+ * This panel includes charts for:
+ * - Distance Travelled By Foot
+ * - Distance Travelled In Vehicle
+ * - Distance Travelled Swimming
+ * - Distance Travelled By Boat
+ * - Distance Sailed
+ *
+ * Each chart uses a leaderboard bar chart to show the top performers, with color coding based on "Time Played (m)".
+ * A color legend is also provided for the play time metric.
+ *
+ * @param {TravelStatsPanelProps} props - The props for the panel.
+ * @param {Database} props.db - The SQL.js database instance to fetch travel stats from.
+ * @returns {JSX.Element} The rendered travel stats panel.
+ */
 import { useRef } from 'react';
 import { Database } from 'sql.js';
 import { fetchAllTravelStats } from './travelData';

@@ -1,4 +1,14 @@
-import { useRef, useState } from 'react';
+/**
+ * Panel component for displaying player demographics analytics.
+ *
+ * This panel visualizes various demographic statistics from the provided database,
+ * including player count, average play time, gender distribution, average penis and breast sizes,
+ * and age distribution. It uses charts and KPIs for clear presentation.
+ *
+ * @param db - The SQL.js database instance containing demographic data.
+ * @returns A React component rendering the demographics analytics panel.
+ */
+import { useRef } from 'react';
 import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { Database } from 'sql.js';
 import { getDemographicsAnalytics } from './demographicsData';

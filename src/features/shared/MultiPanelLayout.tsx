@@ -1,3 +1,33 @@
+/**
+ * MultiPanelLayout is a React component that manages and displays multiple panel groups,
+ * allowing users to navigate between them, export all panels as images in a zip file,
+ * or send all panels as images to a Discord webhook.
+ *
+ * @remarks
+ * - Each panel group is rendered using the `SinglePanelLayout` component.
+ * - Only the currently selected panel group is visible; others are hidden but remain in the DOM for export purposes.
+ * - Provides keyboard navigation (ArrowLeft/ArrowRight) for switching between panel groups.
+ * - Supports exporting all panel groups as PNG images in a zip file.
+ * - Supports sending all panel images to a Discord webhook via a modal dialog.
+ *
+ * @param groupCount - The number of panel groups to display.
+ * @param getPanelHeader - Optional function to generate a header for each panel group.
+ * @param getPanelFileName - Optional function to generate a file name for each panel group's exported image.
+ * @param children - Render prop function to render the content of each panel group.
+ * @param exportZipName - Optional name for the exported zip file (default: 'multi-panel-analysis.zip').
+ *
+ * @example
+ * ```tsx
+ * <MultiPanelLayout
+ *   groupCount={3}
+ *   getPanelHeader={i => `Group ${i + 1}`}
+ *   getPanelFileName={i => `group-${i + 1}.png`}
+ *   exportZipName="analysis.zip"
+ * >
+ *   {(i, { disableAnimation }) => <PanelContent groupIndex={i} disableAnimation={disableAnimation} />}
+ * </MultiPanelLayout>
+ * ```
+ */
 import React, { useRef, useState } from 'react';
 import { SinglePanelLayout } from './SinglePanelLayout';
 import JSZip from 'jszip';

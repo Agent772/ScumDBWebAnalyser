@@ -1,3 +1,21 @@
+/**
+ * Renders the Vehicles per Squad analysis panel.
+ *
+ * This panel displays a hierarchical, filterable, and collapsible table of squads, their members, and each member's vehicles.
+ * Users can filter by squad name, member name, vehicle ID, or vehicle class. The panel also provides options to download the
+ * filtered analysis as a TXT file or send it to a Discord webhook as an attachment.
+ *
+ * Features:
+ * - Expand/collapse squads and members to view vehicles.
+ * - Filter squads, members, and vehicles using input fields.
+ * - Download the current analysis as a TXT file.
+ * - Send the analysis to Discord via a webhook (with optional message).
+ * - Accessibility features such as ARIA labels and keyboard navigation.
+ *
+ * @param {object} props - The component props.
+ * @param {Database} props.db - The SQL.js database instance to query squad and vehicle data from.
+ * @returns {JSX.Element} The rendered Vehicles per Squad analysis panel.
+ */
 import { Database } from 'sql.js';
 import React, { useState } from 'react';
 import { DiscordModal } from '../../ui/Discord/DiscordModal';

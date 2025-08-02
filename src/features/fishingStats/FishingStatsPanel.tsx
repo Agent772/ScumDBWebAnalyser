@@ -1,3 +1,18 @@
+/**
+ * Displays a panel with various fishing statistics visualizations.
+ *
+ * This panel includes bar charts for:
+ * - Most Fish Caught
+ * - Heaviest Fish Caught
+ * - Longest Fish Caught
+ * - Most Broken Fishing Lines
+ *
+ * It also displays a color legend for the "Fish Caught" KPI.
+ *
+ * @param {Object} props - The component props.
+ * @param {Database} props.db - The SQL.js database instance used to fetch fishing statistics.
+ * @returns {JSX.Element} The rendered fishing stats panel.
+ */
 import { useRef } from 'react';
 import { Database } from 'sql.js';
 import { fetchAllFishingStats } from './fishingStatsData';

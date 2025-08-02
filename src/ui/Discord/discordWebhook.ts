@@ -121,7 +121,7 @@ export async function postToDiscordWebhook(
       const form = new FormData();
       if (content) form.append('content', content);
       if (info.username) form.append('username', info.username);
-      if (info.threadName) form.append('thread_name', info.threadName);
+      // if (info.threadName) form.append('thread_name', info.threadName);
       form.append('file', file, filename || 'file.txt');
       const res = await fetch(url, {
         method: 'POST',
@@ -135,7 +135,7 @@ export async function postToDiscordWebhook(
         content,
         username: info.username || undefined,
       };
-      if (info.threadName) body.thread_name = info.threadName;
+      // if (info.threadName) body.thread_name = info.threadName;
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

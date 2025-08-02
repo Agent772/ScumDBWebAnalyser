@@ -1,3 +1,15 @@
+/**
+ * Fetches and aggregates all survival statistics for users from the database.
+ *
+ * Executes a single SQL query joining `user_profile` and `survival_stats` tables,
+ * then processes the result into categorized arrays of `ChartEntry` objects for each
+ * tracked survival metric, as well as an array of play times.
+ *
+ * @param db - The SQL.js database instance to query.
+ * @returns An object containing arrays of survival statistics, each array corresponding
+ *          to a specific metric (e.g., fame points, wounds patched, etc.), and an array
+ *          of play times for all users.
+ */
 import { Database } from 'sql.js';
 import type { ChartEntry } from '../../utils/types/ChartData';
 

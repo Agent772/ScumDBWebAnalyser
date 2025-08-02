@@ -1,3 +1,21 @@
+/**
+ * Fetches all crafting statistics from the provided SQLite database and returns them
+ * in a structured format suitable for charting and analysis.
+ *
+ * The function queries the `user_profile` and `survival_stats` tables to retrieve
+ * each user's name, play time (in minutes), and various crafting statistics.
+ * The results are mapped into arrays of `ChartEntry` objects for each crafting category,
+ * as well as an array of play times.
+ *
+ * @param db - The SQLite database instance to query.
+ * @returns An object containing arrays of crafting statistics and play times:
+ * - `MostGunsCrafted`: Array of users and their guns crafted count.
+ * - `MostBulletsCrafted`: Array of users and their bullets crafted count.
+ * - `MostArrowsCrafted`: Array of users and their arrows crafted count.
+ * - `MostClothingCrafted`: Array of users and their clothing crafted count.
+ * - `MostMeleeWeaponsCrafted`: Array of users and their melee weapons crafted count.
+ * - `PlayTimes`: Array of user play times (in minutes).
+ */
 import { Database } from 'sql.js';
 import type { ChartEntry } from '../../utils/types/ChartData';
 

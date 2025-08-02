@@ -1,5 +1,10 @@
 import { COLORS } from "./colors";
 
+/**
+ * Props for the ChartFooter component.
+ *
+ * @property text - The text content to be displayed in the chart footer.
+ */
 interface ChartFooterProps {
     text: string;
 }

@@ -1,3 +1,20 @@
+/**
+ * Renders a panel displaying various miscellaneous statistics using bar charts.
+ * 
+ * This panel includes charts for:
+ * - Highest Fat (kg)
+ * - Highest Muscle Mass (kg)
+ * - Foliage Cut
+ * - Heart Attacks
+ * - Overdose
+ * 
+ * Each chart visualizes leaderboard data, color-coded by "Time Played (m)".
+ * A color legend and chart footer are also included for context.
+ *
+ * @param {MiscStatsPanelProps} props - The props for the panel.
+ * @param {Database} props.db - The SQL.js database instance used to fetch statistics.
+ * @returns {JSX.Element} The rendered miscellaneous statistics panel.
+ */
 import { useRef } from 'react';
 import { Database } from 'sql.js';
 import { fetchAllMISCStats } from './miscData';

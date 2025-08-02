@@ -1,3 +1,17 @@
+/**
+ * Fetches and aggregates all animal-related statistics for each user from the database.
+ *
+ * This function performs a single query to retrieve all relevant animal stats and play time
+ * for each user, then organizes the data into arrays of `ChartEntry` objects for each statistic.
+ * The result is an object containing arrays for each animal stat, suitable for charting or further analysis.
+ *
+ * @param db - The SQL.js database instance to query.
+ * @returns An object containing arrays of `ChartEntry` for each animal statistic and an array of play times.
+ *
+ * @example
+ * const stats = fetchAllAnimalsStats(db);
+ * console.log(stats.MostAnimalsKilled); // Array of ChartEntry for animals killed per user
+ */
 import { Database } from 'sql.js';
 import type { ChartEntry } from '../../utils/types/ChartData';
 

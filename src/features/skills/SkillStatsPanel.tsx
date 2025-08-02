@@ -1,4 +1,21 @@
 
+/**
+ * Renders a multi-panel leaderboard dashboard for skill statistics and XP leaderboards.
+ * 
+ * This panel displays various skill leaderboards for prisoners, grouped by skill categories:
+ * - Basic (Strength, Constitution, Dexterity, Intelligence)
+ * - Strength (Boxing, Rifles, Melee Weapons, Handgun, Archery)
+ * - Constitution (Running, Endurance)
+ * - Dexterity (Thievery, Driving, Demolition, Motorcycle, Stealth, Aviation)
+ * - Intelligence (Awareness, Sniping, Camouflage, Survival, Cooking, Engineering, Medical)
+ * 
+ * Each panel contains one or more bar charts visualizing the top performers for each skill,
+ * colored by time played. A color legend is included for reference.
+ * 
+ * @param {SkillStatsPanelProps} props - The component props.
+ * @param {Database} props.db - The SQL.js database instance to fetch skill data from.
+ * @returns {JSX.Element} The rendered skill stats panel with multiple leaderboard charts.
+ */
 import { MultiPanelLayout } from '../shared/MultiPanelLayout';
 import { fetchAllSkillStats, fetchAllPrisonerSkills } from './skillsData';
 import { Database } from 'sql.js';

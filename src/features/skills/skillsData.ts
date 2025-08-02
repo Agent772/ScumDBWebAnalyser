@@ -1,3 +1,11 @@
+/**
+ * Fetches all prisoner skills from the database, grouping them by skill name. Each skill entry includes
+ * the player name, experience (used as KPI), and play time (used for color coding). Skill names have
+ * the trailing 'Skill' removed if present.
+ *
+ * @param db - The sql.js Database instance to query.
+ * @returns An object mapping skill names to arrays of `ChartEntry` objects for each prisoner.
+ */
 import { Database } from 'sql.js';
 import { parseBlob } from '../../utils/blobParser';
 import type { ChartEntry } from '../../utils/types/ChartData';

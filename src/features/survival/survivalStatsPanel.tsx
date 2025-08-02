@@ -1,4 +1,15 @@
-// End of file
+/**
+ * Renders the Survival Stats Panel, displaying various survival-related statistics
+ * using bar charts grouped into two panels: "Famepoints & Time" and "Survival Stats".
+ *
+ * This component fetches all survival stats from the provided SQLite database,
+ * prepares the data for charting, and displays them in a multi-panel layout.
+ * Each panel contains several charts visualizing different KPIs, such as Famepoints,
+ * Survived Time, Wounds Patched, and more, with color coding based on played time.
+ *
+ * @param db - The SQLite database instance from which survival stats are fetched.
+ * @returns A React component displaying survival statistics in a multi-panel chart layout.
+ */
 import { Database } from 'sql.js';
 import { fetchAllSurvivalStats } from './survivalData';
 import { MultiPanelLayout } from '../shared/MultiPanelLayout';

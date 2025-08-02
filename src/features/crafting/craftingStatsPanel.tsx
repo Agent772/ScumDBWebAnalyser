@@ -11,6 +11,18 @@ interface CraftingStatsPanelProps {
   db: Database;
 }
 
+/**
+ * Displays a panel with various crafting statistics visualized as bar charts.
+ *
+ * The `CraftingStatsPanel` component renders multiple `LeaderboardBarChart` charts for different crafting categories,
+ * such as guns, bullets, arrows, clothing, and melee weapons. Each chart visualizes the top crafting stats for its category,
+ * with color coding based on time played. A color legend is also displayed to indicate the meaning of the color scale.
+ *
+ * @param {CraftingStatsPanelProps} props - The props for the component.
+ * @param {Database} props.db - The database instance used to fetch crafting statistics.
+ *
+ * @returns {JSX.Element} The rendered crafting stats panel.
+ */
 export function CraftingStatsPanel({ db }: CraftingStatsPanelProps) {
   const allStats = fetchAllCraftingStats(db);
 

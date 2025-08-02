@@ -1,5 +1,21 @@
 
 
+/**
+ * Displays a multi-panel layout of animal-related statistics using leaderboard bar charts.
+ * 
+ * This panel is divided into three groups:
+ * 
+ * 1. **Animals Overview**: Shows overall stats such as animals killed, longest animal kill distance, animals skinned, and times mauled by bear.
+ * 2. **Single Animal Kills 1**: Displays stats for crows, seagulls, horses, boars, and goats killed.
+ * 3. **Single Animal Kills 2**: Displays stats for deers, chickens, rabbits, donkeys, and wolves killed.
+ * 
+ * Each chart uses a color legend based on "Time Played (m)" for additional context.
+ * 
+ * @param {AnimalStatsPanelProps} props - The props for the component.
+ * @param {Database} props.db - The SQL.js database instance used to fetch animal statistics.
+ * 
+ * @returns {JSX.Element} The rendered animal statistics panel with multiple grouped charts.
+ */
 import { MultiPanelLayout } from '../shared/MultiPanelLayout';
 import { fetchAllAnimalsStats } from './animalsData';
 import { Database } from 'sql.js';

@@ -1,3 +1,16 @@
+/**
+ * Fetches and aggregates all kill-related statistics from the database for each user profile.
+ *
+ * This function performs a single query joining the `user_profile` and `survival_stats` tables,
+ * then processes the results into various arrays of `ChartEntry` objects, each representing a different
+ * statistic (e.g., most kills, most deaths, highest accuracy, etc.). Each entry includes the player's name,
+ * the KPI value for the statistic, and a color-coding KPI (typically play time or a related metric).
+ *
+ * Additionally, it computes derived statistics such as kill/death ratios and accuracy.
+ *
+ * @param db - The SQL.js `Database` instance to query.
+ * @returns An object containing arrays of `ChartEntry` for each statistic and an array of play times.
+ */
 import { Database } from 'sql.js';
 import type { ChartEntry } from '../../utils/types/ChartData';
 

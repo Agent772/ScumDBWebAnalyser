@@ -1,3 +1,17 @@
+/**
+ * Displays a multi-panel layout with food and body response statistics visualized as bar charts.
+ *
+ * This panel is divided into two groups:
+ * 1. **Food & Drink Overview**: Shows charts for Food Eaten, Liquid Drank, Mushrooms Eaten, Alcohol Drank, and Total Calories Intake.
+ * 2. **Body Response**: Shows charts for Urinations, Defecations, Diarrheas, Vomits, and Starvation.
+ *
+ * Each chart uses a leaderboard-style bar chart, color-coded by "Time Played (m)".
+ * A color legend is displayed for each group to explain the color coding.
+ *
+ * @param {FoodStatsPanelProps} props - The component props.
+ * @param {Database} props.db - The SQL.js database instance used to fetch food statistics.
+ * @returns {JSX.Element} The rendered food statistics panel.
+ */
 import { MultiPanelLayout } from '../shared/MultiPanelLayout';
 import { fetchAllFoodStats } from './foodData';
 import { Database } from 'sql.js';

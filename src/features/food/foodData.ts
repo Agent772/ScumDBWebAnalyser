@@ -1,3 +1,15 @@
+/**
+ * Fetches all food-related statistics for each user from the database and organizes them into arrays for charting.
+ *
+ * Executes a single SQL query joining `user_profile` and `survival_stats` tables, then maps the results into
+ * categorized arrays of `ChartEntry` objects, each representing a specific statistic per user.
+ * Also collects play times for each user.
+ *
+ * @param db - The SQL.js database instance to query.
+ * @returns An object containing arrays of food and survival statistics (`ChartEntry[]`) and play times (`number[]`).
+ *          Each array corresponds to a specific statistic, with entries containing the user's name, the KPI value,
+ *          and the play time for color coding.
+ */
 import { Database } from 'sql.js';
 import type { ChartEntry } from '../../utils/types/ChartData';
 

@@ -1,3 +1,20 @@
+/**
+ * KillStatsPanel displays a multi-panel leaderboard with various kill and death statistics
+ * for players, puppets, and weapons, based on the provided SQLite database.
+ *
+ * The panel is divided into four groups:
+ * 1. Kills Leaderboards: Shows most kills, deaths, longest kill distances, and overall K/D ratios.
+ * 2. Puppets & Prisoners Kills: Displays stats for puppet kills, prisoner kills, deaths by prisoners, K/D ratios, and knockouts.
+ * 3. Weapons Details: Breaks down kills by melee, archery, firearms, bare hands, drones, and sentries.
+ * 4. Shots & Melee Stats: Shows shots fired, shots hit, headshots, and accuracy (with a slider to filter by minimum shots fired).
+ *
+ * Each panel uses LeaderboardBarChart for visualization and ColorLegendPanel for color coding explanations.
+ * The component is highly interactive and supports disabling animations for export or performance.
+ *
+ * @param {KillStatsPanelProps} props - The component props.
+ * @param {Database} props.db - The SQLite database instance containing the stats data.
+ * @returns {JSX.Element} The rendered multi-panel leaderboard component.
+ */
 import { useState } from 'react';
 import Slider from '@mui/material/Slider';
 import { MultiPanelLayout } from '../shared/MultiPanelLayout';

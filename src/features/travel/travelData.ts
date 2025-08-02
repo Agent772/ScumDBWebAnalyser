@@ -1,3 +1,19 @@
+/**
+ * Fetches all travel-related statistics for each user from the database and structures them for charting.
+ *
+ * Executes a single SQL query to retrieve user names, play times, and various distance metrics from the
+ * `user_profile` and `survival_stats` tables. The results are mapped into arrays of `ChartEntry` objects
+ * for each travel category, as well as an array of play times.
+ *
+ * @param db - The SQL.js `Database` instance to query.
+ * @returns An `AllTravelStats` object containing arrays of travel statistics and play times.
+ * - `MostDistanceTravelledByFoot`: Distance travelled by foot per user.
+ * - `MostDistanceTravelledInVehicle`: Distance travelled in vehicles per user.
+ * - `MostDistanceTravelledSwimming`: Distance travelled swimming per user.
+ * - `MostDistanceTravelledByBoat`: Distance travelled by boat per user.
+ * - `MostDistanceSailed`: Distance sailed per user.
+ * - `PlayTimes`: Array of play times (in minutes) per user.
+ */
 import { Database } from 'sql.js';
 import type { ChartEntry } from '../../utils/types/ChartData';
 

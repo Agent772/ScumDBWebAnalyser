@@ -1,3 +1,17 @@
+/**
+ * Fetches all fishing statistics for all users from the provided SQL.js database.
+ *
+ * Executes a single query to retrieve user names and their fishing statistics,
+ * including total fish caught, heaviest fish caught, longest fish caught, and lines broken.
+ * The results are processed into arrays of `ChartEntry` objects, sorted by their respective KPIs.
+ *
+ * @param db - The SQL.js `Database` instance to query.
+ * @returns An `AllFishingStats` object containing arrays of `ChartEntry` for each statistic:
+ * - `Caught`: Sorted by total fish caught.
+ * - `Heaviest`: Sorted by heaviest fish caught (with color coding by total caught).
+ * - `Longest`: Sorted by longest fish caught (with color coding by total caught).
+ * - `LinesBroken`: Sorted by lines broken (with color coding by total caught).
+ */
 import { Database } from 'sql.js';
 import type { ChartEntry } from '../../utils/types/ChartData';
 

@@ -1,3 +1,17 @@
+/**
+ * Fetches all miscellaneous survival statistics from the database for each user profile.
+ *
+ * Executes a single SQL query joining `user_profile` and `survival_stats` tables,
+ * and returns an object containing arrays of chart entries for various statistics,
+ * as well as an array of play times.
+ *
+ * Each chart entry includes the user's name, the KPI value for the statistic,
+ * and the play time (used for color coding).
+ *
+ * @param db - The SQL.js database instance to query.
+ * @returns An object containing arrays of chart entries for foliage cut, heart attacks,
+ * overdose, highest muscle mass, highest fat, and an array of play times.
+ */
 import { Database } from 'sql.js';
 import type { ChartEntry } from '../../utils/types/ChartData';
 

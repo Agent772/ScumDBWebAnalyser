@@ -1,3 +1,17 @@
+/**
+ * Computes and returns demographic analytics from the provided SQL.js database.
+ *
+ * This function aggregates various statistics about player demographics, including:
+ * - Total player count
+ * - Average play time (in minutes)
+ * - Gender distribution (counts of Male, Female, and Unknown)
+ * - Penis size statistics (average, minimum, maximum)
+ * - Breast size statistics (average, minimum, maximum)
+ * - Age distribution (counts per age)
+ *
+ * @param db - The SQL.js `Database` instance to query demographic data from.
+ * @returns An object containing demographic analytics.
+ */
 import { Database } from 'sql.js';
 
 export interface DemographicsAnalytics {

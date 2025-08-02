@@ -1,3 +1,21 @@
+/**
+ * Displays a panel with various looting-related statistics visualized as bar charts.
+ *
+ * This panel includes charts for:
+ * - Locks Picked
+ * - Containers Looted
+ * - Items Picked Up
+ * - Items Put Into Containers
+ * - Highest Weight Carried
+ *
+ * Each chart uses leaderboard-style bar charts and color coding based on relevant metrics.
+ * Color legends are provided for "Time Played (m)" and "Items Picked Up".
+ *
+ * @param {LootingStatsPanelProps} props - The component props.
+ * @param {Database} props.db - The SQL.js database instance to fetch looting stats from.
+ *
+ * @returns {JSX.Element} The rendered looting stats panel.
+ */
 import { useRef } from 'react';
 import { Database } from 'sql.js';
 import { fetchAllLootingStats } from './lootingData';
