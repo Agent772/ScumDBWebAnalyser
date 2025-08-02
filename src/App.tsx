@@ -9,6 +9,7 @@ import { DiscordIcon } from './ui/Discord/DiscordIcon';
 import { SkillStatsPanel } from './features/skills/SkillStatsPanel';
 import { KillStatsPanel } from './features/kills/killsStatsPanel';
 import { COLORS } from './ui/helpers/colors';
+import { AnimalStatsPanel } from './features/animals/animalStatsPanel';
 import './index.css';
 
 function App() {
@@ -201,6 +202,12 @@ function App() {
               >
                 Kills
               </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('animal-stats')}
+              >
+                Animal
+              </button>
             </div>
           </nav>
         ) : null}
@@ -277,6 +284,11 @@ function App() {
               {selectedAnalysis === 'kills-stats' && (
                 <div style={{ width: '100%', minHeight: 120 }}>
                   <KillStatsPanel db={db} />
+                </div>
+              )}
+              {selectedAnalysis === 'animal-stats' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <AnimalStatsPanel db={db} />
                 </div>
               )}
               {/* Placeholder for future analysis panels */}
