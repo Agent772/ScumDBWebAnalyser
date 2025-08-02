@@ -114,35 +114,42 @@ function App() {
       </header>
 
       {/* Main content area */}
-      <main style={{
-        flex: 1,
-        marginBottom: 56,
-        display: 'flex',
-        flexDirection: 'row',
-        width: '99vw',//'100%',
-        height: '100%',
-        boxSizing: 'border-box',
-        // background: COLORS.background,
-      }}>
+      <main
+        style={{
+          flex: 1,
+          marginBottom: 56,
+          display: 'flex',
+          flexDirection: 'row',
+          width: '99vw',//'100%',
+          height: '100%',
+          boxSizing: 'border-box',
+        }}
+        aria-label="Main content"
+        role="main"
+      >
         {/* Left navigation menu, only after DB upload */}
         {db ? (
-          <nav style={{
-            width: 240,
-            minWidth: 180,
-            maxWidth: 320,
-            background: COLORS.elevation1,
-            color: COLORS.text,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            height: 'calc(100vh - 100px)',
-            position: 'fixed',
-            top: 64,
-            left: 0,
-            borderRight: '2px solid #222',
-            boxShadow: COLORS.shadow,
-            zIndex: 900,
-          }}>
+          <nav
+            aria-label="Analysis navigation"
+            style={{
+              width: 240,
+              minWidth: 180,
+              maxWidth: 320,
+              background: COLORS.elevation1,
+              color: COLORS.text,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              height: 'calc(100vh - 100px)',
+              position: 'fixed',
+              top: 64,
+              left: 0,
+              borderRight: '2px solid #222',
+              boxShadow: COLORS.shadow,
+              zIndex: 900,
+            }}
+            role="navigation"
+          >
             {/* Top: Discord Webhook Manager button and Predefined analysis buttons */}
             <div style={{ padding: '1.2rem 1rem 0.5rem 1rem' }}>
               <button
@@ -252,18 +259,22 @@ function App() {
       )}
 
         {/* Main content area */}
-        <section style={{
-          flex: 1,
-          marginLeft: db ? 240 : 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: db ? 'flex-start' : 'center',
-          padding: db ? '4.5rem 2rem 0rem 2rem' : '0',
-          minHeight: 0,
-          width: '100%',
-          overflowY: 'auto',
-        }}>
+        <section
+          style={{
+            flex: 1,
+            marginLeft: db ? 240 : 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: db ? 'flex-start' : 'center',
+            padding: db ? '4.5rem 2rem 0rem 2rem' : '0',
+            minHeight: 0,
+            width: '100%',
+            overflowY: 'auto',
+          }}
+          aria-label={db ? 'Analysis results' : 'Database upload'}
+          role="region"
+        >
           {/* Upload UI if no DB loaded */}
           {!db && (
             <>
@@ -273,10 +284,12 @@ function App() {
                 accept=".db"
                 style={{ display: 'none' }}
                 onChange={handleFile}
+                aria-label="Upload SCUM.db file"
               />
               <button
                 type="button"
-                onClick={() => document.getElementById('scumdb-upload')?.click()}
+                aria-label="Upload SCUM.db file"
+                onClick={() => document.getElementById('scumdb-upload')?.focus() || document.getElementById('scumdb-upload')?.click()}
                 style={{ padding: '0.7em 1.5em', fontSize: '1rem', borderRadius: '6px', background: COLORS.primary, color: COLORS.textSecondary, border: 'none', cursor: 'pointer', fontWeight: 600, margin: '2.5rem 0 1.5rem 0' }}
               >
                 Upload SCUM.db
@@ -284,8 +297,12 @@ function App() {
               <p style={{ fontSize: 13, color: COLORS.text, marginTop: 4 }}>
                 <b>Hint:</b> The <code>SCUM.db</code> file is usually located at <code>/Saved/SaveFiles/SCUM.db</code> on your server.
               </p>
-              {loading && <p>Loading database...</p>}
-              {error && <p style={{ color: COLORS.error }}>{error}</p>}
+              {loading && (
+                <p role="status" aria-live="polite">Loading database...</p>
+              )}
+              {error && (
+                <p role="alert" style={{ color: COLORS.error }}>{error}</p>
+              )}
             </>
           )}
           {/* Show analysis result or prompt */}

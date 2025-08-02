@@ -9,7 +9,7 @@ import '../../index.css'; // Ensure styles are applied
 
 interface SinglePanelLayoutProps {
   header: ReactNode;
-  panelRef?: RefObject<HTMLDivElement>;
+  panelRef?: { current: HTMLDivElement | null };
   children: ((props: { disableAnimation: boolean }) => React.ReactNode) | React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -68,7 +68,7 @@ export function SinglePanelLayout({
   };
 
   return (
-    <div style={{ width: '100%', ...style }}>
+    <section style={{ width: '100%', ...style }} aria-label="Analysis panel">
       {discordOpen && (
         <DiscordModal
           open={discordOpen}
@@ -77,7 +77,13 @@ export function SinglePanelLayout({
         />
       )}
       {discordStatus && (
-        <div style={{ color: discordStatus.startsWith('Posted') ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}>{discordStatus}</div>
+        <div
+          role="status"
+          aria-live="polite"
+          style={{ color: discordStatus.startsWith('Posted') ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
+        >
+          {discordStatus}
+        </div>
       )}
       {status && status}
       <div
@@ -94,6 +100,8 @@ export function SinglePanelLayout({
           height: height,
           alignItems: 'center',
         }}
+        role="region"
+        aria-label="Panel content"
       >
         {/* Header and actions in the same grid row */}
         <h2
@@ -108,6 +116,7 @@ export function SinglePanelLayout({
             gridRow: '1 / 2',
             alignSelf: 'center',
           }}
+          tabIndex={0}
         >
           {header}
         </h2>
@@ -124,6 +133,7 @@ export function SinglePanelLayout({
           <button
             type="button"
             className='btn-download'
+            aria-label="Export panel as image"
             onClick={handleExport}
           >
             Export as Image
@@ -131,6 +141,7 @@ export function SinglePanelLayout({
           <button
             type="button"
             className="btn-discord"
+            aria-label="Send panel to Discord"
             onClick={() => setDiscordOpen(true)}
           >
             <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
@@ -142,6 +153,6 @@ export function SinglePanelLayout({
           ? children({ disableAnimation: exporting })
           : children}
       </div>
-    </div>
+    </section>
   );
 }

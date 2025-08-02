@@ -4,6 +4,7 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { exportAsImage } from '../../ui/Export/exportAsImage';
 import { DiscordModal } from '../../ui/Discord/DiscordModal';
+import type { DiscordWebhookInfo } from '../../ui/Discord/DiscordModal';
 import { postMultipleFilesToDiscordWebhook } from '../../ui/Discord/discordWebhook';
 import { DiscordIcon } from '../../ui/Discord/DiscordIcon';
 import { COLORS } from '../../ui/helpers/colors';
@@ -32,13 +33,20 @@ export function MultiPanelLayout({
   // Use array of refs, always length groupCount, with nulls
   const panelRefs = useRef<(HTMLDivElement | null)[]>(Array(groupCount).fill(null));
 
+  // Keyboard navigation for group buttons
+  const navButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
   // Navigation buttons for header
   const navButtons = (
-    <div style={{ display: 'flex', gap: 4 }}>
+    <nav aria-label="Panel group navigation" style={{ display: 'flex', gap: 4 }}>
       {Array.from({ length: groupCount }).map((_, i) => (
         <button
           key={i}
           aria-label={`Show group ${i + 1}`}
+          aria-current={i === currentGroup ? 'page' : undefined}
+          ref={el => {
+            navButtonRefs.current[i] = el;
+          }}
           style={{
             background: i === currentGroup ? COLORS.primary : COLORS.elevation4,
             color: i === currentGroup ? COLORS.textSecondary : COLORS.text,
@@ -47,13 +55,28 @@ export function MultiPanelLayout({
             padding: '2px 8px',
             fontWeight: 700,
             cursor: 'pointer',
+            outline: i === currentGroup ? `2px solid ${COLORS.primary}` : undefined,
           }}
+          tabIndex={0}
           onClick={() => setCurrentGroup(i)}
+          onKeyDown={e => {
+            if (e.key === 'ArrowRight') {
+              e.preventDefault();
+              const next = (i + 1) % groupCount;
+              setCurrentGroup(next);
+              navButtonRefs.current[next]?.focus();
+            } else if (e.key === 'ArrowLeft') {
+              e.preventDefault();
+              const prev = (i - 1 + groupCount) % groupCount;
+              setCurrentGroup(prev);
+              navButtonRefs.current[prev]?.focus();
+            }
+          }}
         >
           {i + 1}
         </button>
       ))}
-    </div>
+    </nav>
   );
 
   // Export all groups as images in a zip, making each panel visible for export
@@ -83,8 +106,7 @@ export function MultiPanelLayout({
   };
 
   // Send all images to Discord in one message
-
-  const handleDiscordSend = async (info: any) => {
+  const handleDiscordSend = async (info: DiscordWebhookInfo) => {
     setDiscordOpen(false); // Close modal before exporting
     setExporting(true); // Skip animations
     setDiscordStatus(null);
@@ -117,12 +139,13 @@ export function MultiPanelLayout({
   };
 
   return (
-    <div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8}}>
+    <main style={{ width: '100%' }} aria-label="Multi-panel analysis">
+      <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8 }}>
         {navButtons}
         <button
           type="button"
           className="btn-download"
+          aria-label="Export all panels as zip"
           onClick={handleExportAll}
         >
           Export All as Zip
@@ -130,12 +153,13 @@ export function MultiPanelLayout({
         <button
           type="button"
           className="btn-discord"
+          aria-label="Send all panels to Discord"
           onClick={() => setDiscordOpen(true)}
         >
           <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
           Send All to Discord
         </button>
-      </div>
+      </header>
       {discordOpen && (
         <DiscordModal
           open={discordOpen}
@@ -144,24 +168,38 @@ export function MultiPanelLayout({
         />
       )}
       {discordStatus && (
-        <div style={{ color: discordStatus.startsWith('Posted') ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}>{discordStatus}</div>
+        <div
+          role="status"
+          aria-live="polite"
+          style={{ color: discordStatus.startsWith('Posted') ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
+        >
+          {discordStatus}
+        </div>
       )}
       {/* Render all panels, but only show the current one. Others are hidden but in DOM for export. */}
-      {Array.from({ length: groupCount }).map((_, i) => (
-        <div
-          key={i}
-          ref={el => (panelRefs.current[i] = el)}
-          style={{ display: i === currentGroup ? 'block' : 'none' }}
-        >
-          <SinglePanelLayout
-            header={getPanelHeader(i)}
-            panelRef={{ current: panelRefs.current[i] }}
-            height='85vh'
+      {Array.from({ length: groupCount }).map((_, i) => {
+        // Always provide a valid RefObject for panelRef
+        const panelRefObj = { current: panelRefs.current[i] as HTMLDivElement | null };
+        return (
+          <section
+            key={i}
+            ref={el => {
+              panelRefs.current[i] = el as HTMLDivElement | null;
+            }}
+            style={{ display: i === currentGroup ? 'block' : 'none' }}
+            aria-label={`Panel group ${i + 1}`}
+            aria-hidden={i !== currentGroup}
           >
-            {children ? children(i, { disableAnimation: exporting }) : null}
-          </SinglePanelLayout>
-        </div>
-      ))}
-    </div>
+            <SinglePanelLayout
+              header={getPanelHeader(i)}
+              panelRef={panelRefObj}
+              height='85vh'
+            >
+              {children ? children(i, { disableAnimation: exporting }) : null}
+            </SinglePanelLayout>
+          </section>
+        );
+      })}
+    </main>
   );
 }

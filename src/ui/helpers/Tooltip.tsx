@@ -25,12 +25,23 @@ interface TooltipProps {
 export function StatsTooltip({ active, name, kpi, kpiLabel, colorKPI, coloringLabel }: TooltipProps) {
   if (active) {
     return (
-      <div style={{ background: COLORS.elevation5, color: COLORS.text, borderRadius: 6, padding: '10px 14px', boxShadow: `0 2px 8px ${COLORS.elevation5}`, fontSize: 13, lineHeight: 1.5 }}>
-        <div><strong>Name:</strong> {name}</div>
-        <div><strong>{kpiLabel}:</strong> {kpi.toFixed(2)}</div>
-        {coloringLabel && colorKPI && (
-          <div><strong>{coloringLabel}:</strong> {colorKPI.toFixed(2)}</div>
-        )}
+      <div
+        role="tooltip"
+        aria-live="polite"
+        style={{ background: COLORS.elevation5, color: COLORS.text, borderRadius: 6, padding: '10px 14px', boxShadow: `0 2px 8px ${COLORS.elevation5}`, fontSize: 13, lineHeight: 1.5 }}
+      >
+        <dl style={{ margin: 0 }}>
+          <dt><strong>Name:</strong></dt>
+          <dd style={{ margin: 0 }}>{name}</dd>
+          <dt><strong>{kpiLabel}:</strong></dt>
+          <dd style={{ margin: 0 }}>{kpi.toFixed(2)}</dd>
+          {coloringLabel && colorKPI && (
+            <>
+              <dt><strong>{coloringLabel}:</strong></dt>
+              <dd style={{ margin: 0 }}>{colorKPI.toFixed(2)}</dd>
+            </>
+          )}
+        </dl>
       </div>
     );
   }

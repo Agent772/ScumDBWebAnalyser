@@ -36,6 +36,16 @@ export const DiscordWebhookManagerModal: React.FC<DiscordWebhookManagerModalProp
   const [threadId, setThreadId] = useState('');
   const [error, setError] = useState<string | null>(null);
 
+  // Accessibility: close on Escape key
+  React.useEffect(() => {
+    if (!open) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose();
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose]);
+
   const handleAdd = () => {
     setError(null);
     if (!name.trim() || !url.trim()) {
@@ -72,17 +82,23 @@ export const DiscordWebhookManagerModal: React.FC<DiscordWebhookManagerModalProp
   if (!open) return null;
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      zIndex: 2000,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="webhook-manager-modal-title"
+      tabIndex={-1}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 2000,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <div style={{
         background: COLORS.elevation3,
         color: COLORS.text,
@@ -95,6 +111,7 @@ export const DiscordWebhookManagerModal: React.FC<DiscordWebhookManagerModalProp
       }}>
         <button
           onClick={onClose}
+          aria-label="Close"
           style={{
             position: 'absolute',
             top: 16,
@@ -105,13 +122,12 @@ export const DiscordWebhookManagerModal: React.FC<DiscordWebhookManagerModalProp
             fontSize: 22,
             cursor: 'pointer',
           }}
-          aria-label="Close"
         >
           ×
         </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
           <DiscordIcon />
-          <span style={{ fontWeight: 700, fontSize: '1.25rem', color: '#7289da' }}>Manage Discord Webhooks</span>
+          <span id="webhook-manager-modal-title" style={{ fontWeight: 700, fontSize: '1.25rem', color: '#7289da' }}>Manage Discord Webhooks</span>
         </div>
         <div style={{ marginBottom: 18, color: COLORS.text, fontSize: '1rem' }}>
           Add, view, or remove Discord webhooks. Saved webhooks are stored in your browser only.

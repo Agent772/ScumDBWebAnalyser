@@ -45,6 +45,16 @@ export function DiscordModal({ open, onClose, onSubmit, defaultUsername }: Disco
   const [saved, setSaved] = useState<SavedDiscordWebhook[]>(getSavedDiscordWebhooks());
   const [selectedSavedIdx, setSelectedSavedIdx] = useState<number>(-1);
 
+  // Accessibility: close on Escape key
+  React.useEffect(() => {
+    if (!open) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose();
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose]);
+
   // When a saved webhook is picked, fill all fields
   function handlePickSaved(idx: number) {
     setSelectedSavedIdx(idx);
@@ -81,13 +91,19 @@ export function DiscordModal({ open, onClose, onSubmit, defaultUsername }: Disco
 
   if (!open) return null;
   return (
-    <div style={{
-      position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 2000,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-    }}>
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="discord-modal-title"
+      tabIndex={-1}
+      style={{
+        position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 2000,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
       <div style={{ background: COLORS.elevation3, color: COLORS.text, borderRadius: 10, padding: '2rem', minWidth: 340, maxWidth: 440, boxShadow: '0 4px 32px #0008', position: 'relative' }}>
-        <button onClick={onClose} style={{ position: 'absolute', top: 10, right: 14, background: 'none', border: 'none', color: COLORS.text, fontSize: 22, cursor: 'pointer' }} title="Close">×</button>
-        <h2 style={{ color: '#7289da', marginTop: 0, marginBottom: 18, fontWeight: 700 }}>Post to Discord</h2>
+        <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 10, right: 14, background: 'none', border: 'none', color: COLORS.text, fontSize: 22, cursor: 'pointer' }} title="Close">×</button>
+        <h2 id="discord-modal-title" style={{ color: '#7289da', marginTop: 0, marginBottom: 18, fontWeight: 700 }}>Post to Discord</h2>
         <form onSubmit={handleSubmit}>
           {/* Saved webhooks dropdown */}
           {saved.length > 0 && (

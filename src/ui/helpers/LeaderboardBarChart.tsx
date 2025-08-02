@@ -37,7 +37,7 @@ export function LeaderboardBarChart({
   disableAnimation = false,
 }: LeaderboardBarChartProps) {
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+    <div style={{ width: '100%', height: '100%', position: 'relative' }} aria-label="Leaderboard Bar Chart" role="region">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data.entries}

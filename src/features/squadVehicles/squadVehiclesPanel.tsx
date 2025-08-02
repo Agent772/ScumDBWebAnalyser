@@ -23,30 +23,6 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
     return squad.members.reduce((sum, m) => sum + m.vehicles.length, 0);
   }
 
-  // Flatten data for table
-  const flatRows: { squad: string; member: string; vehicle_id: number; vehicle_class: string }[] = [];
-  squadGroups.forEach((squad) => {
-    squad.members.forEach((member) => {
-      if (member.vehicles.length === 0) {
-        flatRows.push({
-          squad: squad.squadName,
-          member: member.name,
-          vehicle_id: 0,
-          vehicle_class: '',
-        });
-      } else {
-        member.vehicles.forEach((v) => {
-          flatRows.push({
-            squad: squad.squadName,
-            member: member.name,
-            vehicle_id: v.entity_id,
-            vehicle_class: v.vehicle_class,
-          });
-        });
-      }
-    });
-  });
-
   // Filtering state
   const [filter, setFilter] = useState({
     squad: '',
@@ -189,11 +165,22 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
 
   // Render
   return (
-    <div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, marginBottom: 12 }}>
+    <section style={{ width: '100%' }} aria-label="Vehicles per Squad analysis" role="region">
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          gap: 8,
+          marginTop: '2.5rem',
+          marginBottom: 12,
+        }}
+      >
         <button
           type="button"
           className='btn-download'
+          aria-label="Download as TXT"
+          style={{ marginTop: 0 }}
           onClick={downloadTxt}
         >
           Download as TXT
@@ -201,6 +188,8 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         <button
           type="button"
           className="btn-discord"
+          aria-label="Send to Discord"
+          style={{ marginTop: 0 }}
           onClick={() => setDiscordOpen(true)}
         >
           <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />
@@ -208,22 +197,23 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         </button>
       </div>
       <h2
-          style={{
-            color: COLORS.primary,
-            fontWeight: 700,
-            fontSize: '2rem',
-            margin: 0,
-            textAlign: 'center',
-            letterSpacing: '0.01em',
-          }}
-        >
-           Vehicles per Squad
-        </h2>
-      <div className="analysis-table-filters">
-        <input className="analysis-table-filter" placeholder="Filter Squad" value={filter.squad} onChange={e => setFilter(f => ({ ...f, squad: e.target.value }))} />
-        <input className="analysis-table-filter" placeholder="Filter Member" value={filter.member} onChange={e => setFilter(f => ({ ...f, member: e.target.value }))} />
-        <input className="analysis-table-filter" placeholder="Filter Vehicle ID" value={filter.vehicle_id} onChange={e => setFilter(f => ({ ...f, vehicle_id: e.target.value }))} />
-        <input className="analysis-table-filter" placeholder="Filter Vehicle Class" value={filter.vehicle_class} onChange={e => setFilter(f => ({ ...f, vehicle_class: e.target.value }))} />
+        style={{
+          color: COLORS.primary,
+          fontWeight: 700,
+          fontSize: '2rem',
+          margin: 0,
+          textAlign: 'center',
+          letterSpacing: '0.01em',
+        }}
+        tabIndex={0}
+      >
+        Vehicles per Squad
+      </h2>
+      <div className="analysis-table-filters" aria-label="Table filters">
+        <input className="analysis-table-filter" placeholder="Filter Squad" value={filter.squad} onChange={e => setFilter(f => ({ ...f, squad: e.target.value }))} aria-label="Filter Squad" />
+        <input className="analysis-table-filter" placeholder="Filter Member" value={filter.member} onChange={e => setFilter(f => ({ ...f, member: e.target.value }))} aria-label="Filter Member" />
+        <input className="analysis-table-filter" placeholder="Filter Vehicle ID" value={filter.vehicle_id} onChange={e => setFilter(f => ({ ...f, vehicle_id: e.target.value }))} aria-label="Filter Vehicle ID" />
+        <input className="analysis-table-filter" placeholder="Filter Vehicle Class" value={filter.vehicle_class} onChange={e => setFilter(f => ({ ...f, vehicle_class: e.target.value }))} aria-label="Filter Vehicle Class" />
       </div>
       {discordOpen && (
         <DiscordModal
@@ -233,10 +223,16 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         />
       )}
       {discordStatus && (
-        <div style={{ color: discordStatus.startsWith('Posted') ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}>{discordStatus}</div>
+        <div
+          role="status"
+          aria-live="polite"
+          style={{ color: discordStatus.startsWith('Posted') ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
+        >
+          {discordStatus}
+        </div>
       )}
       <div style={{ overflowX: 'auto' }}>
-        <table className="analysis-table">
+        <table className="analysis-table" aria-label="Vehicles per Squad table">
           <thead>
             <tr>
               <th style={{ width: '40%' }}>Squad / Member / Vehicle</th>
@@ -255,9 +251,9 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
               const squadOpen = openSquads[squad.squadName] !== false;
               return (
                 <React.Fragment key={squad.squadName + sIdx}>
-                  <tr className="squad-row" onClick={() => toggleSquad(squad.squadName)}>
+                  <tr className="squad-row" onClick={() => toggleSquad(squad.squadName)} tabIndex={0} aria-label={`Squad ${squad.squadName}, ${squad.members.length} members, ${squadVehicleCount(squad)} vehicles`}>
                     <td className="squad-cell" colSpan={3}>
-                      <span className="arrow">{squadOpen ? '▼' : '▶'}</span>{squad.squadName}
+                      <span className="arrow" aria-hidden="true">{squadOpen ? '▼' : '▶'}</span>{squad.squadName}
                       <span className="count">
                         ({squad.members.length} members, {squadVehicleCount(squad)} vehicles)
                       </span>
@@ -273,9 +269,9 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
                     );
                     return (
                       <React.Fragment key={member.name + mIdx}>
-                        <tr className="member-row" onClick={e => { e.stopPropagation(); toggleMember(squad.squadName, member.name); }}>
+                        <tr className="member-row" onClick={e => { e.stopPropagation(); toggleMember(squad.squadName, member.name); }} tabIndex={0} aria-label={`Member ${member.name}, ${member.vehicles.length} vehicles`}>
                           <td className="member-cell" colSpan={3}>
-                            <span className="arrow">{memberOpen ? '▼' : '▶'}</span>{member.name}
+                            <span className="arrow" aria-hidden="true">{memberOpen ? '▼' : '▶'}</span>{member.name}
                             <span className="count">({member.vehicles.length} vehicles)</span>
                           </td>
                         </tr>
@@ -301,6 +297,6 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
   );
 }

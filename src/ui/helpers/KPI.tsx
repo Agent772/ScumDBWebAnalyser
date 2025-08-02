@@ -22,12 +22,12 @@ interface KPIProps {
 
 export function KPI({ header, value, footer, color = COLORS.text, style }: KPIProps) {
   return (
-    <div
+    <section
       className="kpi-box"
+      aria-label={header + ' KPI'}
       style={{
         background: COLORS.elevation2,
         borderRadius: 8,
-        //padding: '0.3em 0.5em',
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -39,7 +39,7 @@ export function KPI({ header, value, footer, color = COLORS.text, style }: KPIPr
         ...style,
       }}
     >
-      <div
+      <h3
         style={{
           fontSize: 'clamp(1.1em, 2.5vw, 2.2em)',
           fontWeight: 600,
@@ -52,7 +52,7 @@ export function KPI({ header, value, footer, color = COLORS.text, style }: KPIPr
         }}
       >
         <span style={{ fontSize: 'clamp(1.5em, 3vw, 2.8em)' }}>{header}</span>
-      </div>
+      </h3>
       <div
         style={{
           fontSize: 'clamp(2.2em, 6vw, 4.5em)',
@@ -79,6 +79,6 @@ export function KPI({ header, value, footer, color = COLORS.text, style }: KPIPr
           {footer}
         </div>
       )}
-    </div>
+    </section>
   );
 }
