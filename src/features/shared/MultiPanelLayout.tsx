@@ -85,9 +85,16 @@ export function MultiPanelLayout({
   // Send all images to Discord in one message
 
   const handleDiscordSend = async (info: any) => {
+    setDiscordOpen(false); // Close modal before exporting
+    setExporting(true); // Skip animations
     setDiscordStatus(null);
     const files: { blob: Blob; name: string }[] = [];
+    const originalGroup = currentGroup;
     for (let i = 0; i < groupCount; i++) {
+      await new Promise<void>(resolve => {
+        setCurrentGroup(i);
+        setTimeout(resolve, 120);
+      });
       const ref = panelRefs.current[i];
       if (ref) {
         const dataUrl = await exportAsImage(ref, { returnDataUrl: true, fileName: getPanelFileName(i) });
@@ -98,6 +105,8 @@ export function MultiPanelLayout({
         }
       }
     }
+    setCurrentGroup(originalGroup);
+    setExporting(false);
     if (files.length === 0) {
       setDiscordStatus('No images to send.');
       return;

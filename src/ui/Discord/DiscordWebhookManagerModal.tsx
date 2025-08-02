@@ -17,15 +17,23 @@ import type { SavedDiscordWebhook } from './discordWebhook';
 import { COLORS } from '../helpers/colors';
 import { DiscordIcon } from './DiscordIcon';
 
+// Extended type for local use (backward compatible)
+type SavedDiscordWebhookExtended = SavedDiscordWebhook & {
+  username?: string;
+  threadId?: string;
+};
+
 interface DiscordWebhookManagerModalProps {
   open: boolean;
   onClose: () => void;
 }
 
 export const DiscordWebhookManagerModal: React.FC<DiscordWebhookManagerModalProps> = ({ open, onClose }) => {
-  const [webhooks, setWebhooks] = useState<SavedDiscordWebhook[]>(getSavedDiscordWebhooks());
+  const [webhooks, setWebhooks] = useState<SavedDiscordWebhookExtended[]>(getSavedDiscordWebhooks() as SavedDiscordWebhookExtended[]);
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
+  const [username, setUsername] = useState('');
+  const [threadId, setThreadId] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const handleAdd = () => {
@@ -42,11 +50,18 @@ export const DiscordWebhookManagerModal: React.FC<DiscordWebhookManagerModalProp
       setError('A webhook with this name already exists.');
       return;
     }
-    const newWebhook: SavedDiscordWebhook = { name: name.trim(), webhook: url.trim() };
+    const newWebhook: SavedDiscordWebhookExtended = {
+      name: name.trim(),
+      webhook: url.trim(),
+      username: username.trim() || undefined,
+      threadId: threadId.trim() || undefined,
+    };
     saveDiscordWebhook(newWebhook);
-    setWebhooks(getSavedDiscordWebhooks());
+    setWebhooks(getSavedDiscordWebhooks() as SavedDiscordWebhookExtended[]);
     setName('');
     setUrl('');
+    setUsername('');
+    setThreadId('');
   };
 
   const handleRemove = (webhook: string) => {
@@ -63,7 +78,6 @@ export const DiscordWebhookManagerModal: React.FC<DiscordWebhookManagerModalProp
       left: 0,
       width: '100vw',
       height: '100vh',
-      background: COLORS.elevation3,
       zIndex: 2000,
       display: 'flex',
       alignItems: 'center',
@@ -121,6 +135,24 @@ export const DiscordWebhookManagerModal: React.FC<DiscordWebhookManagerModalProp
               maxLength={256}
             />
           </div>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '2%', marginBottom: 8 }}>
+            <input
+              type="text"
+              placeholder="Username (optional)"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              style={{ flex: 1, padding: '0.5em', borderRadius: 5, border: '1px solid #444', background: COLORS.elevation4, color: COLORS.text }}
+              maxLength={32}
+            />
+            <input
+              type="text"
+              placeholder="Thread ID (optional)"
+              value={threadId}
+              onChange={e => setThreadId(e.target.value)}
+              style={{ flex: 1, padding: '0.5em', borderRadius: 5, border: '1px solid #444', background: COLORS.elevation4, color: COLORS.text }}
+              maxLength={64}
+            />
+          </div>
           <button
             onClick={handleAdd}
             style={{ marginLeft: 0, marginTop: 8, width: '100%', padding: '0.6em', borderRadius: 6, border: 'none', background: '#7289da', color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: '1rem' }}
@@ -144,7 +176,11 @@ export const DiscordWebhookManagerModal: React.FC<DiscordWebhookManagerModalProp
           {webhooks.length === 0 && <li style={{ color: COLORS.text, fontSize: '0.98rem', padding: '12px 0', textAlign: 'center' }}>No webhooks saved.</li>}
           {webhooks.map(w => (
             <li key={w.webhook} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 0 10px 0', borderBottom: '1px solid #2d3142', margin: '0 18px' }}>
-              <span style={{ color: '#7289da', fontWeight: 600, fontSize: '1.08rem', wordBreak: 'break-all', letterSpacing: '0.01em' }}>{w.name}</span>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flex: 1 }}>
+                <span style={{ color: '#7289da', fontWeight: 600, fontSize: '1.08rem', wordBreak: 'break-all', letterSpacing: '0.01em' }}>{w.name}</span>
+                {w.username && <span style={{ color: COLORS.text, fontSize: '0.97em', marginTop: 2 }}>Username: <b>{w.username}</b></span>}
+                {w.threadId && <span style={{ color: COLORS.text, fontSize: '0.97em', marginTop: 2 }}>Thread ID: <b>{w.threadId}</b></span>}
+              </div>
               <button
                 onClick={() => handleRemove(w.webhook)}
                 style={{ background: 'transparent', border: 'none', color: COLORS.error, fontWeight: 600, cursor: 'pointer', fontSize: '1.25rem', marginLeft: 16, display: 'flex', alignItems: 'center' }}

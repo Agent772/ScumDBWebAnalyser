@@ -25,7 +25,7 @@ export interface DiscordWebhookInfo {
   message?: string;
   username?: string;
   threadId?: string;
-  threadName?: string;
+  // threadName?: string;
 }
 
 interface DiscordModalProps {
@@ -34,13 +34,12 @@ interface DiscordModalProps {
   onSubmit: (info: DiscordWebhookInfo) => void;
   defaultUsername?: string;
 }
-
 export function DiscordModal({ open, onClose, onSubmit, defaultUsername }: DiscordModalProps) {
   const [webhook, setWebhook] = useState('');
   const [message, setMessage] = useState('');
   const [username, setUsername] = useState(defaultUsername || '');
   const [threadId, setThreadId] = useState('');
-  const [threadName, setThreadName] = useState('');
+  // const [threadName, setThreadName] = useState('');
   const [saveOptIn, setSaveOptIn] = useState(false);
   const [webhookLabel, setWebhookLabel] = useState('');
   const [saved, setSaved] = useState<SavedDiscordWebhook[]>(getSavedDiscordWebhooks());
@@ -54,7 +53,7 @@ export function DiscordModal({ open, onClose, onSubmit, defaultUsername }: Disco
     setWebhook(entry.webhook);
     setUsername(entry.username || '');
     setThreadId(entry.threadId || '');
-    setThreadName('');
+    // setThreadName('');
     setWebhookLabel(entry.name || '');
     setSaveOptIn(false);
   }
@@ -76,13 +75,14 @@ export function DiscordModal({ open, onClose, onSubmit, defaultUsername }: Disco
     if (selectedSavedIdx === -1 && saveOptIn && webhookLabel.trim()) {
       handleSaveWebhook();
     }
-    onSubmit({ webhook, message, username, threadId, threadName });
+    // onSubmit({ webhook, message, username, threadId, threadName });
+    onSubmit({ webhook, message, username, threadId });
   }
 
   if (!open) return null;
   return (
     <div style={{
-      position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: COLORS.elevation3, zIndex: 2000,
+      position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 2000,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
     }}>
       <div style={{ background: COLORS.elevation3, color: COLORS.text, borderRadius: 10, padding: '2rem', minWidth: 340, maxWidth: 440, boxShadow: '0 4px 32px #0008', position: 'relative' }}>
@@ -131,8 +131,10 @@ export function DiscordModal({ open, onClose, onSubmit, defaultUsername }: Disco
           <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Bot Username" style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #7289da', marginBottom: 14, fontSize: '1em' }} />
           <label style={{ display: 'block', marginBottom: 8, fontWeight: 600 }}>Thread ID (optional)</label>
           <input type="text" value={threadId} onChange={e => setThreadId(e.target.value)} placeholder="Thread ID for forum posts" style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #7289da', marginBottom: 10, fontSize: '1em' }} />
+          {/*
           <label style={{ display: 'block', marginBottom: 8, fontWeight: 600 }}>Thread Name (optional)</label>
           <input type="text" value={threadName} onChange={e => setThreadName(e.target.value)} placeholder="Thread name for new forum thread" style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #7289da', marginBottom: 10, fontSize: '1em' }} />
+          */}
           {/* Save webhook opt-in */}
           <div style={{ marginBottom: 12, marginTop: 2 }}>
             <input
