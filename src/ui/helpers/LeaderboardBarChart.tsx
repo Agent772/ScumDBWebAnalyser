@@ -15,6 +15,7 @@ import { getKpiBarColor } from '../../utils/kpiColor';
 import { StatsTooltip } from './Tooltip';
 import { COLORS } from './colors';
 import { yAxisStyle, xAxisStyle, getXAxisMax } from './chartHelpers';
+import { Watermark } from './Watermark';
 
 interface LeaderboardBarChartProps {
   data: ChartData;
@@ -36,61 +37,64 @@ export function LeaderboardBarChart({
   disableAnimation = false,
 }: LeaderboardBarChartProps) {
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <BarChart
-        data={data.entries}
-        layout="vertical"
-        margin={{ top: 8, right: 8, left: 8, bottom: 8 }}
-      >
-        <YAxis
-          type="category"
-          dataKey="name"
-          width={yAxisWidth}
-          axisLine={false}
-          tickLine={false}
-          tick={{ ...yAxisStyle, fontSize: yAxisFontSize ?? yAxisStyle.fontSize }}
-        />
-        <XAxis
-          type="number"
-          allowDecimals={false}
-          axisLine={false}
-          tickLine={false}
-          tick={{ ...xAxisStyle, fontSize: xAxisFontSize ?? xAxisStyle.fontSize }}
-          domain={[0, getXAxisMax(data.entries, 'kpi')]}
-        />
-        <Bar dataKey="kpi" radius={[0, 3, 3, 0]} label={{ position: 'right' }} isAnimationActive={!disableAnimation}>
-          {data.entries.map((entry, idx) => (
-            <Cell
-              key={`cell-${idx}`}
-              fill={
-                entry.colorCodingKpi !== undefined
-                  ? getKpiBarColor(
-                      entry.colorCodingKpi ?? 0,
-                      data.colorCodingMin ?? 0,
-                      data.colorCodingMax ?? 0
-                    )
-                  : COLORS.primary // fallback/default color
-              }
-            />
-          ))}
-        </Bar>
-        <Tooltip
-          content={({ active, payload }) => {
-            if (!active || !payload || !payload.length) return null;
-            const d = payload[0].payload as ChartEntry;
-            return (
-              <StatsTooltip
-                active={active}
-                name={d.name}
-                kpi={d.kpi}
-                kpiLabel={kpiLabel}
-                colorKPI={d.colorCodingKpi}
-                coloringLabel={coloringLabel}
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={data.entries}
+          layout="vertical"
+          margin={{ top: 8, right: 8, left: 8, bottom: 8 }}
+        >
+          <YAxis
+            type="category"
+            dataKey="name"
+            width={yAxisWidth}
+            axisLine={false}
+            tickLine={false}
+            tick={{ ...yAxisStyle, fontSize: yAxisFontSize ?? yAxisStyle.fontSize }}
+          />
+          <XAxis
+            type="number"
+            allowDecimals={false}
+            axisLine={false}
+            tickLine={false}
+            tick={{ ...xAxisStyle, fontSize: xAxisFontSize ?? xAxisStyle.fontSize }}
+            domain={[0, getXAxisMax(data.entries, 'kpi')]}
+          />
+          <Bar dataKey="kpi" radius={[0, 3, 3, 0]} label={{ position: 'right' }} isAnimationActive={!disableAnimation}>
+            {data.entries.map((entry, idx) => (
+              <Cell
+                key={`cell-${idx}`}
+                fill={
+                  entry.colorCodingKpi !== undefined
+                    ? getKpiBarColor(
+                        entry.colorCodingKpi ?? 0,
+                        data.colorCodingMin ?? 0,
+                        data.colorCodingMax ?? 0
+                      )
+                    : COLORS.primary // fallback/default color
+                }
               />
-            );
-          }}
-        />
-      </BarChart>
-    </ResponsiveContainer>
+            ))}
+          </Bar>
+          <Tooltip
+            content={({ active, payload }) => {
+              if (!active || !payload || !payload.length) return null;
+              const d = payload[0].payload as ChartEntry;
+              return (
+                <StatsTooltip
+                  active={active}
+                  name={d.name}
+                  kpi={d.kpi}
+                  kpiLabel={kpiLabel}
+                  colorKPI={d.colorCodingKpi}
+                  coloringLabel={coloringLabel}
+                />
+              );
+            }}
+          />
+        </BarChart>
+      </ResponsiveContainer>
+      {disableAnimation && <Watermark />}
+    </div>
   );
 }

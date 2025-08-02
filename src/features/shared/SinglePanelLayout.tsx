@@ -10,7 +10,7 @@ import '../../index.css'; // Ensure styles are applied
 interface SinglePanelLayoutProps {
   header: ReactNode;
   panelRef?: RefObject<HTMLDivElement>;
-  children: ReactNode;
+  children: ((props: { disableAnimation: boolean }) => React.ReactNode) | React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
   status?: ReactNode;
@@ -18,7 +18,6 @@ interface SinglePanelLayoutProps {
   exportFileName?: string;
   discordFileName?: string;
   height?: string;
-  disableAnimation?: boolean;
 }
 
 export function SinglePanelLayout({
@@ -32,14 +31,18 @@ export function SinglePanelLayout({
   exportFileName = 'analysis-panel.png',
   discordFileName = 'analysis-panel.png',
   height = '89vh',
-  disableAnimation = false,
 }: SinglePanelLayoutProps) {
   const [discordOpen, setDiscordOpen] = useState(false);
   const [discordStatus, setDiscordStatus] = useState<string | null>(null);
+  const [exporting, setExporting] = useState(false);
 
+  // Temporarily set disableAnimation to true during export
   const handleExport = async () => {
     if (panelRef?.current) {
+      setExporting(true);
+      await new Promise(r => setTimeout(r, 30));
       await exportAsImage(panelRef.current, { fileName: exportFileName });
+      setExporting(false);
     }
   };
 
@@ -49,7 +52,10 @@ export function SinglePanelLayout({
       setDiscordStatus('Panel not found.');
       return;
     }
+    setExporting(true);
+    await new Promise(r => setTimeout(r, 30));
     const dataUrl = await exportAsImage(panelRef.current, { returnDataUrl: true, fileName: discordFileName }) as string;
+    setExporting(false);
     if (!dataUrl) {
       setDiscordStatus('Failed to export image.');
       return;
@@ -132,16 +138,9 @@ export function SinglePanelLayout({
           </button>
           {actions}
         </div>
-        {React.Children.map(children, child => {
-          if (
-            React.isValidElement(child) &&
-            child.type &&
-            (child.type as any).name === 'LeaderboardBarChart'
-          ) {
-            return React.cloneElement(child, { disableAnimation });
-          }
-          return child;
-        })}
+        {typeof children === 'function'
+          ? children({ disableAnimation: exporting })
+          : children}
       </div>
     </div>
   );

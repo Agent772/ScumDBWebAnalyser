@@ -30,59 +30,65 @@ export function FishingStatsPanel({ db }: FishingStatsPanelProps) {
       exportFileName="fishing-stats-analysis.png"
       discordFileName="fishing-stats-analysis.png"
     >
-      {/* Fish Caught KPI Color Legend */}
-      <ColorLegendPanel
-        min={minFishCaught}
-        max={maxFishCaught}
-        label="Fish Caught Color Scale"
-      />
-      {/* Most Fish Caught */}
-      <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 8'}}>
-        <div style={{ ...chartHeaderStyle}}>Most Fish Caught</div>
-        <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
-          <LeaderboardBarChart
-            data={caughtData}
-            kpiLabel='Fish Caught'
-            yAxisWidth={120}
-          />
+      {({ disableAnimation }) => <>
+        {/* Fish Caught KPI Color Legend */}
+        <ColorLegendPanel
+          min={minFishCaught}
+          max={maxFishCaught}
+          label="Fish Caught Color Scale"
+        />
+        {/* Most Fish Caught */}
+        <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 8'}}>
+          <div style={{ ...chartHeaderStyle}}>Most Fish Caught</div>
+          <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
+            <LeaderboardBarChart
+              data={caughtData}
+              kpiLabel='Fish Caught'
+              yAxisWidth={120}
+              disableAnimation={disableAnimation}
+            />
+          </div>
         </div>
-      </div>
-      {/* Heaviest Fish Caught */}
-      <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 8' }}>
-        <div style={{ ...chartHeaderStyle }}>Heaviest Fish Caught</div>
-        <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
-          <LeaderboardBarChart
-            data={heaviestData}
-            kpiLabel='Heaviest Fish Caught'
-            yAxisWidth={120}
-            coloringLabel="Fish Caught"
-          />
+        {/* Heaviest Fish Caught */}
+        <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 8' }}>
+          <div style={{ ...chartHeaderStyle }}>Heaviest Fish Caught</div>
+          <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
+            <LeaderboardBarChart
+              data={heaviestData}
+              kpiLabel='Heaviest Fish Caught'
+              yAxisWidth={120}
+              coloringLabel="Fish Caught"
+              disableAnimation={disableAnimation}
+            />
+          </div>
         </div>
-      </div>
-      {/* Longest Fish Caught */}
-      <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '8 / 14' }}>
-        <div style={{ ...chartHeaderStyle }}>Longest Fish Caught</div>
-        <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
-          <LeaderboardBarChart
-            data={longestData}
-            kpiLabel='Longest Fish Caught'
-            yAxisWidth={120}
-            coloringLabel="Fish Caught"
-          />
+        {/* Longest Fish Caught */}
+        <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '8 / 14' }}>
+          <div style={{ ...chartHeaderStyle }}>Longest Fish Caught</div>
+          <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
+            <LeaderboardBarChart
+              data={longestData}
+              kpiLabel='Longest Fish Caught'
+              yAxisWidth={120}
+              coloringLabel="Fish Caught"
+              disableAnimation={disableAnimation}
+            />
+          </div>
         </div>
-      </div>
-      {/* Most Broken Fishing Lines */}
-      <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '8 / 14' }}>
-        <div style={{ ...chartHeaderStyle }}>Most Broken Fishing Lines</div>
-        <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
-          <LeaderboardBarChart
-            data={linesBrokenData}
-            kpiLabel='Lines Broken'
-            yAxisWidth={120}
-            coloringLabel="Fish Caught"
-          />
+        {/* Most Broken Fishing Lines */}
+        <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '8 / 14' }}>
+          <div style={{ ...chartHeaderStyle }}>Most Broken Fishing Lines</div>
+          <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
+            <LeaderboardBarChart
+              data={linesBrokenData}
+              kpiLabel='Lines Broken'
+              yAxisWidth={120}
+              coloringLabel="Fish Caught"
+              disableAnimation={disableAnimation}
+            />
+          </div>
         </div>
-      </div>
+      </>}
     </SinglePanelLayout>
   );
 }
