@@ -13,6 +13,7 @@ import { AnimalStatsPanel } from './features/animals/animalStatsPanel';
 import { CraftingStatsPanel } from './features/crafting/craftingStatsPanel';
 import { TravelStatsPanel } from './features/travel/travelStatsPanel';
 import { LootingStatsPanel } from './features/looting/lootingStatsPanel';
+import { FoodStatsPanel } from './features/food/foodStatsPanel';
 import './index.css';
 
 function App() {
@@ -229,6 +230,12 @@ function App() {
               >
                 Looting
               </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('food-stats')}
+              >
+                Food
+              </button>
             </div>
           </nav>
         ) : null}
@@ -325,6 +332,11 @@ function App() {
               {selectedAnalysis === 'looting-stats' && (
                 <div style={{ width: '100%', minHeight: 120 }}>
                   <LootingStatsPanel db={db} />
+                </div>
+              )}
+              {selectedAnalysis === 'food-stats' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <FoodStatsPanel db={db} />
                 </div>
               )}
               {/* Placeholder for future analysis panels */}
