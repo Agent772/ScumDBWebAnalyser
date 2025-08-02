@@ -10,6 +10,7 @@ import { SkillStatsPanel } from './features/skills/SkillStatsPanel';
 import { KillStatsPanel } from './features/kills/killsStatsPanel';
 import { COLORS } from './ui/helpers/colors';
 import { AnimalStatsPanel } from './features/animals/animalStatsPanel';
+import { CraftingStatsPanel } from './features/crafting/craftingStatsPanel';
 import './index.css';
 
 function App() {
@@ -208,6 +209,12 @@ function App() {
               >
                 Animal
               </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('crafting-stats')}
+              >
+                Crafting
+              </button>
             </div>
           </nav>
         ) : null}
@@ -289,6 +296,16 @@ function App() {
               {selectedAnalysis === 'animal-stats' && (
                 <div style={{ width: '100%', minHeight: 120 }}>
                   <AnimalStatsPanel db={db} />
+                </div>
+              )}
+              {selectedAnalysis === 'animal-stats' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <AnimalStatsPanel db={db} />
+                </div>
+              )}
+              {selectedAnalysis === 'crafting-stats' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <CraftingStatsPanel db={db} />
                 </div>
               )}
               {/* Placeholder for future analysis panels */}
