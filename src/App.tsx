@@ -11,6 +11,7 @@ import { KillStatsPanel } from './features/kills/killsStatsPanel';
 import { COLORS } from './ui/helpers/colors';
 import { AnimalStatsPanel } from './features/animals/animalStatsPanel';
 import { CraftingStatsPanel } from './features/crafting/craftingStatsPanel';
+import { TravelStatsPanel } from './features/travel/travelStatsPanel';
 import './index.css';
 
 function App() {
@@ -215,6 +216,12 @@ function App() {
               >
                 Crafting
               </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('travel-stats')}
+              >
+                Travel
+              </button>
             </div>
           </nav>
         ) : null}
@@ -306,6 +313,11 @@ function App() {
               {selectedAnalysis === 'crafting-stats' && (
                 <div style={{ width: '100%', minHeight: 120 }}>
                   <CraftingStatsPanel db={db} />
+                </div>
+              )}
+              {selectedAnalysis === 'travel-stats' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <TravelStatsPanel db={db} />
                 </div>
               )}
               {/* Placeholder for future analysis panels */}
