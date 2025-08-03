@@ -86,7 +86,7 @@ You can run ScumDB Web Analyzer locally using Docker. No Node.js or npm required
 
 ```sh
 docker run --rm -p 5173:80 \
-  $DOCKERHUB_USERNAME/scumdbwebanalyser:latest
+  agent772/scumdbwebanalyser:latest
 ```
 
 Then open [http://localhost:5173](http://localhost:5173) in your browser.
@@ -99,7 +99,7 @@ Create a `docker-compose.yml` like this:
 version: '3.8'
 services:
   scumdbwebanalyser:
-    image: $DOCKERHUB_USERNAME/scumdbwebanalyser:latest
+    image: agent772/scumdbwebanalyser:latest
     ports:
       - "5173:80"
 ```
@@ -107,7 +107,7 @@ services:
 Then run:
 
 ```sh
-docker compose up
+docker compose up -d
 ```
 
 The app will be available at [http://localhost:5173](http://localhost:5173).
