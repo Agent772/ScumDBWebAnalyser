@@ -71,7 +71,7 @@ function App() {
         overflow: 'hidden',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', minWidth: 0, marginRight: 10 }}>
-          <img src="/src/ui/assets/logo.svg" alt="ScumDB Web Analyzer Logo" style={{ width: 40, height: 40 }} />
+          <img src="/logo.svg" alt="ScumDB Web Analyzer Logo" style={{ width: 40, height: 40 }} />
           <span style={{ fontWeight: 700, fontSize: '1.5rem', letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t('app_title')}</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginRight: 45 }}>
