@@ -11,6 +11,6 @@ FROM node:20-alpine
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm ci
 EXPOSE 4173
 CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]
