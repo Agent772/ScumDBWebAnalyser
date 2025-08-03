@@ -15,29 +15,30 @@ export const LanguageSelector: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        <LanguageIcon sx={{ color: COLORS.primary, mr: 1, my: 0.5 }} />
-    <FormControl variant="standard" size="small">
-      <Select
-        value={i18n.language}
-        onChange={e => i18n.changeLanguage(e.target.value)}
-        label="Language"
-        style={{ minWidth: 50 }}
-        size="small"
-        sx={{ color: COLORS.text }}
-        MenuProps={{
-          PaperProps: {
-            sx: {
-              color: COLORS.text,
-              backgroundColor: COLORS.elevation2,
+      <LanguageIcon sx={{ color: COLORS.primary, mr: 1, my: 0.5 }} />
+      <FormControl variant="standard" size="small">
+        <Select
+          value={i18n.language}
+          onChange={e => i18n.changeLanguage(e.target.value)}
+          label="Language"
+          style={{ minWidth: 50 }}
+          size="small"
+          sx={{ color: COLORS.text }}
+          aria-label="Select language"
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                color: COLORS.text,
+                backgroundColor: COLORS.elevation2,
+              },
             },
-          },
-        }}
-      >
-        {languages.map(lang => (
-          <MenuItem key={lang} value={lang}>{lang.toUpperCase()}</MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+          }}
+        >
+          {languages.map(lang => (
+            <MenuItem key={lang} value={lang}>{lang.toUpperCase()}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </Box>
   );
 };

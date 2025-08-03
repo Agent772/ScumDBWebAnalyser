@@ -83,7 +83,9 @@ function App() {
             <img
               src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
               alt="Buy Me A Coffee"
-              style={{ height: 40, width: 143, display: 'block' }}
+              width={129}
+              height={36}
+              style={{ height: 36, width: 129, display: 'block' }}
             />
           </a>
           <a

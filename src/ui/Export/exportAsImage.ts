@@ -13,6 +13,7 @@ export async function exportAsImage(
   options?: { fileName?: string; returnDataUrl?: boolean }
 ): Promise<string | void> {
   if (!element) throw new Error('Element is required');
+  // @ts-expect-error: backgroundColor is supported by html2canvas but not in the types
   const canvas = await html2canvas(element, { backgroundColor: null });
   const dataUrl = canvas.toDataURL('image/png');
   if (options?.returnDataUrl) return dataUrl;
