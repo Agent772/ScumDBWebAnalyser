@@ -107,7 +107,7 @@ services:
 Then run:
 
 ```sh
-docker compose up -d
+docker-compose up -d
 ```
 
 The app will be available at [http://localhost:5173](http://localhost:5173).
