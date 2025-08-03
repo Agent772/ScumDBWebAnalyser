@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+# Output vite.config.ts for debugging
+RUN echo '--- vite.config.ts contents ---' && cat vite.config.ts && echo '--- end vite.config.ts ---'
 RUN npm run build
 
 # Stage 2: Serve the built app with Vite preview
