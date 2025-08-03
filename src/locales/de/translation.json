@@ -54,6 +54,7 @@
     "analysis": "Analyse",
     "stats": "Statistiken",
     "vehicles_per_squad": "Fahrzeuge pro Squad",
+    "bases_per_squad": "Bases pro Squad",
     "demographics": "Demografie",
     "fishing": "Angeln",
     "skill": "Fähigkeit",
@@ -249,23 +250,39 @@
 
   "squad_vehicles_panel": {
     "panel_header": "Fahrzeuge pro Squad",
-    "table_filters_aria": "Tabellenfilter",
-    "filter_squad": "Squad filtern",
-    "filter_member": "Mitglied filtern",
     "filter_vehicle_id": "Fahrzeug-ID filtern",
     "filter_vehicle_class": "Fahrzeugklasse filtern",
     "no_vehicles": "keine Fahrzeuge",
-    "no_squads_or_members": "Keine Squads oder Mitglieder gefunden.",
-    "analysis_empty": "Analyse ist leer. Bitte Filter oder Daten anpassen.",
     "table_aria_label": "Fahrzeuge pro Squad Tabelle",
     "table_col_squad_member_vehicle": "Squad / Mitglied / Fahrzeug",
     "table_col_vehicle_id": "Fahrzeug-ID",
     "table_col_vehicle_class": "Fahrzeugklasse",
     "squad_aria_label": "Squad {{name}}, {{members}} Mitglieder, {{vehicles}} Fahrzeuge",
     "member_aria_label": "Mitglied {{name}}, {{vehicles}} Fahrzeuge",
-    "members": "{{count}} Mitglieder",
     "vehicles": "{{count}} Fahrzeuge"
   },
+  "members": "{{count}} Mitglieder",
+  "table_filters_aria": "Tabellenfilter",
+  "filter_squad": "Squad filtern",
+  "filter_member": "Mitglied filtern",
+  "no_squads_or_members": "Keine Squads oder Mitglieder gefunden.",
+  "analysis_empty": "Analyse ist leer. Bitte Filter oder Daten anpassen.",
+
+  "squad_base_panel": {
+    "panel_header": "Bases pro Squad",
+    "bases": "{{count}} Bases",
+    "no_bases": "Keine Bases gefunden.",
+    "filter_base_location": "Nach Basisstandort filtern",
+    "table_aria_label": "Bases pro Squad Tabelle",
+    "table_col_squad_member": "Squad / Mitglied",
+    "table_col_squad_member_base": "Squad / Mitglied / Basis",
+    "table_col_base_location": "Basisstandort",
+    "table_col_copy": "In die Zwischenablage kopieren",
+    "squad_aria_label": "Squad {{name}}, {{members}} Mitglieder, {{bases}} Bases",
+    "copied_teleport": "Teleport-Befehl kopiert",
+    "show_on_map": "Standort auf der Karte anzeigen"
+  },
+
   "single_panel": {
     "failed_export": "Exportieren fehlgeschlagen.",
     "export_panel_as_image_aria": "Panel als Bild exportieren",

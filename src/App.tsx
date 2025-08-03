@@ -3,6 +3,7 @@ import './utils/i18n';
 import { useTranslation } from 'react-i18next';
 import initSqlJs, { Database } from 'sql.js';
 import { SquadVehiclesPanel } from './features/squadVehicles/squadVehiclesPanel';
+import { SquadBasesPanel } from './features/squadBases/squadBasesPanel';
 import { DemographicsAnalyticsPanel } from './features/demographics/DemographicsAnalyticsPanel';
 import { FishingStatsPanel } from './features/fishingStats/FishingStatsPanel';
 import { SurvivalStatsPanel } from './features/survival/survivalStatsPanel';
@@ -189,6 +190,12 @@ function App() {
               >
                 {t('navigation.vehicles_per_squad')}
               </button>
+              <button
+                style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
+                onClick={() => setSelectedAnalysis('squad-bases')}
+              >
+                {t('navigation.bases_per_squad')}
+              </button>
               <div style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: 12 }}>{t('navigation.stats')}</div>
               <button
                 style={{ width: '100%', marginBottom: 10, padding: '0.6em', borderRadius: 6, border: 'none', background: COLORS.primary, color: COLORS.textSecondary, fontWeight: 600, cursor: 'pointer' }}
@@ -314,14 +321,19 @@ function App() {
           {/* Show analysis result or prompt */}
           {db && (
             <div style={{ width: '100%' }}>
-              {selectedAnalysis === 'demographics' && (
-                <div style={{ width: '100%', minHeight: 120 }}>
-                  <DemographicsAnalyticsPanel db={db} />
-                </div>
-              )}
               {selectedAnalysis === 'squad-vehicles' && (
                 <div style={{ width: '100%', minHeight: 120 }}>
                   <SquadVehiclesPanel db={db} />
+                </div>
+              )}
+              {selectedAnalysis === 'squad-bases' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <SquadBasesPanel db={db} />
+                </div>
+              )}
+              {selectedAnalysis === 'demographics' && (
+                <div style={{ width: '100%', minHeight: 120 }}>
+                  <DemographicsAnalyticsPanel db={db} />
                 </div>
               )}
               {selectedAnalysis === 'fishing-stats' && (

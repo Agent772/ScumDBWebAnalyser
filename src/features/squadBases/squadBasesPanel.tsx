@@ -25,55 +25,64 @@ import type { DiscordWebhookInfo } from '../../ui/Discord/DiscordModal';
 import '../../ui/analysisTable.css';
 import '../../index.css'; // Ensure styles are applied
 import { DiscordIcon } from '../../ui/Discord/DiscordIcon';
-import { getSquadVehiclesAnalytics } from './squadVehiclesData';
-import type { SquadGroup } from './squadVehiclesData';
+import { getSquadBaseData } from './squadBasesData';
+import type { SquadGroupBases } from './squadBasesData';
+// import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { COLORS } from '../../ui/helpers/colors';
+import { Tooltip } from '../../ui/helpers/Tooltip';
+import { BaseLocationMapPreview } from '../../ui/helpers/BaseLocationMapPreview';
 
-interface squadVehicleProps {
+interface squadBaseProps {
   db: Database;
 }
 
-export function SquadVehiclesPanel({ db }: squadVehicleProps) {
+export function SquadBasesPanel({ db }: squadBaseProps) {
   const { t } = useTranslation();
-  const squadGroups = getSquadVehiclesAnalytics(db);
+  const squadGroups = getSquadBaseData(db);
 
-  // Helper: count vehicles in squad
-  function squadVehicleCount(squad: SquadGroup) {
-    return squad.members.reduce((sum, m) => sum + m.vehicles.length, 0);
+  // State for copy feedback
+  const [copiedLoc, setCopiedLoc] = useState<string | null>(null);
+
+  // Helper: count bases in squad
+  function squadBaseCount(squad: SquadGroupBases) {
+    return squad.members.reduce((sum, m) => sum + m.bases.length, 0);
   }
 
   // Filtering state
   const [filter, setFilter] = useState({
     squad: '',
     member: '',
-    vehicle_id: '',
-    vehicle_class: '',
+    base_location: '',
   });
 
-  // (filteredRows is not used in the UI, so removed to avoid lint error)
+  // Clipboard copy handler
+  function copyTeleport(x: number, y: number) {
+    const cmd = `#teleport ${x} ${y} 0`;
+    navigator.clipboard.writeText(cmd);
+  }
+
 
   // Download as txt
   function downloadTxt() {
     let txt = '';
-    // Only include squads/members/vehicles that match the current filter
+    // Only include squads/members/bases that match the current filter
     const filteredSquads = squadGroups.filter(sq => sq.squadName.toLowerCase().includes(filter.squad.toLowerCase()));
     filteredSquads.forEach(squad => {
       // Check if any member matches
       const filteredMembers = squad.members.filter(m => m.name.toLowerCase().includes(filter.member.toLowerCase()));
       if (filteredMembers.length === 0) return;
-      txt += `${squad.squadName}  (${t('members', { count: squad.members.length })}, ${t('squad_vehicles_panel.vehicles', { count: squadVehicleCount(squad) })})\n`;
+      txt += `${squad.squadName}  (${t('members', { count: squad.members.length })}, ${t('squad_base_panel.bases', { count: squadBaseCount(squad) })})\n`;
       filteredMembers.forEach(member => {
-        txt += `  ${member.name}  (${t('squad_vehicles_panel.vehicles', { count: member.vehicles.length })})\n`;
-        // Filter vehicles for this member
-        const filteredVehicles = member.vehicles.filter(v =>
-          (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
-          v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
+        txt += `  ${member.name}  (${t('squad_base_panel.bases', { count: member.bases.length })})\n`;
+        // Filter bases for this member
+        const filteredBases = member.bases.filter(b =>
+          filter.base_location === '' || `${b.location_x},${b.location_y}`.includes(filter.base_location)
         );
-        if (filteredVehicles.length === 0) {
-          txt += `    – ${t('squad_vehicles_panel.no_vehicles')} –\n`;
+        if (filteredBases.length === 0) {
+          txt += `    – ${t('squad_base_panel.no_bases')} –\n`;
         } else {
-          filteredVehicles.forEach(v => {
-            txt += `    ${v.entity_id}\t${v.vehicle_class}\n`;
+          filteredBases.forEach(b => {
+            txt += `    (${b.location_x}, ${b.location_y})\n`;
           });
         }
       });
@@ -84,7 +93,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'squad-vehicles.txt';
+    a.download = 'squad-bases.txt';
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -110,11 +119,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
           const squadObj = squadGroups.find(sq => sq.squadName === squad);
           if (squadObj) {
             squadObj.members.forEach(m => {
-              if (m.vehicles && m.vehicles.length > 0) {
-                updated[squad + '|' + m.name] = true;
-              } else {
-                updated[squad + '|' + m.name] = false;
-              }
+              updated[squad + '|' + m.name] = m.bases && m.bases.length > 0;
             });
           }
           return updated;
@@ -139,23 +144,22 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
 
   // Generate the analysis txt (same as download, but as string)
   function getAnalysisTxt() {
-    let txt = t('squad_vehicles_panel.panel_header') + '\n\n';
+    let txt = t('squad_base_panel.panel_header') + '\n\n';
     const filteredSquads = squadGroups.filter(sq => sq.squadName.toLowerCase().includes(filter.squad.toLowerCase()));
     filteredSquads.forEach(squad => {
       const filteredMembers = squad.members.filter(m => m.name.toLowerCase().includes(filter.member.toLowerCase()));
       if (filteredMembers.length === 0) return;
-      txt += `${squad.squadName}  (${t('members', { count: squad.members.length })}, ${t('squad_vehicles_panel.vehicles', { count: squadVehicleCount(squad) })})\n`;
+      txt += `${squad.squadName}  (${t('members', { count: squad.members.length })}, ${t('squad_base_panel.bases', { count: squadBaseCount(squad) })})\n`;
       filteredMembers.forEach(member => {
-        txt += `  ${member.name}  (${t('squad_vehicles_panel.vehicles', { count: member.vehicles.length })})\n`;
-        const filteredVehicles = member.vehicles.filter(v =>
-          (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
-          v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
+        txt += `  ${member.name}  (${t('squad_base_panel.bases', { count: member.bases.length })})\n`;
+        const filteredBases = member.bases.filter(b =>
+          filter.base_location === '' || `${b.location_x},${b.location_y}`.includes(filter.base_location)
         );
-        if (filteredVehicles.length === 0) {
-          txt += `    – ${t('squad_vehicles_panel.no_vehicles')} –\n`;
+        if (filteredBases.length === 0) {
+          txt += `    – ${t('squad_base_panel.no_bases')} –\n`;
         } else {
-          filteredVehicles.forEach(v => {
-            txt += `    ${v.entity_id}\t${v.vehicle_class}\n`;
+          filteredBases.forEach(b => {
+            txt += `    (${b.location_x}, ${b.location_y})\n`;
           });
         }
       });
@@ -175,7 +179,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
     }
     // Create a Blob for the file attachment
     const file = new Blob([txt], { type: 'text/plain' });
-    const filename = 'squad-vehicles.txt';
+    const filename = 'squad-bases.txt';
     // Optionally include a message above the file
     const content = info.message ? info.message : '';
     const ok = await postToDiscordWebhook(info, content, file, filename);
@@ -188,7 +192,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
 
   // Render
   return (
-    <section style={{ width: '100%' }} aria-label={t('squad_vehicles_panel.panel_header')} role="region">
+    <section style={{ width: '100%' }} aria-label={t('squad_base_panel.panel_header')} role="region">
       <div
         style={{
           display: 'flex',
@@ -230,13 +234,12 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         }}
         tabIndex={0}
       >
-        {t('squad_vehicles_panel.panel_header')}
+        {t('squad_base_panel.panel_header')}
       </h2>
       <div className="analysis-table-filters" aria-label={t('table_filters_aria')}>
         <input className="analysis-table-filter" placeholder={t('filter_squad')} value={filter.squad} onChange={e => setFilter(f => ({ ...f, squad: e.target.value }))} aria-label={t('filter_squad')} />
         <input className="analysis-table-filter" placeholder={t('filter_member')} value={filter.member} onChange={e => setFilter(f => ({ ...f, member: e.target.value }))} aria-label={t('filter_member')} />
-        <input className="analysis-table-filter" placeholder={t('squad_vehicles_panel.filter_vehicle_id')} value={filter.vehicle_id} onChange={e => setFilter(f => ({ ...f, vehicle_id: e.target.value }))} aria-label={t('squad_vehicles_panel.filter_vehicle_id')} />
-        <input className="analysis-table-filter" placeholder={t('squad_vehicles_panel.filter_vehicle_class')} value={filter.vehicle_class} onChange={e => setFilter(f => ({ ...f, vehicle_class: e.target.value }))} aria-label={t('squad_vehicles_panel.filter_vehicle_class')} />
+        <input className="analysis-table-filter" placeholder={t('squad_base_panel.filter_base_location')} value={filter.base_location} onChange={e => setFilter(f => ({ ...f, base_location: e.target.value }))} aria-label={t('squad_base_panel.filter_base_location')} />
       </div>
       {discordOpen && (
         <DiscordModal
@@ -255,17 +258,16 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         </div>
       )}
       <div style={{ overflowX: 'auto' }}>
-        <table className="analysis-table" aria-label={t('squad_vehicles_panel.table_aria_label')}>
+        <table className="analysis-table" aria-label={t('squad_base_panel.table_aria_label')}>
           <thead>
             <tr>
-              <th style={{ width: '40%' }}>{t('squad_vehicles_panel.table_col_squad_member_vehicle')}</th>
-              <th style={{ width: '20%' }}>{t('squad_vehicles_panel.table_col_vehicle_id')}</th>
-              <th style={{ width: '40%' }}>{t('squad_vehicles_panel.table_col_vehicle_class')}</th>
+              <th style={{ width: '40%' }}>{t('squad_base_panel.table_col_squad_member')}</th>
+              <th style={{ width: '60%' }}>{t('squad_base_panel.table_col_base_location')}</th>
             </tr>
           </thead>
           <tbody>
             {squadGroups.length === 0 && (
-              <tr><td colSpan={3} className="no-vehicles-row">{t('no_squads_or_members')}</td></tr>
+              <tr><td colSpan={3} className="no-bases-row">{t('no_squads_or_members')}</td></tr>
             )}
             {squadGroups.filter(sq => sq.squadName.toLowerCase().includes(filter.squad.toLowerCase())).map((squad, sIdx) => {
               // Filter members
@@ -274,40 +276,64 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
               const squadOpen = openSquads[squad.squadName] !== false;
               return (
                 <React.Fragment key={squad.squadName + sIdx}>
-                  <tr className="squad-row" onClick={() => toggleSquad(squad.squadName)} tabIndex={0} aria-label={t('squad_vehicles_panel.squad_aria_label', { name: squad.squadName, members: squad.members.length, vehicles: squadVehicleCount(squad) })}>
+                  <tr className="squad-row" onClick={() => toggleSquad(squad.squadName)} tabIndex={0} aria-label={t('squad_base_panel.squad_aria_label', { name: squad.squadName, members: squad.members.length, bases: squadBaseCount(squad) })}>
                     <td className="squad-cell" colSpan={3}>
                       <span className="arrow" aria-hidden="true">{squadOpen ? '▼' : '▶'}</span>{squad.squadName}
                       <span className="count">
-                        ({t('members', { count: squad.members.length })}, {t('squad_vehicles_panel.vehicles', { count: squadVehicleCount(squad) })})
+                        ({t('members', { count: squad.members.length })}, {t('squad_base_panel.bases', { count: squadBaseCount(squad) })})
                       </span>
                     </td>
                   </tr>
                   {squadOpen && filteredMembers.map((member, mIdx) => {
                     const memberKey = squad.squadName + '|' + member.name;
                     const memberOpen = openMembers[memberKey] !== false;
-                    // Filter vehicles
-                    const filteredVehicles = member.vehicles.filter(v =>
-                      (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
-                      v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
+                    // Filter bases
+                    const filteredBases = member.bases.filter(b =>
+                      filter.base_location === '' || `${b.location_x},${b.location_y}`.includes(filter.base_location)
                     );
                     return (
                       <React.Fragment key={member.name + mIdx}>
-                        <tr className="member-row" onClick={e => { e.stopPropagation(); toggleMember(squad.squadName, member.name); }} tabIndex={0} aria-label={t('squad_vehicles_panel.member_aria_label', { name: member.name, vehicles: member.vehicles.length })}>
+                        <tr className="member-row" onClick={e => { e.stopPropagation(); toggleMember(squad.squadName, member.name); }} tabIndex={0} aria-label={t('squad_base_panel.member_aria_label', { name: member.name, bases: member.bases.length })}>
                           <td className="member-cell" colSpan={3}>
                             <span className="arrow" aria-hidden="true">{memberOpen ? '▼' : '▶'}</span>{member.name}
-                            <span className="count">({t('squad_vehicles_panel.vehicles', { count: member.vehicles.length })})</span>
+                            <span className="count">({t('squad_base_panel.bases', { count: member.bases.length })})</span>
                           </td>
                         </tr>
-                        {memberOpen && (filteredVehicles.length === 0 ? (
-                          <tr className="no-vehicles-row">
-                            <td className="vehicle-cell" colSpan={3}>– {t('squad_vehicles_panel.no_vehicles')} –</td>
+                        {memberOpen && (filteredBases.length === 0 ? (
+                          <tr className="no-bases-row">
+                            <td className="base-cell" colSpan={2}>– {t('squad_base_panel.no_bases')} –</td>
                           </tr>
                         ) : (
-                          filteredVehicles.map((v, vIdx) => (
-                            <tr key={v.entity_id + vIdx} className="vehicle-row">
-                              <td className="vehicle-cell"></td>
-                              <td>{v.entity_id}</td>
-                              <td>{v.vehicle_class}</td>
+                          filteredBases.map((b, bIdx) => (
+                            <tr key={b.location_x + ',' + b.location_y + bIdx} className="base-row">
+                              <td className="base-cell"></td>
+                              <td>
+                                <Tooltip
+                                  content={<BaseLocationMapPreview x={b.location_x} y={b.location_y} />}
+                                  placement="top"
+                                >
+                                  <span
+                                    style={{ cursor: 'pointer', textDecoration: 'underline dotted', color: COLORS.primary }}
+                                    tabIndex={0}
+                                    aria-label={t('squad_base_panel.show_on_map')}
+                                    onClick={() => {
+                                      copyTeleport(b.location_x, b.location_y);
+                                      setCopiedLoc(`${b.location_x},${b.location_y}`);
+                                      setTimeout(() => setCopiedLoc(null), 1200);
+                                    }}
+                                    onKeyDown={e => {
+                                      if (e.key === 'Enter' || e.key === ' ') {
+                                        copyTeleport(b.location_x, b.location_y);
+                                        setCopiedLoc(`${b.location_x},${b.location_y}`);
+                                        setTimeout(() => setCopiedLoc(null), 1200);
+                                      }
+                                    }}
+                                    role="button"
+                                  >
+                                    {b.location_x}, {b.location_y}
+                                  </span>
+                                </Tooltip>
+                              </td>
                             </tr>
                           ))
                         ))}
@@ -320,6 +346,32 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
           </tbody>
         </table>
       </div>
+      {/* Copied notification */}
+      {copiedLoc && (
+        <div
+          style={{
+            position: 'fixed',
+            left: '50%',
+            bottom: 32,
+            transform: 'translateX(-50%)',
+            background: COLORS.success,
+            color: '#fff',
+            padding: '12px 32px',
+            borderRadius: 8,
+            fontWeight: 600,
+            fontSize: '1.1rem',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
+            zIndex: 9999,
+            pointerEvents: 'none',
+            opacity: 0.97,
+            transition: 'opacity 0.2s',
+          }}
+          role="status"
+          aria-live="polite"
+        >
+          {t('squad_base_panel.copied_teleport')}
+        </div>
+      )}
     </section>
   );
 }
