@@ -8,11 +8,10 @@ COPY . .
 RUN echo '--- vite.config.ts contents ---' && cat vite.config.ts && echo '--- end vite.config.ts ---'
 RUN npm run build
 
-# Stage 2: Serve the built app with Vite preview
+# Stage 2: Serve the built app with a static file server
 FROM node:20-alpine
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
-COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install -g serve
 EXPOSE 4173
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]
+CMD ["serve", "-s", "dist", "-l", "4173"]
