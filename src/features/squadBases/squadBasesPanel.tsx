@@ -17,7 +17,7 @@
  * @returns {JSX.Element} The rendered Vehicles per Squad analysis panel.
  */
 import { Database } from 'sql.js';
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DiscordModal } from '../../ui/Discord/DiscordModal';
 import { postToDiscordWebhook } from '../../ui/Discord/discordWebhook';
@@ -30,7 +30,8 @@ import type { SquadGroupBases } from './squadBasesData';
 // import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { COLORS } from '../../ui/helpers/colors';
 import { Tooltip } from '../../ui/helpers/Tooltip';
-import { BaseLocationMapPreview } from '../../ui/helpers/BaseLocationMapPreview';
+
+const BaseLocationMapPreview = lazy(() => import('../../ui/helpers/BaseLocationMapPreview'));
 
 interface squadBaseProps {
   db: Database;
@@ -308,31 +309,33 @@ export function SquadBasesPanel({ db }: squadBaseProps) {
                             <tr key={b.location_x + ',' + b.location_y + bIdx} className="base-row">
                               <td className="base-cell"></td>
                               <td>
-                                <Tooltip
-                                  content={<BaseLocationMapPreview x={b.location_x} y={b.location_y} />}
-                                  placement="top"
-                                >
-                                  <span
-                                    style={{ cursor: 'pointer', textDecoration: 'underline dotted', color: COLORS.primary }}
-                                    tabIndex={0}
-                                    aria-label={t('squad_base_panel.show_on_map')}
-                                    onClick={() => {
-                                      copyTeleport(b.location_x, b.location_y);
-                                      setCopiedLoc(`${b.location_x},${b.location_y}`);
-                                      setTimeout(() => setCopiedLoc(null), 1200);
-                                    }}
-                                    onKeyDown={e => {
-                                      if (e.key === 'Enter' || e.key === ' ') {
+                                <Suspense fallback={<div style={{ width: 200, height: 200 }}>Loading…</div>}>
+                                  <Tooltip
+                                    content={<BaseLocationMapPreview x={b.location_x} y={b.location_y} />}
+                                    placement="top"
+                                  >
+                                    <span
+                                      style={{ cursor: 'pointer', textDecoration: 'underline dotted', color: COLORS.primary }}
+                                      tabIndex={0}
+                                      aria-label={t('squad_base_panel.show_on_map')}
+                                      onClick={() => {
                                         copyTeleport(b.location_x, b.location_y);
                                         setCopiedLoc(`${b.location_x},${b.location_y}`);
                                         setTimeout(() => setCopiedLoc(null), 1200);
-                                      }
-                                    }}
-                                    role="button"
-                                  >
-                                    {b.location_x}, {b.location_y}
-                                  </span>
-                                </Tooltip>
+                                      }}
+                                      onKeyDown={e => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                          copyTeleport(b.location_x, b.location_y);
+                                          setCopiedLoc(`${b.location_x},${b.location_y}`);
+                                          setTimeout(() => setCopiedLoc(null), 1200);
+                                        }
+                                      }}
+                                      role="button"
+                                    >
+                                      {b.location_x}, {b.location_y}
+                                    </span>
+                                  </Tooltip>
+                                </Suspense>
                               </td>
                             </tr>
                           ))

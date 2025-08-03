@@ -100,3 +100,4 @@ export const BaseLocationMapPreview: React.FC<BaseLocationMapPreviewProps> = ({ 
     </div>
   );
 };
+export default BaseLocationMapPreview;
