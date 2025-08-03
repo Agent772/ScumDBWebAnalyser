@@ -55,7 +55,8 @@ export function SinglePanelLayout({
 }: SinglePanelLayoutProps) {
   const { t } = useTranslation();
   const [discordOpen, setDiscordOpen] = useState(false);
-  const [discordStatus, setDiscordStatus] = useState<string | null>(null);
+  // Discord status: { type: 'success' | 'error', message: string }
+  const [discordStatus, setDiscordStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
   const [exporting, setExporting] = useState(false);
 
   // Temporarily set disableAnimation to true during export
@@ -71,7 +72,7 @@ export function SinglePanelLayout({
   const handleDiscordSend = async (info: DiscordWebhookInfo) => {
     setDiscordStatus(null);
     if (!panelRef?.current) {
-      setDiscordStatus(t('single_panel.panel_not_found'));
+      setDiscordStatus({ type: 'error', message: t('discord.panel_not_found') });
       return;
     }
     setExporting(true);
@@ -79,13 +80,16 @@ export function SinglePanelLayout({
     const dataUrl = await exportAsImage(panelRef.current, { returnDataUrl: true, fileName: discordFileName }) as string;
     setExporting(false);
     if (!dataUrl) {
-      setDiscordStatus(t('single_panel.failed_export_image'));
+      setDiscordStatus({ type: 'error', message: t('single_panel.failed_export') });
       return;
     }
     const res = await fetch(dataUrl);
     const blob = await res.blob();
     const ok = await postToDiscordWebhook(info, info.message || '', blob, discordFileName);
-    setDiscordStatus(ok ? t('single_panel.posted_to_discord') : t('single_panel.failed_post'));
+    setDiscordStatus(ok
+      ? { type: 'success', message: t('discord.posted') }
+      : { type: 'error', message: t('discord.failed') }
+    );
     if (ok) setDiscordOpen(false);
   };
 
@@ -102,9 +106,9 @@ export function SinglePanelLayout({
         <div
           role="status"
           aria-live="polite"
-          style={{ color: discordStatus.startsWith(t('single_panel.status_posted_prefix')) ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
+          style={{ color: discordStatus.type === 'success' ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
         >
-          {discordStatus}
+          {discordStatus.message}
         </div>
       )}
       {status && status}

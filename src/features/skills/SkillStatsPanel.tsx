@@ -74,12 +74,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
     <MultiPanelLayout
       groupCount={6}
       getPanelHeader={i => {
-        if (i === 0) return t('skills_stats.basic_header');
-        if (i === 1) return t('skills_stats.strength_header');
-        if (i === 2) return t('skills_stats.constitution_header');
-        if (i === 3) return t('skills_stats.dexterity_header');
-        if (i === 4) return t('skills_stats.intelligence_header_1');
-        if (i === 5) return t('skills_stats.intelligence_header_2');
+        if (i === 0) return t('skills_panel.panel_header');
+        if (i === 1) return t('skills_panel.panel_header_2');
+        if (i === 2) return t('skills_panel.panel_header_3');
+        if (i === 3) return t('skills_panel.panel_header_4');
+        if (i === 4) return t('skills_panel.panel_header_5', { page: 1 });
+        if (i === 5) return t('skills_panel.panel_header_5', { page: 2 });
         return '';
       }} getPanelFileName={i => {
         if (i === 0) return 'skills-leaderboards.png';
@@ -95,15 +95,15 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
         if (groupIndex === 0) {
           return (
             <>
-              <ColorLegendPanel idSuffix={String(groupIndex)} min={strengthData.colorCodingMin!} max={strengthData.colorCodingMax!} label={t('skills_stats.time_played')} />
+              <ColorLegendPanel idSuffix={String(groupIndex)} min={strengthData.colorCodingMin!} max={strengthData.colorCodingMax!} label={t('time_played_m')} />
               {/* Strength Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.strength')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.strength')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={strengthData}
-                    kpiLabel={t('skills_stats.strength')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.strength')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -112,12 +112,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Constitution Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.constitution')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.constitution')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={constitutionData}
-                    kpiLabel={t('skills_stats.constitution')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.constitution')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -126,12 +126,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Dexterity Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.dexterity')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.dexterity')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={dexterityData}
-                    kpiLabel={t('skills_stats.dexterity')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.dexterity')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -140,12 +140,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Intelligence Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.intelligence')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.intelligence')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={intelligenceData}
-                    kpiLabel={t('skills_stats.intelligence')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.intelligence')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -159,12 +159,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
             <>
               {/* Boxing Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.boxing')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.boxing')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={boxingData}
-                    kpiLabel={t('skills_stats.boxing_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.boxing') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -173,12 +173,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Rifle Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.rifle')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.rifle')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={rifleData}
-                    kpiLabel={t('skills_stats.rifle_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.rifle') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -187,12 +187,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Melee Weapons Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.melee_weapons')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.melee_weapons')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={meleeData}
-                    kpiLabel={t('skills_stats.melee_weapons_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.melee_weapons') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -201,12 +201,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
               
               {/* Pistol Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.pistol')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.pistol')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={handgunData}
-                    kpiLabel={t('skills_stats.pistol_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.pistol') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -215,12 +215,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Archery Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.archery')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.archery')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={archeryData}
-                    kpiLabel={t('skills_stats.archery_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.archery') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -241,7 +241,7 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
                   idSuffix={String(groupIndex)}
                   min={boxingData.colorCodingMin!}
                   max={boxingData.colorCodingMax!}
-                  label={t('skills_stats.time_played')}
+                  label={t('time_played_m')}
                 />
               </div>
             </>
@@ -252,12 +252,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
             <>
               {/* Running Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.running')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.running')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={runningData}
-                    kpiLabel={t('skills_stats.running_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.running') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -266,12 +266,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Endurance Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.endurance')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.endurance')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={enduranceData}
-                    kpiLabel={t('skills_stats.endurance_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.endurance') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -294,7 +294,7 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
                   idSuffix={String(groupIndex)}
                   min={runningData.colorCodingMin!}
                   max={runningData.colorCodingMax!}
-                  label={t('skills_stats.time_played')}
+                  label={t('time_played_m')}
                 />
               </div>
             </>
@@ -305,12 +305,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
             <>
               {/* Thievery Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.thievery')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.thievery')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={thieveryData}
-                    kpiLabel={t('skills_stats.thievery_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.thievery') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -319,12 +319,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Driving Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.driving')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.driving')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={drivingData}
-                    kpiLabel={t('skills_stats.driving_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.driving') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -333,12 +333,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Demolition Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.demolition')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.demolition')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={demolitionData}
-                    kpiLabel={t('skills_stats.demolition_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.demolition') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -347,12 +347,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Motorcycle Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.motorcycle')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.motorcycle')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={motorcycleData}
-                    kpiLabel={t('skills_stats.motorcycle_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.motorcycle') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -361,12 +361,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Stealth Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.stealth')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.stealth')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={stealthData}
-                    kpiLabel={t('skills_stats.stealth_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.stealth') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -375,12 +375,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Aviation Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.aviation')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.aviation')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={aviationData}
-                    kpiLabel={t('skills_stats.aviation_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.aviation') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -394,12 +394,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
             <>
               {/* Awareness Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.awareness')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.awareness')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={awarenessData}
-                    kpiLabel={t('skills_stats.awareness_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.awareness') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -408,12 +408,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Sniping Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.sniping')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.sniping')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={snipingData}
-                    kpiLabel={t('skills_stats.sniping_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.sniping') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -422,12 +422,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Camouflage Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.camouflage')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.camouflage')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={camouflageData}
-                    kpiLabel={t('skills_stats.camouflage_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.camouflage') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -436,12 +436,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Survival Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.survival')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.survival')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={survivalData}
-                    kpiLabel={t('skills_stats.survival_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.survival') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -455,12 +455,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
             <>
               {/* Cooking Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.cooking')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.cooking')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={cookingData}
-                    kpiLabel={t('skills_stats.cooking_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.cooking') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -469,12 +469,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* Engineering Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.engineering')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.engineering')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={engineeringData}
-                    kpiLabel={t('skills_stats.engineering_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.engineering') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -483,12 +483,12 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
 
               {/* medical Skill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('skills_stats.medical')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('skills_panel.medical')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={medicalData}
-                    kpiLabel={t('skills_stats.medical_xp')}
-                    coloringLabel={t('skills_stats.time_played')}
+                    kpiLabel={t('skills_panel.medical') + ' ' + t('skills_panel.xp')}
+                    coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -511,7 +511,7 @@ export function SkillStatsPanel({ db }: SkillStatsPanelProps) {
                   idSuffix={String(groupIndex)}
                   min={runningData.colorCodingMin!}
                   max={runningData.colorCodingMax!}
-                  label={t('skills_stats.time_played')}
+                  label={t('time_played_m')}
                 />
               </div>
             </>

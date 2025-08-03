@@ -22,6 +22,9 @@
   "discord": {
     "post_to_discord": "Post to Discord",
     "pick_saved_webhook": "Pick Saved Webhook",
+    "posted": "Posted to Discord with attachment!",
+    "failed": "Failed to post. Check the webhook URL and try again.",
+    "panel_not_found": "Panel not found.",
     "webhook_url": "Webhook URL",
     "message_optional": "Message (optional)",
     "message_placeholder": "Message to include above the analysis...",
@@ -32,7 +35,7 @@
     "save_webhook_for_later": "Save this webhook for later use",
     "webhook_label_placeholder": "Label for this webhook",
     "discord_webhook_storage_statement": "Your webhooks are stored locally in your browser and never sent anywhere else.",
-    "manage_webhooks": "Manage Discord Webhooks",
+    "manage_webhooks": "Manage Webhooks",
     "webhook_manager": {
         "description": "Add, view, or remove Discord webhooks. Saved webhooks are stored in your browser only.",
         "name_placeholder": "Webhook Name",
@@ -43,7 +46,7 @@
         "remove_button": "Remove Webhook",
         "name_url_required": "Name and URL are required.",
         "invalid_url": "Invalid Discord webhook URL.",
-        "duplicate_name": "A webhook with this name already exists.",
+        "duplicate_name": "A webhook with this name already exists."
     }
   },
 
@@ -64,9 +67,29 @@
     "misc": "MISC"
   },
 
+  "multi_panel": {
+    "panel_group_navigation": "Panel group navigation",
+    "show_group": "Show group {{group}}",
+    "export_all_as_zip": "Export All as Zip",
+    "send_all_to_discord": "Send All to Discord",
+    "status_posted_prefix": "Posted",
+    "status_failed_prefix": "Failed"
+  },
+
+  "demographics_panel": {
+    "players": "Players",
+    "avg_play_time_min": "Avg. Play Time (min)",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "avg_penis_size": "Avg. Penis Size",
+    "avg_breast_size": "Avg. Breast Size",
+    "age_distribution": "Age Distribution"
+  },
+
   "animals_panel": {
     "panel_header": "Animals Overview",
-    "single_animal_kills": "Single Animal Kills {{page}}",
+    "panel_header_2": "Single Animal Kills {{page}}",
     "animals_killed": "Animals Killed",
     "longest_animal_kill_distance": "Longest Animal Kill Distance",
     "animals_skinned": "Animals Skinned",
@@ -91,17 +114,6 @@
     "clothing_crafted": "Clothing Crafted",
     "melee_weapons_crafted": "Melee Weapons Crafted"
   },
-
-  "demographics_panel": {
-    "players": "Players",
-    "avg_play_time_min": "Avg. Play Time (min)",
-    "gender": "Gender",
-    "male": "Male",
-    "female": "Female",
-    "avg_penis_size": "Avg. Penis Size",
-    "avg_breast_size": "Avg. Breast Size",
-    "age_distribution": "Age Distribution"
-  },
   
   "fishing_panel": {
     "panel_header": "Fishing Stats",
@@ -113,10 +125,10 @@
     "most_broken_fishing_lines": "Most Broken Fishing Lines",
     "lines_broken": "Lines Broken"
   },
-  // Continue Here
-  "food_stats": {
-    "food_and_drink_overview": "Food & Drink Overview",
-    "body_response": "Body Response",
+  
+  "food_panel": {
+    "panel_header": "Food & Drink Stats",
+    "panel_header_2": "Body Response",
     "food_eaten": "Food Eaten",
     "liquid_drank": "Liquid Drank",
     "mushrooms_eaten": "Mushrooms Eaten",
@@ -126,14 +138,14 @@
     "defecations": "Defecations",
     "diarrheas": "Diarrheas",
     "vomits": "Vomits",
-    "starvation": "Starvation",
-    "time_played_m": "Time Played (m)"
+    "starvation": "Starvation"
   },
-  "kills_stats": {
-    "kills_leaderboards": "Kills Leaderboards",
-    "puppets_prisoners_kills": "Puppets & Prisoners Kills",
-    "weapons_details": "Weapons Details",
-    "shots_melee_stats": "Shots & Melee Stats",
+
+  "kills_panel": {
+    "panel_header": "Kills Leaderboards",
+    "panel_header_2": "Puppets & Prisoners Kills",
+    "panel_header_3": "Weapons Details",
+    "panel_header_4": "Shots & Melee Stats",
     "kills": "Kills",
     "deaths": "Deaths",
     "longest_kill": "Longest Kill",
@@ -155,109 +167,74 @@
     "headshots": "Headshots",
     "accuracy": "Accuracy",
     "min_shots_fired": "Min Shots Fired",
-    "headshots_footer": "Headshots are counted for bows and firearms, but not for melee weapons.",
-    "time_played_m": "Time Played (m)"
+    "headshots_footer": "Headshots are counted for bows and firearms, but not for melee weapons."
   },
-  "looting_stats": {
-    "looting_stats": "Looting Stats",
+
+  "looting_panel": {
+    "panel_header": "Looting Stats",
     "locks_picked": "Locks Picked",
     "containers_looted": "Containers Looted",
     "items_picked_up": "Items Picked Up",
     "items_put_into_containers": "Items Put Into Containers",
     "highest_weight_carried": "Highest Weight Carried (kg)",
-    "items_put_into_containers_footer": "Color coding is based on the number of items picked up.",
-    "time_played_m": "Time Played (m)"
+    "items_put_into_containers_footer": "Color coding is based on the number of items picked up."
   },
-  "misc_stats": {
-    "misc_stats": "Misc Stats",
+
+  "misc_panel": {
+    "panel_header": "Misc Stats",
     "highest_fat": "Highest Fat (kg)",
     "highest_muscle_mass": "Highest Muscle Mass (kg)",
     "foliage_cut": "Foliage Cut",
     "heart_attacks": "Heart Attacks",
     "overdose": "Overdose",
-    "heart_attacks_footer": "Color coding is based on the number of items picked up.",
-    "time_played_m": "Time Played (m)"
+    "heart_attacks_footer": "Color coding is based on the number of items picked up."
   },
-  "multi_panel": {
-    "panel_group_navigation": "Panel group navigation",
-    "show_group": "Show group {{group}}",
-    "export_all_as_zip_aria": "Export all panels as zip",
-    "export_all_as_zip": "Export All as Zip",
-    "send_all_to_discord_aria": "Send all panels to Discord",
-    "send_all_to_discord": "Send All to Discord",
-    "status_posted_prefix": "Posted",
-    "status_failed_prefix": "Failed"
-  },
-  "skills_stats": {
-    "basic_header": "Basic Skill Leaderboards",
-    "strength_header": "Strength Skill Leaderboards",
-    "constitution_header": "Constitution Skill Leaderboards",
-    "dexterity_header": "Dexterity Skill Leaderboards",
-    "intelligence_header_1": "Intelligence Skill Leaderboards (1/2)",
-    "intelligence_header_2": "Intelligence Skill Leaderboards (2/2)",
+
+  "skills_panel": {
+    "panel_header": "Basic Skill Leaderboards",
+    "panel_header_2": "Strength Skill Leaderboards",
+    "panel_header_3": "Constitution Skill Leaderboards",
+    "panel_header_4": "Dexterity Skill Leaderboards",
+    "panel_header_5": "Intelligence Skill Leaderboards {{page}}",
     "strength": "Strength",
     "constitution": "Constitution",
     "dexterity": "Dexterity",
     "intelligence": "Intelligence",
+    "xp": "XP",
     "boxing": "Boxing",
-    "boxing_xp": "Boxing XP",
     "rifle": "Rifle",
-    "rifle_xp": "Rifle XP",
     "melee_weapons": "Melee Weapons",
-    "melee_weapons_xp": "Melee Weapons XP",
     "pistol": "Pistol",
-    "pistol_xp": "Pistol XP",
     "archery": "Archery",
-    "archery_xp": "Archery XP",
     "running": "Running",
-    "running_xp": "Running XP",
     "endurance": "Endurance",
-    "endurance_xp": "Endurance XP",
     "thievery": "Thievery",
-    "thievery_xp": "Thievery XP",
     "driving": "Driving",
-    "driving_xp": "Driving XP",
     "demolition": "Demolition",
-    "demolition_xp": "Demolition XP",
     "motorcycle": "Motorcycle",
-    "motorcycle_xp": "Motorcycle XP",
     "stealth": "Stealth",
-    "stealth_xp": "Stealth XP",
     "aviation": "Aviation",
-    "aviation_xp": "Aviation XP",
     "awareness": "Awareness",
-    "awareness_xp": "Awareness XP",
     "sniping": "Sniping",
-    "sniping_xp": "Sniping XP",
     "camouflage": "Camouflage",
-    "camouflage_xp": "Camouflage XP",
     "survival": "Survival",
-    "survival_xp": "Survival XP",
     "cooking": "Cooking",
-    "cooking_xp": "Cooking XP",
     "engineering": "Engineering",
-    "engineering_xp": "Engineering XP",
-    "medical": "Medical",
-    "medical_xp": "Medical XP",
-    "time_played": "Time Played (m)"
+    "medical": "Medical"
   },
-  "travel_stats": {
-    "header": "Travel Stats",
-    "distance_by_foot": "Distance Travelled By Foot (m)",
-    "distance_by_foot_kpi": "Distance By Foot (m)",
-    "distance_in_vehicle": "Distance Travelled In Vehicle (m)",
-    "distance_in_vehicle_kpi": "Distance In Vehicle (m)",
-    "distance_swimming": "Distance Travelled Swimming (m)",
-    "distance_swimming_kpi": "Distance Swimming (m)",
-    "distance_by_boat": "Distance Travelled By Boat (m)",
-    "distance_by_boat_kpi": "Distance By Boat (m)",
-    "distance_sailed": "Distance Sailed (m)",
-    "distance_sailed_kpi": "Distance Sailed (m)",
-    "time_played": "Time Played (m)"
+
+  "travel_panel": {
+    "panel_header": "Travel Stats",
+    "distance_by_foot": "Travelled by Foot (m)",
+    "distance_in_vehicle": "Travelled in Vehicle (m)",
+    "distance_swimming": "Swam (m)",
+    "distance_by_boat": "Travelled by Boat (m)",
+    "distance_sailed": "Sailed (m)"
   },
-  "survival_stats": {
-    "famepoints_time_header": "Famepoints & Time",
-    "survival_stats_header": "Survival Stats",
+
+  "survival_panel": {
+    "panel_header": "Famepoints & Time",
+    "panel_header_2": "Survival Stats",
     "famepoints": "Famepoints",
     "highest_famepoints": "Highest Famepoints",
     "survived_time": "Survived Time (m)",
@@ -267,26 +244,19 @@
     "highest_damage_taken": "Highest Damage Taken",
     "times_mauled_by_bear": "Times Mauled By Bear",
     "times_caught_by_shark": "Times Caught By Shark",
-    "times_escaped_shark_bite": "Times Escaped Shark Bite",
-    "played_time": "Played Time (m)"
+    "times_escaped_shark_bite": "Times Escaped Shark Bite"
   },
-  "squad_vehicles": {
-    "aria_label": "Vehicles per Squad analysis",
-    "download_txt_aria": "Download as TXT",
-    "download_txt": "Download as TXT",
-    "title": "Vehicles per Squad",
+
+  "squad_vehicles_panel": {
+    "panel_header": "Vehicles per Squad",
     "table_filters_aria": "Table filters",
-    "filter_squad": "Filter Squad",
-    "filter_member": "Filter Member",
-    "filter_vehicle_id": "Filter Vehicle ID",
-    "filter_vehicle_class": "Filter Vehicle Class",
-    "analysis_title": "Vehicles per Squad Analysis",
+    "filter_squad": "Filter by Squad",
+    "filter_member": "Filter by Member",
+    "filter_vehicle_id": "Filter by Vehicle ID",
+    "filter_vehicle_class": "Filter by Vehicle Class",
     "no_vehicles": "no Vehicles",
     "no_squads_or_members": "No squads or members found.",
     "analysis_empty": "Analysis is empty. Please adjust filters or data.",
-    "posted_to_discord": "Posted to Discord with file attachment!",
-    "failed_post": "Failed to post. Check the webhook URL and try again.",
-    "status_posted_prefix": "Posted",
     "table_aria_label": "Vehicles per Squad table",
     "table_col_squad_member_vehicle": "Squad / Member / Vehicle",
     "table_col_vehicle_id": "Vehicle ID",
@@ -297,11 +267,7 @@
     "vehicles": "{{count}} vehicles"
   },
   "single_panel": {
-    "panel_not_found": "Panel not found.",
-    "failed_export_image": "Failed to export image.",
-    "posted_to_discord": "Posted to Discord with image!",
-    "failed_post": "Failed to post. Check the webhook URL and try again.",
-    "status_posted_prefix": "Posted",
+    "failed_export": "Failed to export",
     "export_panel_as_image_aria": "Export panel as image",
     "export_panel_as_image": "Export as Image",
     "send_panel_to_discord_aria": "Send panel to Discord",

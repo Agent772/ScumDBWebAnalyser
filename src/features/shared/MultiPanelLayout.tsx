@@ -177,7 +177,7 @@ export function MultiPanelLayout({
         <button
           type="button"
           className="btn-download"
-          aria-label={t('multi_panel.export_all_as_zip_aria')}
+          aria-label={t('multi_panel.export_all_as_zip')}
           onClick={handleExportAll}
         >
           {t('multi_panel.export_all_as_zip')}
@@ -185,7 +185,7 @@ export function MultiPanelLayout({
         <button
           type="button"
           className="btn-discord"
-          aria-label={t('multi_panel.send_all_to_discord_aria')}
+          aria-label={t('multi_panel.send_all_to_discord')}
           onClick={() => setDiscordOpen(true)}
         >
           <DiscordIcon width={20} height={20} style={{ verticalAlign: 'middle', marginRight: 6 }} />

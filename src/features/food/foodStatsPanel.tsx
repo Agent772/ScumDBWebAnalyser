@@ -48,8 +48,8 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
     <MultiPanelLayout
       groupCount={2}
       getPanelHeader={i => {
-        if (i === 0) return t('food_stats.food_and_drink_overview');
-        if (i === 1) return t('food_stats.body_response');
+        if (i === 0) return t('food_panel.panel_header');
+        if (i === 1) return t('food_panel.panel_header_2');
         return '';
       }}
       getPanelFileName={i => {
@@ -64,11 +64,11 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
             <>
               {/* Food Eaten Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('food_stats.food_eaten')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('food_panel.food_eaten')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={foodEatenData}
-                    kpiLabel={t('food_stats.food_eaten')}
+                    kpiLabel={t('food_panel.food_eaten')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -77,11 +77,11 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
               </div>
               {/* Liquid Drank Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('food_stats.liquid_drank')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('food_panel.liquid_drank')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={liquidDrankData}
-                    kpiLabel={t('food_stats.liquid_drank')}
+                    kpiLabel={t('food_panel.liquid_drank')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -90,11 +90,11 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
               </div>
               {/* Mushrooms Eaten Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('food_stats.mushrooms_eaten')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('food_panel.mushrooms_eaten')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={mushroomsEatenData}
-                    kpiLabel={t('food_stats.mushrooms_eaten')}
+                    kpiLabel={t('food_panel.mushrooms_eaten')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -103,11 +103,11 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
               </div>
               {/* Alcohol Drank Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('food_stats.alcohol_drank')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('food_panel.alcohol_drank')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={alcoholDrankData}
-                    kpiLabel={t('food_stats.alcohol_drank')}
+                    kpiLabel={t('food_panel.alcohol_drank')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -116,11 +116,11 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
               </div>
               {/* Total Calories Intake Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('food_stats.total_calories_intake')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('food_panel.total_calories_intake')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={totalCaloriesIntakeData}
-                    kpiLabel={t('food_stats.total_calories_intake')}
+                    kpiLabel={t('food_panel.total_calories_intake')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -155,11 +155,11 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
             <>
               {/* Urination Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('food_stats.urinations')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('food_panel.urinations')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={urinationData}
-                    kpiLabel={t('food_stats.urinations')}
+                    kpiLabel={t('food_panel.urinations')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -168,11 +168,11 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
               </div>
               {/* Defecation Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('food_stats.defecations')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('food_panel.defecations')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={defecationData}
-                    kpiLabel={t('food_stats.defecations')}
+                    kpiLabel={t('food_panel.defecations')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -181,11 +181,11 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
               </div>
               {/* Diarrhea Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('food_stats.diarrheas')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('food_panel.diarrheas')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={diarrheaData}
-                    kpiLabel={t('food_stats.diarrheas')}
+                    kpiLabel={t('food_panel.diarrheas')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -194,11 +194,11 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
               </div>
               {/* Vomit Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('food_stats.vomits')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('food_panel.vomits')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={vomitData}
-                    kpiLabel={t('food_stats.vomits')}
+                    kpiLabel={t('food_panel.vomits')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -207,11 +207,11 @@ export function FoodStatsPanel({ db }: FoodStatsPanelProps) {
               </div>
               {/* Starvation Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('food_stats.starvation')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('food_panel.starvation')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={starvationData}
-                    kpiLabel={t('food_stats.starvation')}
+                    kpiLabel={t('food_panel.starvation')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}

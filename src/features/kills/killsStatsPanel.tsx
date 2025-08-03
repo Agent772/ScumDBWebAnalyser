@@ -75,10 +75,10 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
     <MultiPanelLayout
       groupCount={4}
       getPanelHeader={i => {
-        if (i === 0) return t('kills_stats.kills_leaderboards');
-        if (i === 1) return t('kills_stats.puppets_prisoners_kills');
-        if (i === 2) return t('kills_stats.weapons_details');
-        if (i === 3) return t('kills_stats.shots_melee_stats');
+        if (i === 0) return t('kills_panel.panel_header');
+        if (i === 1) return t('kills_panel.panel_header_2');
+        if (i === 2) return t('kills_panel.panel_header_3');
+        if (i === 3) return t('kills_panel.panel_header_4');
         return '';
       }}
       getPanelFileName={i => {
@@ -96,11 +96,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
               <ColorLegendPanel idSuffix={String(groupIndex)} min={killsData.colorCodingMin!} max={killsData.colorCodingMax!} label={t('time_played_m')} />
               {/* Kills Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.kills')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.kills')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={killsData}
-                    kpiLabel={t('kills_stats.kills')}
+                    kpiLabel={t('kills_panel.kills')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -110,11 +110,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* Death Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.deaths')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.deaths')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={deathData}
-                    kpiLabel={t('kills_stats.deaths')}
+                    kpiLabel={t('kills_panel.deaths')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -124,11 +124,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* Longest Kill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.longest_kill')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.longest_kill')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={longestKillDistanceData}
-                    kpiLabel={t('kills_stats.longest_kill')}
+                    kpiLabel={t('kills_panel.longest_kill')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -138,12 +138,12 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* All KD Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.all_kd')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.all_kd')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={highestAllKDData}
-                    kpiLabel={t('kills_stats.all_kd')}
-                    coloringLabel={t('kills_stats.kills')}
+                    kpiLabel={t('kills_panel.all_kd')}
+                    coloringLabel={t('kills_panel.kills')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -157,11 +157,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
             <>
               {/* Puppet Kill Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.puppet_kills')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.puppet_kills')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={puppetKilledData}
-                    kpiLabel={t('kills_stats.puppet_kills')}
+                    kpiLabel={t('kills_panel.puppet_kills')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -171,11 +171,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* Prisoner Kills Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.prisoner_kills')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.prisoner_kills')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={prisonerKillsData}
-                    kpiLabel={t('kills_stats.prisoner_kills')}
+                    kpiLabel={t('kills_panel.prisoner_kills')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -185,11 +185,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* Deaths by Prisoners Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.deaths_by_prisoners')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.deaths_by_prisoners')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={deathByPrisonersData}
-                    kpiLabel={t('kills_stats.deaths_by_prisoners')}
+                    kpiLabel={t('kills_panel.deaths_by_prisoners')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -199,12 +199,12 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
               
               {/* Prisoner KD Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.prisoner_kd')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.prisoner_kd')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={highestPrisonerKDData}
-                    kpiLabel={t('kills_stats.prisoner_kd')}
-                    coloringLabel={t('kills_stats.prisoner_kills')}
+                    kpiLabel={t('kills_panel.prisoner_kd')}
+                    coloringLabel={t('kills_panel.prisoner_kills')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -213,11 +213,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* Puppets KO Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.puppets_ko')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.puppets_ko')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={puppetsKnockedOutData}
-                    kpiLabel={t('kills_stats.puppets_ko')}
+                    kpiLabel={t('kills_panel.puppets_ko')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -226,11 +226,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
               </div>
               {/* Player KO Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.player_ko')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.player_ko')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={playerKnockedOutData}
-                    kpiLabel={t('kills_stats.player_ko')}
+                    kpiLabel={t('kills_panel.player_ko')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -245,11 +245,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
             <>
               {/* Melee Kills Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.melee_kills')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.melee_kills')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={meleeKillsData}
-                    kpiLabel={t('kills_stats.melee_kills')}
+                    kpiLabel={t('kills_panel.melee_kills')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -259,11 +259,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* Archery Kills Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.archery_kills')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.archery_kills')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={archeryKillsData}
-                    kpiLabel={t('kills_stats.archery_kills')}
+                    kpiLabel={t('kills_panel.archery_kills')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -273,11 +273,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* Firearm Kills Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.firearm_kills')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.firearm_kills')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={firearmKillsData}
-                    kpiLabel={t('kills_stats.firearm_kills')}
+                    kpiLabel={t('kills_panel.firearm_kills')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -287,11 +287,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* Bare Handed Kills Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.bare_handed_kills')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.bare_handed_kills')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={bareHandedKillsData}
-                    kpiLabel={t('kills_stats.bare_handed_kills')}
+                    kpiLabel={t('kills_panel.bare_handed_kills')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -301,11 +301,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
                 {/* Drone Kills Chart */}
                 <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-                  <div style={{ ...chartHeaderStyle }}>{t('kills_stats.drone_kills')}</div>
+                  <div style={{ ...chartHeaderStyle }}>{t('kills_panel.drone_kills')}</div>
                   <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                     <LeaderboardBarChart
                       data={droneKillsData}
-                      kpiLabel={t('kills_stats.drone_kills')}
+                      kpiLabel={t('kills_panel.drone_kills')}
                       coloringLabel={t('time_played_m')}
                       yAxisWidth={120}
                       disableAnimation={disableAnimation}
@@ -315,11 +315,11 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
                 {/* Sentry Kills Chart */}
                 <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '10 / 14' }}>
-                  <div style={{ ...chartHeaderStyle }}>{t('kills_stats.sentry_kills')}</div>
+                  <div style={{ ...chartHeaderStyle }}>{t('kills_panel.sentry_kills')}</div>
                   <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                     <LeaderboardBarChart
                       data={sentryKillsData}
-                      kpiLabel={t('kills_stats.sentry_kills')}
+                      kpiLabel={t('kills_panel.sentry_kills')}
                       coloringLabel={t('time_played_m')}
                       yAxisWidth={120}
                       disableAnimation={disableAnimation}
@@ -332,14 +332,14 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
             // Panel 4
             return (
             <>
-              <ColorLegendPanel idSuffix={String(groupIndex)} min={shotsHitData.colorCodingMin!} max={shotsHitData.colorCodingMax!} label={t('kills_stats.shots_fired')} />
+              <ColorLegendPanel idSuffix={String(groupIndex)} min={shotsHitData.colorCodingMin!} max={shotsHitData.colorCodingMax!} label={t('kills_panel.shots_fired')} />
               {/* Shots Fired Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.shots_fired')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.shots_fired')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={shotsFiredData}
-                    kpiLabel={t('kills_stats.shots_fired')}
+                    kpiLabel={t('kills_panel.shots_fired')}
                     coloringLabel={t('time_played_m')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
@@ -349,12 +349,12 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* Shots Hit Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.shots_hit')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.shots_hit')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={shotsHitData}
-                    kpiLabel={t('kills_stats.shots_hit')}
-                    coloringLabel={t('kills_stats.shots_fired')}
+                    kpiLabel={t('kills_panel.shots_hit')}
+                    coloringLabel={t('kills_panel.shots_fired')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
@@ -363,25 +363,25 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
 
               {/* Headshots Chart */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('kills_stats.headshots')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('kills_panel.headshots')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={headshotsData}
-                    kpiLabel={t('kills_stats.headshots')}
-                    coloringLabel={t('kills_stats.shots_fired')}
+                    kpiLabel={t('kills_panel.headshots')}
+                    coloringLabel={t('kills_panel.shots_fired')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />
                 </div>
-                <ChartFooter text={t('kills_stats.headshots_footer')} />
+                <ChartFooter text={t('kills_panel.headshots_footer')} />
               </div>
 
               {/* Accuracy Chart with Material UI Slider beside header */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '8 / 14' }}>
                 <div style={{ ...chartHeaderStyle, display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <span>{t('kills_stats.accuracy')}</span>
+                  <span>{t('kills_panel.accuracy')}</span>
                   <div style={{ display: 'flex', alignItems: 'center', fontWeight: 400, fontSize: 11 }}>
-                    <span style={{ marginRight: 6, marginLeft: 50 }}>{t('kills_stats.min_shots_fired')}:</span>
+                    <span style={{ marginRight: 6, marginLeft: 50 }}>{t('kills_panel.min_shots_fired')}:</span>
                     <Slider
                       value={accuracyThreshold}
                       min={0}
@@ -408,8 +408,8 @@ export function KillStatsPanel({ db }: KillStatsPanelProps) {
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={highestAccuracyData}
-                    kpiLabel={t('kills_stats.accuracy')}
-                    coloringLabel={t('kills_stats.shots_fired')}
+                    kpiLabel={t('kills_panel.accuracy')}
+                    coloringLabel={t('kills_panel.shots_fired')}
                     yAxisWidth={120}
                     disableAnimation={disableAnimation}
                   />

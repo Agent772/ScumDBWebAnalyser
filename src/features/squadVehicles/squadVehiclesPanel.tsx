@@ -61,16 +61,16 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
       // Check if any member matches
       const filteredMembers = squad.members.filter(m => m.name.toLowerCase().includes(filter.member.toLowerCase()));
       if (filteredMembers.length === 0) return;
-      txt += `${squad.squadName}  (${t('squad_vehicles.members', { count: squad.members.length })}, ${t('squad_vehicles.vehicles', { count: squadVehicleCount(squad) })})\n`;
+      txt += `${squad.squadName}  (${t('squad_vehicles_panel.members', { count: squad.members.length })}, ${t('squad_vehicles_panel.vehicles', { count: squadVehicleCount(squad) })})\n`;
       filteredMembers.forEach(member => {
-        txt += `  ${member.name}  (${t('squad_vehicles.vehicles', { count: member.vehicles.length })})\n`;
+        txt += `  ${member.name}  (${t('squad_vehicles_panel.vehicles', { count: member.vehicles.length })})\n`;
         // Filter vehicles for this member
         const filteredVehicles = member.vehicles.filter(v =>
           (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
           v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
         );
         if (filteredVehicles.length === 0) {
-          txt += `    – ${t('squad_vehicles.no_vehicles')} –\n`;
+          txt += `    – ${t('squad_vehicles_panel.no_vehicles')} –\n`;
         } else {
           filteredVehicles.forEach(v => {
             txt += `    ${v.entity_id}\t${v.vehicle_class}\n`;
@@ -79,7 +79,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
       });
       txt += '\n';
     });
-    if (!txt.trim()) txt = t('squad_vehicles.no_squads_or_members');
+    if (!txt.trim()) txt = t('squad_vehicles_panel.no_squads_or_members');
     const blob = new Blob([txt], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -134,24 +134,25 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
 
   // Discord modal state
   const [discordOpen, setDiscordOpen] = useState(false);
-  const [discordStatus, setDiscordStatus] = useState<string | null>(null);
+  // Discord status: { type: 'success' | 'error', message: string }
+  const [discordStatus, setDiscordStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
   // Generate the analysis txt (same as download, but as string)
   function getAnalysisTxt() {
-    let txt = t('squad_vehicles.analysis_title') + '\n\n';
+    let txt = t('squad_vehicles_panel.panel_header') + '\n\n';
     const filteredSquads = squadGroups.filter(sq => sq.squadName.toLowerCase().includes(filter.squad.toLowerCase()));
     filteredSquads.forEach(squad => {
       const filteredMembers = squad.members.filter(m => m.name.toLowerCase().includes(filter.member.toLowerCase()));
       if (filteredMembers.length === 0) return;
-      txt += `${squad.squadName}  (${t('squad_vehicles.members', { count: squad.members.length })}, ${t('squad_vehicles.vehicles', { count: squadVehicleCount(squad) })})\n`;
+      txt += `${squad.squadName}  (${t('squad_vehicles_panel.members', { count: squad.members.length })}, ${t('squad_vehicles_panel.vehicles', { count: squadVehicleCount(squad) })})\n`;
       filteredMembers.forEach(member => {
-        txt += `  ${member.name}  (${t('squad_vehicles.vehicles', { count: member.vehicles.length })})\n`;
+        txt += `  ${member.name}  (${t('squad_vehicles_panel.vehicles', { count: member.vehicles.length })})\n`;
         const filteredVehicles = member.vehicles.filter(v =>
           (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
           v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
         );
         if (filteredVehicles.length === 0) {
-          txt += `    – ${t('squad_vehicles.no_vehicles')} –\n`;
+          txt += `    – ${t('squad_vehicles_panel.no_vehicles')} –\n`;
         } else {
           filteredVehicles.forEach(v => {
             txt += `    ${v.entity_id}\t${v.vehicle_class}\n`;
@@ -160,7 +161,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
       });
       txt += '\n';
     });
-    if (!txt.trim()) txt = t('squad_vehicles.no_squads_or_members');
+    if (!txt.trim()) txt = t('squad_vehicles_panel.no_squads_or_members');
     return txt;
   }
 
@@ -169,7 +170,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
     setDiscordStatus(null);
     const txt = getAnalysisTxt();
     if (!txt.trim()) {
-      setDiscordStatus(t('squad_vehicles.analysis_empty'));
+      setDiscordStatus({ type: 'error', message: t('squad_vehicles_panel.analysis_empty') });
       return;
     }
     // Create a Blob for the file attachment
@@ -178,13 +179,16 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
     // Optionally include a message above the file
     const content = info.message ? info.message : '';
     const ok = await postToDiscordWebhook(info, content, file, filename);
-    setDiscordStatus(ok ? t('squad_vehicles.posted_to_discord') : t('squad_vehicles.failed_post'));
+    setDiscordStatus(ok
+      ? { type: 'success', message: t('discord.posted') }
+      : { type: 'error', message: t('discord.failed') }
+    );
     if (ok) setDiscordOpen(false);
   }
 
   // Render
   return (
-    <section style={{ width: '100%' }} aria-label={t('squad_vehicles.aria_label')} role="region">
+    <section style={{ width: '100%' }} aria-label={t('squad_vehicles_panel.panel_header')} role="region">
       <div
         style={{
           display: 'flex',
@@ -198,11 +202,11 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         <button
           type="button"
           className='btn-download'
-          aria-label={t('squad_vehicles.download_txt_aria')}
+          aria-label={t('download_txt')}
           style={{ marginTop: 0 }}
           onClick={downloadTxt}
         >
-          {t('squad_vehicles.download_txt')}
+          {t('download_txt')}
         </button>
         <button
           type="button"
@@ -226,13 +230,13 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         }}
         tabIndex={0}
       >
-        {t('squad_vehicles.title')}
+        {t('squad_vehicles_panel.panel_header')}
       </h2>
-      <div className="analysis-table-filters" aria-label={t('squad_vehicles.table_filters_aria')}>
-        <input className="analysis-table-filter" placeholder={t('squad_vehicles.filter_squad')} value={filter.squad} onChange={e => setFilter(f => ({ ...f, squad: e.target.value }))} aria-label={t('squad_vehicles.filter_squad')} />
-        <input className="analysis-table-filter" placeholder={t('squad_vehicles.filter_member')} value={filter.member} onChange={e => setFilter(f => ({ ...f, member: e.target.value }))} aria-label={t('squad_vehicles.filter_member')} />
-        <input className="analysis-table-filter" placeholder={t('squad_vehicles.filter_vehicle_id')} value={filter.vehicle_id} onChange={e => setFilter(f => ({ ...f, vehicle_id: e.target.value }))} aria-label={t('squad_vehicles.filter_vehicle_id')} />
-        <input className="analysis-table-filter" placeholder={t('squad_vehicles.filter_vehicle_class')} value={filter.vehicle_class} onChange={e => setFilter(f => ({ ...f, vehicle_class: e.target.value }))} aria-label={t('squad_vehicles.filter_vehicle_class')} />
+      <div className="analysis-table-filters" aria-label={t('squad_vehicles_panel.table_filters_aria')}>
+        <input className="analysis-table-filter" placeholder={t('squad_vehicles_panel.filter_squad')} value={filter.squad} onChange={e => setFilter(f => ({ ...f, squad: e.target.value }))} aria-label={t('squad_vehicles_panel.filter_squad')} />
+        <input className="analysis-table-filter" placeholder={t('squad_vehicles_panel.filter_member')} value={filter.member} onChange={e => setFilter(f => ({ ...f, member: e.target.value }))} aria-label={t('squad_vehicles_panel.filter_member')} />
+        <input className="analysis-table-filter" placeholder={t('squad_vehicles_panel.filter_vehicle_id')} value={filter.vehicle_id} onChange={e => setFilter(f => ({ ...f, vehicle_id: e.target.value }))} aria-label={t('squad_vehicles_panel.filter_vehicle_id')} />
+        <input className="analysis-table-filter" placeholder={t('squad_vehicles_panel.filter_vehicle_class')} value={filter.vehicle_class} onChange={e => setFilter(f => ({ ...f, vehicle_class: e.target.value }))} aria-label={t('squad_vehicles_panel.filter_vehicle_class')} />
       </div>
       {discordOpen && (
         <DiscordModal
@@ -245,23 +249,23 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         <div
           role="status"
           aria-live="polite"
-          style={{ color: discordStatus.startsWith(t('squad_vehicles.status_posted_prefix')) ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
+          style={{ color: discordStatus.type === 'success' ? COLORS.success : COLORS.error, fontWeight: 600, margin: '10px 0' }}
         >
-          {discordStatus}
+          {discordStatus.message}
         </div>
       )}
       <div style={{ overflowX: 'auto' }}>
-        <table className="analysis-table" aria-label={t('squad_vehicles.table_aria_label')}>
+        <table className="analysis-table" aria-label={t('squad_vehicles_panel.table_aria_label')}>
           <thead>
             <tr>
-              <th style={{ width: '40%' }}>{t('squad_vehicles.table_col_squad_member_vehicle')}</th>
-              <th style={{ width: '20%' }}>{t('squad_vehicles.table_col_vehicle_id')}</th>
-              <th style={{ width: '40%' }}>{t('squad_vehicles.table_col_vehicle_class')}</th>
+              <th style={{ width: '40%' }}>{t('squad_vehicles_panel.table_col_squad_member_vehicle')}</th>
+              <th style={{ width: '20%' }}>{t('squad_vehicles_panel.table_col_vehicle_id')}</th>
+              <th style={{ width: '40%' }}>{t('squad_vehicles_panel.table_col_vehicle_class')}</th>
             </tr>
           </thead>
           <tbody>
             {squadGroups.length === 0 && (
-              <tr><td colSpan={3} className="no-vehicles-row">{t('squad_vehicles.no_squads_or_members')}</td></tr>
+              <tr><td colSpan={3} className="no-vehicles-row">{t('squad_vehicles_panel.no_squads_or_members')}</td></tr>
             )}
             {squadGroups.filter(sq => sq.squadName.toLowerCase().includes(filter.squad.toLowerCase())).map((squad, sIdx) => {
               // Filter members
@@ -270,11 +274,11 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
               const squadOpen = openSquads[squad.squadName] !== false;
               return (
                 <React.Fragment key={squad.squadName + sIdx}>
-                  <tr className="squad-row" onClick={() => toggleSquad(squad.squadName)} tabIndex={0} aria-label={t('squad_vehicles.squad_aria_label', { name: squad.squadName, members: squad.members.length, vehicles: squadVehicleCount(squad) })}>
+                  <tr className="squad-row" onClick={() => toggleSquad(squad.squadName)} tabIndex={0} aria-label={t('squad_vehicles_panel.squad_aria_label', { name: squad.squadName, members: squad.members.length, vehicles: squadVehicleCount(squad) })}>
                     <td className="squad-cell" colSpan={3}>
                       <span className="arrow" aria-hidden="true">{squadOpen ? '▼' : '▶'}</span>{squad.squadName}
                       <span className="count">
-                        ({t('squad_vehicles.members', { count: squad.members.length })}, {t('squad_vehicles.vehicles', { count: squadVehicleCount(squad) })})
+                        ({t('squad_vehicles_panel.members', { count: squad.members.length })}, {t('squad_vehicles_panel.vehicles', { count: squadVehicleCount(squad) })})
                       </span>
                     </td>
                   </tr>
@@ -288,15 +292,15 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
                     );
                     return (
                       <React.Fragment key={member.name + mIdx}>
-                        <tr className="member-row" onClick={e => { e.stopPropagation(); toggleMember(squad.squadName, member.name); }} tabIndex={0} aria-label={t('squad_vehicles.member_aria_label', { name: member.name, vehicles: member.vehicles.length })}>
+                        <tr className="member-row" onClick={e => { e.stopPropagation(); toggleMember(squad.squadName, member.name); }} tabIndex={0} aria-label={t('squad_vehicles_panel.member_aria_label', { name: member.name, vehicles: member.vehicles.length })}>
                           <td className="member-cell" colSpan={3}>
                             <span className="arrow" aria-hidden="true">{memberOpen ? '▼' : '▶'}</span>{member.name}
-                            <span className="count">({t('squad_vehicles.vehicles', { count: member.vehicles.length })})</span>
+                            <span className="count">({t('squad_vehicles_panel.vehicles', { count: member.vehicles.length })})</span>
                           </td>
                         </tr>
                         {memberOpen && (filteredVehicles.length === 0 ? (
                           <tr className="no-vehicles-row">
-                            <td className="vehicle-cell" colSpan={3}>– {t('squad_vehicles.no_vehicles')} –</td>
+                            <td className="vehicle-cell" colSpan={3}>– {t('squad_vehicles_panel.no_vehicles')} –</td>
                           </tr>
                         ) : (
                           filteredVehicles.map((v, vIdx) => (

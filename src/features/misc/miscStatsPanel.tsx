@@ -23,7 +23,6 @@ import { ColorLegendPanel } from '../../ui/helpers/ColorLegendPanel';
 import { chartContainerStyle, chartHeaderStyle} from '../../ui/helpers/chartHelpers';
 import { toChartData } from '../../utils/chartDataHelpers';
 import { LeaderboardBarChart } from '../../ui/helpers/LeaderboardBarChart';
-import { ChartFooter } from '../../ui/helpers/chartFooter';
 import { useTranslation } from 'react-i18next';
 
 interface MiscStatsPanelProps {
@@ -45,7 +44,7 @@ export function MiscStatsPanel({ db }: MiscStatsPanelProps) {
 
   return (
     <SinglePanelLayout
-      header={t('misc_stats.misc_stats')}
+      header={t('misc_panel.panel_header')}
       panelRef={panelRef}
       className="misc-stats-panel"
       exportFileName="misc-stats-analysis.png"
@@ -54,11 +53,11 @@ export function MiscStatsPanel({ db }: MiscStatsPanelProps) {
       {({ disableAnimation }) => <>
         {/* Highest Fat */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-          <div style={{ ...chartHeaderStyle }}>{t('misc_stats.highest_fat')}</div>
+          <div style={{ ...chartHeaderStyle }}>{t('misc_panel.highest_fat')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={highestFatData}
-              kpiLabel={t('misc_stats.highest_fat')}
+              kpiLabel={t('misc_panel.highest_fat')}
               coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
@@ -68,11 +67,11 @@ export function MiscStatsPanel({ db }: MiscStatsPanelProps) {
 
         {/* Highest Muscle Mass */}
         <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-          <div style={{ ...chartHeaderStyle }}>{t('misc_stats.highest_muscle_mass')}</div>
+          <div style={{ ...chartHeaderStyle }}>{t('misc_panel.highest_muscle_mass')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={highestMuscleMassData}
-              kpiLabel={t('misc_stats.highest_muscle_mass')}
+              kpiLabel={t('misc_panel.highest_muscle_mass')}
               coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
@@ -82,11 +81,11 @@ export function MiscStatsPanel({ db }: MiscStatsPanelProps) {
 
          {/* Foliage Cut */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-          <div style={{ ...chartHeaderStyle }}>{t('misc_stats.foliage_cut')}</div>
+          <div style={{ ...chartHeaderStyle }}>{t('misc_panel.foliage_cut')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={foliageCutData}
-              kpiLabel={t('misc_stats.foliage_cut')}
+              kpiLabel={t('misc_panel.foliage_cut')}
               coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
@@ -96,25 +95,24 @@ export function MiscStatsPanel({ db }: MiscStatsPanelProps) {
 
         {/* Heart Attacks */}
         <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-          <div style={{ ...chartHeaderStyle }}>{t('misc_stats.heart_attacks')}</div>
+          <div style={{ ...chartHeaderStyle }}>{t('misc_panel.heart_attacks')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={heartAttacksData}
-              kpiLabel={t('misc_stats.heart_attacks')}
+              kpiLabel={t('misc_panel.heart_attacks')}
               coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
           </div>
-          <ChartFooter text={t('misc_stats.heart_attacks_footer')} />
         </div>
         {/* Overdose */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-          <div style={{ ...chartHeaderStyle }}>{t('misc_stats.overdose')}</div>
+          <div style={{ ...chartHeaderStyle }}>{t('misc_panel.overdose')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={overdoseData}
-              kpiLabel={t('misc_stats.overdose')}
+              kpiLabel={t('misc_panel.overdose')}
               coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}

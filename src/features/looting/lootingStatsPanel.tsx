@@ -46,7 +46,7 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
 
   return (
     <SinglePanelLayout
-      header={t('looting_stats.looting_stats')}
+      header={t('looting_panel.panel_header')}
       panelRef={panelRef}
       className="looting-stats-panel"
       exportFileName="looting-stats-analysis.png"
@@ -55,11 +55,11 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
       {({ disableAnimation }) => <>
         {/* Locks Picked */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-          <div style={{ ...chartHeaderStyle }}>{t('looting_stats.locks_picked')}</div>
+          <div style={{ ...chartHeaderStyle }}>{t('looting_panel.locks_picked')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={locksPickedData}
-              kpiLabel={t('looting_stats.locks_picked')}
+              kpiLabel={t('looting_panel.locks_picked')}
               coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
@@ -69,11 +69,11 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
 
         {/* Containers Looted */}
         <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-          <div style={{ ...chartHeaderStyle }}>{t('looting_stats.containers_looted')}</div>
+          <div style={{ ...chartHeaderStyle }}>{t('looting_panel.containers_looted')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={containersLootedData}
-              kpiLabel={t('looting_stats.containers_looted')}
+              kpiLabel={t('looting_panel.containers_looted')}
               coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
@@ -83,11 +83,11 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
 
          {/* Items picked up */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-          <div style={{ ...chartHeaderStyle }}>{t('looting_stats.items_picked_up')}</div>
+          <div style={{ ...chartHeaderStyle }}>{t('looting_panel.items_picked_up')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={itemsPickedUpData}
-              kpiLabel={t('looting_stats.items_picked_up')}
+              kpiLabel={t('looting_panel.items_picked_up')}
               coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
@@ -97,25 +97,25 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
 
         {/* Items put into Containers */}
         <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-          <div style={{ ...chartHeaderStyle }}>{t('looting_stats.items_put_into_containers')}</div>
+          <div style={{ ...chartHeaderStyle }}>{t('looting_panel.items_put_into_containers')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={itemsPutIntoContainersData}
-              kpiLabel={t('looting_stats.items_put_into_containers')}
-              coloringLabel={t('looting_stats.items_picked_up')}
+              kpiLabel={t('looting_panel.items_put_into_containers')}
+              coloringLabel={t('looting_panel.items_picked_up')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
             />
           </div>
-          <ChartFooter text={t('looting_stats.items_put_into_containers_footer')} />
+          <ChartFooter text={t('looting_panel.items_put_into_containers_footer')} />
         </div>
         {/* Highest Weight carried */}
         <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-          <div style={{ ...chartHeaderStyle }}>{t('looting_stats.highest_weight_carried')}</div>
+          <div style={{ ...chartHeaderStyle }}>{t('looting_panel.highest_weight_carried')}</div>
           <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
             <LeaderboardBarChart
               data={highestWeightCarriedData}
-              kpiLabel={t('looting_stats.highest_weight_carried')}
+              kpiLabel={t('looting_panel.highest_weight_carried')}
               coloringLabel={t('time_played_m')}
               yAxisWidth={120}
               disableAnimation={disableAnimation}
@@ -159,7 +159,7 @@ export function LootingStatsPanel({ db }: LootingStatsPanelProps) {
           <ColorLegendPanel
             min={itemsPutIntoContainersData.colorCodingMin!}
             max={itemsPutIntoContainersData.colorCodingMax!}
-            label={t('looting_stats.items_picked_up')}
+            label={t('looting_panel.items_picked_up')}
           />
         </div>
       </>}

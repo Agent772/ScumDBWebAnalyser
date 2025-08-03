@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import './i18n';
+import { LanguageSelector } from './ui/LanguageSelector';
+import './utils/i18n';
 import { useTranslation } from 'react-i18next';
 import initSqlJs, { Database } from 'sql.js';
 import { SquadVehiclesPanel } from './features/squadVehicles/squadVehiclesPanel';
@@ -18,9 +18,10 @@ import { LootingStatsPanel } from './features/looting/lootingStatsPanel';
 import { FoodStatsPanel } from './features/food/foodStatsPanel';
 import { MiscStatsPanel } from './features/misc/miscStatsPanel';
 import './index.css';
+import { useState } from 'react';
 
 function App() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [db, setDb] = useState<Database | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -72,17 +73,12 @@ function App() {
           <img src="/src/ui/assets/logo.svg" alt="ScumDB Web Analyzer Logo" style={{ width: 40, height: 40 }} />
           <span style={{ fontWeight: 700, fontSize: '1.5rem', letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t('app_title')}</span>
         </div>
-        {/* Language Switcher */}
-        <div style={{ marginRight: 16 }}>
-          <button onClick={() => i18n.changeLanguage('en')} style={{ marginRight: 6, padding: '0.2em 0.7em', borderRadius: 4, border: '1px solid #ccc', background: i18n.language === 'en' ? '#eee' : 'transparent', cursor: 'pointer' }}>EN</button>
-          <button onClick={() => i18n.changeLanguage('de')} style={{ padding: '0.2em 0.7em', borderRadius: 4, border: '1px solid #ccc', background: i18n.language === 'de' ? '#eee' : 'transparent', cursor: 'pointer' }}>DE</button>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginRight: 45 }}>
           <a
             href="https://www.buymeacoffee.com/Agent772"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ display: 'inline-block', marginRight: 12 }}
+            style={{ display: 'inline-block' }}
           >
             <img
               src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
@@ -110,7 +106,6 @@ function App() {
               transition: 'background 0.2s, border 0.2s',
               cursor: 'pointer',
               minWidth: 0,
-              marginRight: '60px',
             }}
           >
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ display: 'inline', verticalAlign: 'middle' }} xmlns="http://www.w3.org/2000/svg">
@@ -118,6 +113,7 @@ function App() {
             </svg>
             GitHub
           </a>
+          <LanguageSelector />
         </div>
       </header>
 

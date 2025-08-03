@@ -40,8 +40,8 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
     <MultiPanelLayout
       groupCount={2}
       getPanelHeader={i => {
-        if (i === 0) return t('survival_stats.famepoints_time_header');
-        if (i === 1) return t('survival_stats.survival_stats_header');
+        if (i === 0) return t('survival_panel.panel_header');
+        if (i === 1) return t('survival_panel.panel_header_2');
         return '';
       }}
       getPanelFileName={i => {
@@ -58,17 +58,17 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
                 idSuffix={String(groupIndex)}
                 min={fpData.colorCodingMin ?? 0}
                 max={fpData.colorCodingMax ?? 0}
-                label={t('survival_stats.played_time')}
+                label={t('time_played_m')}
               />
               {/* FP */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 8'}}>
-                <div style={{ ...chartHeaderStyle}}>{t('survival_stats.famepoints')}</div>
+                <div style={{ ...chartHeaderStyle}}>{t('survival_panel.famepoints')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={fpData}
-                    kpiLabel={t('survival_stats.famepoints')}
+                    kpiLabel={t('survival_panel.famepoints')}
                     yAxisWidth={120}
-                    coloringLabel={t('survival_stats.played_time')}
+                    coloringLabel={t('time_played_m')}
                     disableAnimation={disableAnimation}
                   />
                 </div>
@@ -76,13 +76,13 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
 
               {/* Highest FP */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 8' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('survival_stats.highest_famepoints')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('survival_panel.highest_famepoints')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={highestFPData}
-                    kpiLabel={t('survival_stats.highest_famepoints')}
+                    kpiLabel={t('survival_panel.highest_famepoints')}
                     yAxisWidth={120}
-                    coloringLabel={t('survival_stats.played_time')}
+                    coloringLabel={t('time_played_m')}
                     disableAnimation={disableAnimation}
                   />
                 </div>
@@ -90,13 +90,13 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
 
               {/* Survived Time*/}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('survival_stats.survived_time')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('survival_panel.survived_time')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={survivedTimeData}
-                    kpiLabel={t('survival_stats.survived_time')}
+                    kpiLabel={t('survival_panel.survived_time')}
                     yAxisWidth={120}
-                    coloringLabel={t('survival_stats.played_time')}
+                    coloringLabel={t('time_played_m')}
                     disableAnimation={disableAnimation}
                   />
                 </div>
@@ -104,13 +104,13 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
 
               {/* Time Dead*/}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '8 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('survival_stats.time_dead')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('survival_panel.time_dead')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={timeDeadData}
-                    kpiLabel={t('survival_stats.time_dead')}
+                    kpiLabel={t('survival_panel.time_dead')}
                     yAxisWidth={120}
-                    coloringLabel={t('survival_stats.played_time')}
+                    coloringLabel={t('time_played_m')}
                     disableAnimation={disableAnimation}
                   />
                 </div>
@@ -123,13 +123,13 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
             <>
               {/* Wounds Patched */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('survival_stats.wounds_patched')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('survival_panel.wounds_patched')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={woundsPatchedData}
-                    kpiLabel={t('survival_stats.wounds_patched')}
+                    kpiLabel={t('survival_panel.wounds_patched')}
                     yAxisWidth={120}
-                    coloringLabel={t('survival_stats.played_time')}
+                    coloringLabel={t('time_played_m')}
                     disableAnimation={disableAnimation}
                   />
                 </div>
@@ -137,13 +137,13 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
 
               {/* Teeth Lost */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '2 / 6' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('survival_stats.teeth_lost')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('survival_panel.teeth_lost')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={teethLostData}
-                    kpiLabel={t('survival_stats.teeth_lost')}
+                    kpiLabel={t('survival_panel.teeth_lost')}
                     yAxisWidth={120}
-                    coloringLabel={t('survival_stats.played_time')}
+                    coloringLabel={t('time_played_m')}
                     disableAnimation={disableAnimation}
                   />
                 </div>
@@ -151,13 +151,13 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
 
               {/* Highest Damage Taken */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('survival_stats.highest_damage_taken')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('survival_panel.highest_damage_taken')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={highestDamageTakenData}
-                    kpiLabel={t('survival_stats.highest_damage_taken')}
+                    kpiLabel={t('survival_panel.highest_damage_taken')}
                     yAxisWidth={120}
-                    coloringLabel={t('survival_stats.played_time')}
+                    coloringLabel={t('time_played_m')}
                     disableAnimation={disableAnimation}
                   />
                 </div>
@@ -165,13 +165,13 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
 
               {/* Times Mauled By Bear */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '6 / 10' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('survival_stats.animals_panel.times_mauled_by_bear')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('survival_panel.animals_panel.times_mauled_by_bear')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={timesMauledByBearData}
-                    kpiLabel={t('survival_stats.animals_panel.times_mauled_by_bear')}
+                    kpiLabel={t('survival_panel.animals_panel.times_mauled_by_bear')}
                     yAxisWidth={120}
-                    coloringLabel={t('survival_stats.played_time')}
+                    coloringLabel={t('time_played_m')}
                     disableAnimation={disableAnimation}
                   />
                 </div>
@@ -179,13 +179,13 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
 
               {/* Times Caught By Shark */}
               <div style={{ ...chartContainerStyle, gridColumn: '1 / 7', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('survival_stats.times_caught_by_shark')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('survival_panel.times_caught_by_shark')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={timesCaughtBySharkData}
-                    kpiLabel={t('survival_stats.times_caught_by_shark')}
+                    kpiLabel={t('survival_panel.times_caught_by_shark')}
                     yAxisWidth={120}
-                    coloringLabel={t('survival_stats.played_time')}
+                    coloringLabel={t('time_played_m')}
                     disableAnimation={disableAnimation}
                   />
                 </div>
@@ -193,13 +193,13 @@ export function SurvivalStatsPanel({ db }: { db: Database }) {
 
               {/* Times Escaped Shark Bite */}
               <div style={{ ...chartContainerStyle, gridColumn: '7 / 13', gridRow: '10 / 14' }}>
-                <div style={{ ...chartHeaderStyle }}>{t('survival_stats.times_escaped_shark_bite')}</div>
+                <div style={{ ...chartHeaderStyle }}>{t('survival_panel.times_escaped_shark_bite')}</div>
                 <div style={{ flex: 1, minHeight: 0, minWidth: 0, width: '100%' }}>
                   <LeaderboardBarChart
                     data={timesEscapedSharkBiteData}
-                    kpiLabel={t('survival_stats.times_escaped_shark_bite')}
+                    kpiLabel={t('survival_panel.times_escaped_shark_bite')}
                     yAxisWidth={120}
-                    coloringLabel={t('survival_stats.played_time')}
+                    coloringLabel={t('time_played_m')}
                     disableAnimation={disableAnimation}
                   />
                 </div>

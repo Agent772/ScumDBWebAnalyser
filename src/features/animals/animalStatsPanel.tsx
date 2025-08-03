@@ -59,8 +59,8 @@ interface AnimalStatsPanelProps {
       groupCount={3}
       getPanelHeader={i => {
         if (i === 0) return t('animals_panel.panel_header');
-        if (i === 1) return t('animals_panel.single_animal_kills', { page: 1 });
-        if (i === 2) return t('animals_panel.single_animal_kills', { page: 2 });
+        if (i === 1) return t('animals_panel.panel_header_2', { page: 1 });
+        if (i === 2) return t('animals_panel.panel_header_2', { page: 2 });
         return '';
       }}
       getPanelFileName={i => {
