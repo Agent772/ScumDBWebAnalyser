@@ -70,7 +70,7 @@ Below are example screenshots of the app in action. (Player names and sensitive 
 
 > _A free-to-use web version will be available soon at:_
 >
-> **[https://yourdomain.example.com](https://yourdomain.example.com)**
+> **[https://scum-analyzer.agent772-tools.de/](https://scum-analyzer.agent772-tools.de/)**
 >
 > _Bookmark this page for updates!_
 
