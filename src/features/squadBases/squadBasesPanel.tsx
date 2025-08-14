@@ -196,6 +196,23 @@ export function SquadBasesPanel({ db }: squadBaseProps) {
     <section style={{ width: '100%' }} aria-label={t('squad_base_panel.panel_header')} role="region">
       <div
         style={{
+          background: '#fffbe6',
+          color: '#8a6d3b',
+          border: '1px solid #faebcc',
+          borderRadius: 6,
+          padding: '12px 18px',
+          marginBottom: 16,
+          fontSize: '1rem',
+          fontWeight: 500,
+          boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
+        }}
+        role="note"
+        aria-live="polite"
+      >
+        ⚠️ <strong>{t('squad_base_panel.wip_hint', 'This panel is a work in progress. Not every flag is attributed correctly yet.')}</strong>
+      </div>
+      <div
+        style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-end',
@@ -292,15 +309,22 @@ export function SquadBasesPanel({ db }: squadBaseProps) {
                     const filteredBases = member.bases.filter(b =>
                       filter.base_location === '' || `${b.location_x},${b.location_y}`.includes(filter.base_location)
                     );
+                    const hasBases = member.bases.length > 0;
                     return (
                       <React.Fragment key={member.name + mIdx}>
-                        <tr className="member-row" onClick={e => { e.stopPropagation(); toggleMember(squad.squadName, member.name); }} tabIndex={0} aria-label={t('squad_base_panel.member_aria_label', { name: member.name, bases: member.bases.length })}>
+                        <tr
+                          className={hasBases ? "member-row" : "member-row no-bases-member"}
+                          onClick={hasBases ? (e => { e.stopPropagation(); toggleMember(squad.squadName, member.name); }) : undefined}
+                          tabIndex={hasBases ? 0 : -1}
+                          aria-label={t('squad_base_panel.member_aria_label', { name: member.name, bases: member.bases.length })}
+                          style={hasBases ? {} : { opacity: 0.7, cursor: 'default' }}
+                        >
                           <td className="member-cell" colSpan={3}>
-                            <span className="arrow" aria-hidden="true">{memberOpen ? '▼' : '▶'}</span>{member.name}
+                            <span className="arrow" aria-hidden="true">{hasBases ? (memberOpen ? '▼' : '▶') : ''}</span>{member.name}
                             <span className="count">({t('squad_base_panel.bases', { count: member.bases.length })})</span>
                           </td>
                         </tr>
-                        {memberOpen && (filteredBases.length === 0 ? (
+                        {hasBases && memberOpen && (filteredBases.length === 0 ? (
                           <tr className="no-bases-row">
                             <td className="base-cell" colSpan={2}>– {t('squad_base_panel.no_bases')} –</td>
                           </tr>

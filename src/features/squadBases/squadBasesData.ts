@@ -29,14 +29,14 @@ export function getSquadBaseData(db: Database): SquadGroupBases[] {
     LEFT JOIN squad_member sm ON sm.squad_id = s.id
     LEFT JOIN user_profile up ON up.id = sm.user_profile_id
     LEFT JOIN base b on b.owner_user_profile_id = up.id
-    where b.owner_user_profile_id > 0
     ORDER BY s.name, up.name`);
 
-  type Row = [number, string, number, string, number, number];
+  type Row = [number, string, number, string, number | null, number | null];
   const squadGroups: SquadGroupBases[] = [];
   if (squads[0]) {
     let currentSquad: SquadGroupBases | null = null;
     let memberMap: Map<string, { name: string; bases: { location_x: number; location_y: number; }[] }> = new Map();
+    let lastSquadName: string | null = null;
 
     for (const row of squads[0].values as Row[]) {
       const squad_name = row[1] || '(no name)';
@@ -44,21 +44,21 @@ export function getSquadBaseData(db: Database): SquadGroupBases[] {
       const location_x = row[4];
       const location_y = row[5];
 
-      if (!currentSquad || currentSquad.squadName !== squad_name) {
+      if (lastSquadName !== squad_name) {
         if (currentSquad) {
-          // Push previous squad group
           currentSquad.members = Array.from(memberMap.values());
           squadGroups.push(currentSquad);
         }
         currentSquad = { squadName: squad_name, members: [] };
         memberMap = new Map();
+        lastSquadName = squad_name;
       }
 
       if (!memberMap.has(member_name)) {
         memberMap.set(member_name, { name: member_name, bases: [] });
       }
       // Only add base if location_x and location_y are valid numbers
-      if (typeof location_x === 'number' && typeof location_y === 'number') {
+      if (typeof location_x === 'number' && typeof location_y === 'number' && !isNaN(location_x) && !isNaN(location_y)) {
         memberMap.get(member_name)!.bases.push({ location_x, location_y });
       }
     }
