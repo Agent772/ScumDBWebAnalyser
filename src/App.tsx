@@ -288,6 +288,24 @@ function App() {
           aria-label={db ? 'Analysis results' : 'Database upload'}
           role="region"
         >
+          {/* SEO-friendly intro section */}
+          {!db && (
+            <main style={{ maxWidth: 600, margin: '2rem auto', fontFamily: 'sans-serif', textAlign: 'center' }}>
+              <h1>SCUM DB Web Analyzer</h1>
+              <p>
+                Welcome to SCUM DB Web Analyzer – the best <strong>SCUM tools</strong> for analyzing your game stats, database, and more. Use our <strong>SCUM analyzer</strong> for interactive charts and statistics. No data leaves your browser, ensuring privacy and security.
+              </p>
+              <ul style={{ textAlign: 'left', margin: '1rem auto', display: 'inline-block' }}>
+                <li>Client-side analysis: your data stays private</li>
+                <li>Interactive charts and <strong>SCUM stats</strong></li>
+                <li>Easy to use and extend</li>
+                <li>Responsive and accessible UI</li>
+              </ul>
+              <p>
+                Try the <strong>SCUM DB Web Analyzer</strong> now and get insights into your game database!
+              </p>
+            </main>
+          )}
           {/* Upload UI if no DB loaded */}
           {!db && (
             <>
