@@ -12,7 +12,7 @@ import { Database } from 'sql.js';
 
 export interface SquadGroup {
   squadName: string;
-  members: { name: string; vehicles: { entity_id: number; vehicle_class: string }[] }[];
+  members: { name: string; vehicles: { vehicle_id: number; vehicle_class: string }[] }[];
 }
 
 export function getSquadVehiclesAnalytics(db: Database): SquadGroup[] {
@@ -28,10 +28,10 @@ export function getSquadVehiclesAnalytics(db: Database): SquadGroup[] {
     JOIN entity e ON e.id = ie.entity_id
     WHERE e.reason = 'AVehicleBase::BeginPlay'
   `);
-  const userVehicles = new Map<number, { entity_id: number; vehicle_class: string }[]>();
+  const userVehicles = new Map<number, { vehicle_id: number; vehicle_class: string }[]>();
   if (itemEntities[0]) {
     for (const row of itemEntities[0].values) {
-      const entity_id = Number(row[0]);
+      const vehicle_id = Number(row[2]);
       const xml = row[1];
       const vehicle_class = row[3] ? String(row[3]).replace('_Item_Container_ES', '') : '';
       if (typeof xml === 'string') {
@@ -39,7 +39,7 @@ export function getSquadVehiclesAnalytics(db: Database): SquadGroup[] {
         if (match) {
           const user_profile_id = Number(match[1]);
           if (!userVehicles.has(user_profile_id)) userVehicles.set(user_profile_id, []);
-          userVehicles.get(user_profile_id)!.push({ entity_id, vehicle_class });
+          userVehicles.get(user_profile_id)!.push({ vehicle_id, vehicle_class });
         }
       }
     }

@@ -66,14 +66,14 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
         txt += `  ${member.name}  (${t('squad_vehicles_panel.vehicles', { count: member.vehicles.length })})\n`;
         // Filter vehicles for this member
         const filteredVehicles = member.vehicles.filter(v =>
-          (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
+          (filter.vehicle_id === '' || String(v.vehicle_id).includes(filter.vehicle_id)) &&
           v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
         );
         if (filteredVehicles.length === 0) {
           txt += `    – ${t('squad_vehicles_panel.no_vehicles')} –\n`;
         } else {
           filteredVehicles.forEach(v => {
-            txt += `    ${v.entity_id}\t${v.vehicle_class}\n`;
+            txt += `    ${v.vehicle_id}\t${v.vehicle_class}\n`;
           });
         }
       });
@@ -148,14 +148,14 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
       filteredMembers.forEach(member => {
         txt += `  ${member.name}  (${t('squad_vehicles_panel.vehicles', { count: member.vehicles.length })})\n`;
         const filteredVehicles = member.vehicles.filter(v =>
-          (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
+          (filter.vehicle_id === '' || String(v.vehicle_id).includes(filter.vehicle_id)) &&
           v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
         );
         if (filteredVehicles.length === 0) {
           txt += `    – ${t('squad_vehicles_panel.no_vehicles')} –\n`;
         } else {
           filteredVehicles.forEach(v => {
-            txt += `    ${v.entity_id}\t${v.vehicle_class}\n`;
+            txt += `    ${v.vehicle_id}\t${v.vehicle_class}\n`;
           });
         }
       });
@@ -287,7 +287,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
                     const memberOpen = openMembers[memberKey] !== false;
                     // Filter vehicles
                     const filteredVehicles = member.vehicles.filter(v =>
-                      (filter.vehicle_id === '' || String(v.entity_id).includes(filter.vehicle_id)) &&
+                      (filter.vehicle_id === '' || String(v.vehicle_id).includes(filter.vehicle_id)) &&
                       v.vehicle_class.toLowerCase().includes(filter.vehicle_class.toLowerCase())
                     );
                     return (
@@ -304,9 +304,9 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
                           </tr>
                         ) : (
                           filteredVehicles.map((v, vIdx) => (
-                            <tr key={v.entity_id + vIdx} className="vehicle-row">
+                            <tr key={v.vehicle_id + vIdx} className="vehicle-row">
                               <td className="vehicle-cell"></td>
-                              <td>{v.entity_id}</td>
+                              <td>{v.vehicle_id}</td>
                               <td>{v.vehicle_class}</td>
                             </tr>
                           ))
