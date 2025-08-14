@@ -155,7 +155,7 @@ export function SquadVehiclesPanel({ db }: squadVehicleProps) {
           txt += `    – ${t('squad_vehicles_panel.no_vehicles')} –\n`;
         } else {
           filteredVehicles.forEach(v => {
-            txt += `    ${v.vehicle_id}\t${v.vehicle_class}\n`;
+            txt += `    ${v.vehicle_id}   \t ${v.vehicle_class}\n`;
           });
         }
       });
