@@ -310,6 +310,9 @@ function App() {
               <p style={{ fontSize: 13, color: COLORS.text, marginTop: 4 }}>
                 <b>{t('hint_label')}</b> {t('hint_location')}
               </p>
+              <p style={{ fontSize: 13, color: COLORS.text, marginTop: 4 }}>
+                {t('limitation_hint')}
+              </p>
               {loading && (
                 <p role="status" aria-live="polite">{t('loading_db')}</p>
               )}

@@ -3,6 +3,7 @@
   "upload_scumdb": "SCUM.db hochladen",
   "hint_location": "Die SCUM.db-Datei befindet sich normalerweise unter /Saved/SaveFiles/SCUM.db auf Ihrem Server.",
   "hint_label": "Hinweis:",
+  "limitation_hint": "Dieses Tool, alle Ergebnisse daraus oder der Quellcode dürfen niemals für einen Server mit einem Echtgeld-Bot-Shop oder einen ähnlichen Dienst verwendet werden, der echtes Geld gegen Vorteile im Spiel tauscht.",
   "close": "Schließen",
   "select": "Auswählen",
   "continue": "Weiter",
